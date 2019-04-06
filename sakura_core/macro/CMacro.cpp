@@ -84,6 +84,54 @@ void CMacro::ClearMacroParam()
 	return;
 }
 
+// 項目データ種
+enum MacroPropType{
+	PROP_TYPE_TSTR,
+	PROP_TYPE_WSTR,
+	PROP_TYPE_I4,
+	PROP_TYPE_BOOL,
+	PROP_TYPE_LINECOMMENT,
+};
+// 設定項目情報構造体
+typedef struct {
+	wchar_t*		name;
+	unsigned int	offset;
+	char			flag;
+	MacroPropType	type;
+	int				size;
+} SPropertyInfo;
+
+// 構造体メンバのサイズを返すマクロ
+#define msizeof(s, m) sizeof( ((s*)NULL)->m )
+
+// 設定項目フラグ
+#define PROP_SECTION	1	//セクションである
+#define PROP_READ		2	//読み取り可能
+#define PROP_WRITE		4	//書き込み可能
+
+#define COMMON_SEC_INFO(prefix, member) { prefix, offsetof(CommonSetting, member), PROP_SECTION }
+#define TYPE_SEC_INFO(prefix) { prefix, 0, PROP_SECTION }
+#define PROPERTY_INFO(name, type, flag, st, member) { name, offsetof(st, member), flag, type, msizeof(st, member) }
+
+// 共通設定項目定義
+SPropertyInfo CommonSettingInfoArr[] = {
+	COMMON_SEC_INFO( L"Format.",		m_sFormat ),
+	PROPERTY_INFO( L"MarkerSymbol",		PROP_TYPE_TSTR,	PROP_READ|PROP_WRITE, CommonSetting_Format, m_szMidashiKigou ),
+	{ NULL }
+};
+
+// タイプ別設定項目定義
+SPropertyInfo TypeSettingInfoArr[] = {
+	TYPE_SEC_INFO( L"Screen." ),
+	PROPERTY_INFO( L"TypeName",			PROP_TYPE_TSTR,	PROP_READ|PROP_WRITE, STypeConfig, m_szTypeName ),
+	PROPERTY_INFO( L"TypeExt",			PROP_TYPE_TSTR,	PROP_READ|PROP_WRITE, STypeConfig, m_szTypeExts ),
+	PROPERTY_INFO( L"InsertSpace",		PROP_TYPE_I4,  	PROP_READ|PROP_WRITE, STypeConfig, m_bInsSpace ),
+	PROPERTY_INFO( L"AutoIndent",		PROP_TYPE_BOOL,	PROP_READ|PROP_WRITE, STypeConfig, m_bAutoIndent ),
+	TYPE_SEC_INFO( L"Color."),
+	PROPERTY_INFO( L"LineComment",		PROP_TYPE_LINECOMMENT,	PROP_READ,    STypeConfig, m_cLineComment),
+	{ NULL }
+};
+
 /*	引数の型振り分け
 	機能IDによって、期待する型は異なります。
 	そこで、引数の型を機能IDによって振り分けて、AddParamしましょう。
@@ -2452,6 +2500,182 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 			}
 			return false;
 		}
+
+	case F_GETCOMMONPROP:
+	case F_SETCOMMONPROP:
+	case F_GETTYPEPROP:
+	case F_SETTYPEPROP:
+		//	2011.09.20 syat 共通／タイプ別設定の取得／設定
+	{
+		wchar_t *Source;
+		int SourceLength;
+		std::wstring sKey;
+		int nType = 0;
+		int nArg = 0;
+		SPropertyInfo* infoArr;
+		bool isCommon;
+		bool isGet;
+
+		// 引数の数チェック
+		switch (LOWORD(ID)) {
+		case F_GETCOMMONPROP:	if (ArgSize < 1) return false; isCommon = true; isGet = true; break;
+		case F_SETCOMMONPROP:	if (ArgSize < 2) return false; isCommon = true; isGet = false; break;
+		case F_GETTYPEPROP:		if (ArgSize < 2) return false; isCommon = false; isGet = true; break;
+		case F_SETTYPEPROP:		if (ArgSize < 3) return false; isCommon = false; isGet = false; break;
+		}
+
+		if (isCommon) {
+			infoArr = CommonSettingInfoArr;
+		}
+		else {
+			if (VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>(&(Arguments[nArg++])), 0, VT_I4) != S_OK) return false;	// VT_I4として解釈
+			nType = varCopy.Data.intVal;	// タイプ別設定のタイプ番号
+			if (nType < 0 || nType > GetDllShareData().m_nTypesCount)
+				return false;
+			if (nType == 0) {	// 0指定の場合は、現在のタイプから取得する
+				nType = View->m_pcEditDoc->m_cDocType.GetDocumentType().GetIndex();
+			}
+			else {				// 1～30の場合は、基本・設定2～30（実際の番号は0～29）から取得する
+				nType--;
+			}
+
+			infoArr = TypeSettingInfoArr;
+		}
+
+		if (VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>(&(Arguments[nArg++])), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
+		Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
+		sKey = Source;	// 項目キー名
+		delete[] Source;
+
+		SPropertyInfo* section = NULL;
+		SPropertyInfo* prop = NULL;
+		for (SPropertyInfo *p = infoArr; p->name; p++) {
+			// セクションを検索する
+			if (p->flag & PROP_SECTION) {
+				section = p;
+				int nSectionLen = wcslen(section->name);
+				if (wcsncmp(section->name, sKey.c_str(), nSectionLen) == 0) {
+					// 項目を検索する
+					for (p++; p->name && 0 == (p->flag & PROP_SECTION); p++) {
+						if (wcscmp(p->name, sKey.c_str() + nSectionLen) == 0) {
+							prop = p;
+							break;
+						}
+					}
+					if (prop)
+						break;
+					p--;
+				}
+			}
+		}
+		if (!prop) {
+			return false;
+		}
+
+		BYTE* mem = NULL;
+		struct STypeDeleter {
+			STypeDeleter() : m_type(NULL), m_nConfig(CTypeConfig(0)), m_bUpdate(false) {};
+			~STypeDeleter() {
+				//if (m_type && m_bUpdate) {
+				//	CDocTypeManager().SetTypeConfig(m_nConfig, *pType);
+				//}
+				delete m_type;
+			};
+			void SetUpdate() { m_bUpdate = true; };
+			STypeConfig* m_type;
+			CTypeConfig  m_nConfig;
+			bool m_bUpdate;
+		};
+		STypeDeleter type;
+		if (isCommon) {
+			mem = reinterpret_cast<BYTE*>(&GetDllShareData().m_Common) + section->offset + prop->offset;
+		}
+		else {
+			STypeConfig* pType = new STypeConfig;
+			CDocTypeManager().GetTypeConfig(CTypeConfig(nType), *pType);
+			type.m_type = pType;
+			type.m_nConfig = CTypeConfig(nType);
+			mem = reinterpret_cast<BYTE*>(pType) + prop->offset;
+		}
+		if (isGet) {		//取得
+			if ((prop->flag & PROP_READ) == 0)
+				return false;
+			switch (prop->type) {
+			case PROP_TYPE_BOOL:
+				Wrap(&Result)->Receive(*(bool*)mem);
+				break;
+			case PROP_TYPE_TSTR:
+			{
+				const TCHAR* value = (const TCHAR*)mem;
+				SysString S(value, _tcslen(value));
+				Wrap(&Result)->Receive(S);
+			}
+			break;
+			case PROP_TYPE_WSTR:
+			{
+				const wchar_t* value = (const wchar_t*)mem;
+				SysString S(value, auto_strlen(value));
+				Wrap(&Result)->Receive(S);
+			}
+			break;
+			case PROP_TYPE_I4:
+				Wrap(&Result)->Receive(*(int*)mem);
+				break;
+			case PROP_TYPE_LINECOMMENT:
+			{
+				CLineComment* cLine = (CLineComment*)mem;
+				const wchar_t* value = cLine->getLineComment(0);
+				SysString S(value, auto_strlen(value));
+				Wrap(&Result)->Receive(S);
+			}
+			break;
+			}
+		}
+		else {				//設定
+			if ((prop->flag & PROP_WRITE) == 0)
+				return false;
+
+			switch (prop->type) {
+			case PROP_TYPE_BOOL:
+				if (VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>(&(Arguments[nArg++])), 0, VT_BOOL) != S_OK) return false;	// VT_BOOLとして解釈
+				*(bool*)mem = varCopy.Data.boolVal == VARIANT_TRUE;
+				type.SetUpdate();
+				break;
+			case PROP_TYPE_TSTR:
+			case PROP_TYPE_WSTR:
+			{
+				std::wstring sValue;
+				if (VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>(&(Arguments[nArg++])), 0, VT_BSTR) != S_OK) return false;	// VT_BSTRとして解釈
+				Wrap(&varCopy.Data.bstrVal)->GetW(&Source, &SourceLength);
+				sValue = Source;	// 既定のファイル名
+				delete[] Source;
+#ifndef UNICODE
+				if (prop->type == PROP_TYPE_TSTR) {
+					std::tstring str = to_tchar(sValue.c_str());
+					memcpy(mem, str.c_str(), t_min<int>((str.length() + 1) * sizeof(TCHAR), prop->size - sizeof(TCHAR)));
+					TCHAR* pTchar = (TCHAR*)(mem + (prop->size - sizeof(TCHAR)));
+					pTchar = _T('\0');
+				}
+				else
+#endif
+				{
+					memcpy(mem, sValue.c_str(), t_min<int>((sValue.length() + 1) * sizeof(wchar_t), prop->size - 2));
+					mem[prop->size - 2] = '\0';
+					mem[prop->size - 1] = '\0';
+				}
+				type.SetUpdate();
+			}
+			break;
+			case PROP_TYPE_I4:
+				if (VariantChangeType(&varCopy.Data, const_cast<VARIANTARG*>(&(Arguments[nArg++])), 0, VT_I4) != S_OK) return false;	// VT_I4として解釈
+				*(int*)mem = varCopy.Data.intVal;
+				type.SetUpdate();
+				break;
+			}
+			Wrap(&Result)->Receive(0);
+		}
+	}
+	return true;
 	default:
 		return false;
 	}
