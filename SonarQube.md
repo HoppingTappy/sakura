@@ -1,5 +1,34 @@
 # SonarQube
 
+<!-- TOC -->
+
+- [SonarQube](#sonarqube)
+    - [SonarQube および SonarCloud](#sonarqube-および-sonarcloud)
+        - [SonarQube](#sonarqube-1)
+        - [SonarCloud](#sonarcloud)
+    - [SonarQube のローカルでの使用方法](#sonarqube-のローカルでの使用方法)
+        - [SonarQube のアカウント設定](#sonarqube-のアカウント設定)
+        - [プロジェクトの作成](#プロジェクトの作成)
+        - [Access Token の作成](#access-token-の作成)
+        - [ローカルで実行する場合の環境設定 (事前準備)](#ローカルで実行する場合の環境設定-事前準備)
+        - [解析手順の流れ (一般論)](#解析手順の流れ-一般論)
+        - [解析手順の流れ (サクラエディタ)](#解析手順の流れ-サクラエディタ)
+    - [サクラエディタを SonarQube でビルドする手順](#サクラエディタを-sonarqube-でビルドする手順)
+    - [SonarQube に関する情報](#sonarqube-に関する情報)
+        - [SonarQube の使用方法に関するサイト](#sonarqube-の使用方法に関するサイト)
+        - [SonarScanner の使用方法](#sonarscanner-の使用方法)
+    - [CI でのビルド](#ci-でのビルド)
+        - [azure pipelines の設定](#azure-pipelines-の設定)
+            - [環境変数](#環境変数)
+            - [スケジュール設定](#スケジュール設定)
+            - [azure-pipelines.yml の設定](#azure-pipelinesyml-の設定)
+                - [Job の設定](#job-の設定)
+                - [Steps の設定](#steps-の設定)
+        - [Appveyor の設定](#appveyor-の設定)
+            - [Secure the GitHub Authentication token](#secure-the-github-authentication-token)
+
+<!-- /TOC -->
+
 <!-- 以下は Markdownの参照形式によるリンク の定義です。 -->
 <!-- 参照 https://hail2u.net/blog/coding/markdown-reference-style-links.html -->
 
@@ -57,14 +86,25 @@ https://sonarcloud.io/projects/create にアクセスしてプロジェクトを
 - Access Token をメモしておきます。 
 **この情報はパスワードと同じ意味を持つので漏れないように注意します。**
 
+### Access Token の作成
+
+https://sonarcloud.io/account/security/ のページでいつでも Access Token の作成、Revoke ができます。
+
+ヘルプ: https://sonarcloud.io/documentation/user-guide/user-token/
+
 ### ローカルで実行する場合の環境設定 (事前準備)
 
-1. https://www.java.com/ja/download/ から JAVA のランタイムをダウンロードしてインストールする
+1. Oracle JRE8 の **64bit 版のランタイム** をダウンロードしてインストールする
+    1. Oracle JRE8 https://java.com/ja/download/manual.jsp (2019/05/02 現在)
+    1. Open JRE8 は Windows 版はダウンロードできなさそう。
+    1. 参考: [Prerequisites and Overview (Supported Platforms)](https://docs.sonarqube.org/latest/requirements/requirements/#header-3)
+    1. 参考: [SonarQubeの Java 11 対応状況](https://qiita.com/hayao_k/items/2cd81161f8dffd3a178b)
+
 1. `JAVA_HOME` の環境変数を設定する
 
 	例
 
-	`set JAVA_HOME=C:\Program Files (x86)\Java\jre1.8.0_201`
+	`set JAVA_HOME=C:\Program Files\Java\jre1.8.0_211`
 
 1. https://chocolatey.org/install#install-with-cmdexe を参考に chocolatey をインストールする。
 
@@ -132,7 +172,7 @@ https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+MSB
 8. `SONAR_QUBE_TOKEN` を追加して値を設定し、 鍵のアイコンをクリックする (重要) 
 9. `Save & Queue` で `Save` を選ぶ
 
-	![環境変数の設定画面](azure-SonarQube.png)
+	![環境変数の設定画面](ci/azure-pipelines/azure-SonarQube.png)
 
 #### スケジュール設定
 
@@ -142,11 +182,11 @@ https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+MSB
 4. `Run` の右隣りのアイコンをクリックする
 5. `Triggers` のボタンを押す
 6. `Scheduled` の `Add` をクリックする
-	![スケジュール設定1](azure-SonarQube-schedule1.png)
+	![スケジュール設定1](ci/azure-pipelines/azure-SonarQube-schedule1.png)
 7. 実行させたいスケジュールを設定して、実行させる対象ブランチを設定する
-	![スケジュール設定2](azure-SonarQube-schedule2.png)
+	![スケジュール設定2](ci/azure-pipelines/azure-SonarQube-schedule2.png)
 8. 設定を保存する
-	![スケジュール設定3](azure-SonarQube-schedule3.png)
+	![スケジュール設定3](ci/azure-pipelines/azure-SonarQube-schedule3.png)
 
 #### azure-pipelines.yml の設定
 
@@ -226,7 +266,7 @@ Appveyor のプロジェクトで Settings の Environment にアクセスして
 |SONAR_QUBE_PROJECT|Sonar Qube のプロジェクト識別子||
 |SONAR_QUBE_TOKEN|Sonar Qube のアクセスキー (API キー)|追加するとき右の鍵マークを押して秘密の環境変数に設定する|
 
-![環境変数の設定画面](appveyor-SonarQube.png)
+![環境変数の設定画面](ci/appveyor/appveyor-SonarQube.png)
 
 
 #### Secure the GitHub Authentication token
