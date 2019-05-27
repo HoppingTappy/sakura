@@ -12,7 +12,9 @@ trigger:
   paths:
     exclude:
       - "*.md"
+      - .github/*.md
       - .github/ISSUE_TEMPLATE/*.md
+      - .gitignore
       - .travis.yml
       - appveyor.yml
 
@@ -27,6 +29,14 @@ pr:
       - master
       - develop
       - feature/*
+  paths:
+    exclude:
+      - "*.md"
+      - .github/*.md
+      - .github/ISSUE_TEMPLATE/*.md
+      - .gitignore
+      - .travis.yml
+      - appveyor.yml
 
 ###############################################################################################################################
 #   jobs/job 定義
