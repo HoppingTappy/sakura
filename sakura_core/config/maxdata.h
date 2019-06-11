@@ -38,7 +38,7 @@ enum maxdata{
 	MAX_EXCLUDEFOLDER			=  30,	//!< 除外フォルダ
 	MAX_GREP_PATH				= 512,	//!< Grepファイルパス長
 	MAX_EXCLUDE_PATH			= 512,	//!< 除外ファイルパス長
-	MAX_TYPES					=  60,	//!< タイプ別設定
+	MAX_TYPES					= 120,	//!< タイプ別設定
 	MAX_TYPES_NAME				=  64,	//!< タイプ属性：名称 バッファサイズ
 	MAX_TYPES_EXTS				=  64,	//!< タイプ属性：拡張子リスト バッファサイズ
 	MAX_PRINTSETTINGARR			=   8,	//!< 印刷ページ設定
