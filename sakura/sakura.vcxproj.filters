@@ -1088,6 +1088,9 @@
     <ClInclude Include="..\sakura_core\recent\CRecentExcludeFolder.h">
       <Filter>Cpp Source Files\recent</Filter>
     </ClInclude>
+    <ClInclude Include="..\sakura_core\mem\CPoolResource.h">
+      <Filter>Cpp Source Files\mem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\sakura_core\Funccode_x.hsrc">
@@ -2292,5 +2295,11 @@
     <Text Include="..\sakura_core\util\ReadMe_util.txt">
       <Filter>Cpp Source Files\util</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FuncCodeRes Include="..\sakura_core\Funccode_x.hsrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="sakura.natvis" />
   </ItemGroup>
 </Project>

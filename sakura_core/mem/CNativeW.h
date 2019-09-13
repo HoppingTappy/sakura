@@ -173,27 +173,12 @@ public:
 	const wchar_t* GetStringW() const						{ return GetStringPtr(); }
 
 	//TCHAR
-#ifdef _UNICODE
 	void SetStringT( const TCHAR* pData, int nDataLen )	{ return SetString(pData,nDataLen); }
 	void SetStringT( const TCHAR* pszData )				{ return SetString(pszData); }
 	void AppendStringT(const TCHAR* pszData)			{ return AppendString(pszData); }
 	void AppendStringT(const TCHAR* pData, int nLength)	{ return AppendString(pData,nLength); }
 	void AppendNativeDataT(const CNativeT& rhs)			{ return AppendNativeData(rhs); }
 	const TCHAR* GetStringT() const						{ return GetStringPtr(); }
-#else
-	void SetStringT( const TCHAR* pData, int nDataLen )	{ return SetStringOld(pData,nDataLen); }
-	void SetStringT( const TCHAR* pszData )				{ return SetStringOld(pszData); }
-	void AppendStringT(const TCHAR* pszData)			{ return AppendStringOld(pszData); }
-	void AppendStringT(const TCHAR* pData, int nLength)	{ return AppendStringOld(pData,nLength); }
-	void AppendNativeDataT(const CNativeT& rhs)			{ return AppendStringOld(rhs.GetStringPtr(), rhs.GetStringLength()); }
-	const TCHAR* GetStringT() const						{ return GetStringPtrOld(); }
-#endif
-
-#if _DEBUG
-private:
-	typedef wchar_t* PWCHAR;
-	PWCHAR& m_pDebugData; //デバッグ用。CMemoryの内容をwchar_t*型でウォッチするためのモノ
-#endif
 
 public:
 	// -- -- staticインターフェース -- -- //
@@ -212,6 +197,9 @@ public:
 	static CLayoutXInt GetColmOfChar( const CStringRef& cStr, int nIdx )
 		{ return GetHabaOfChar(cStr.GetPtr(), cStr.GetLength(), nIdx);}
 };
+
+// 派生クラスでメンバー追加禁止
+static_assert(sizeof(CNativeW) == sizeof(CNative), "size check");
 
 namespace std {
 template <>
