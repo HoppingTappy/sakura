@@ -94,7 +94,7 @@ enum MacroPropType{
 };
 // 設定項目情報構造体
 typedef struct {
-	wchar_t*		name;
+	const wchar_t*		name;
 	unsigned int	offset;
 	char			flag;
 	MacroPropType	type;
@@ -2606,7 +2606,7 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 				break;
 			case PROP_TYPE_TSTR:
 			{
-				const TCHAR* value = (const TCHAR*)mem;
+				const WCHAR* value = (const WCHAR*)mem;
 				SysString S(value, _tcslen(value));
 				Wrap(&Result)->Receive(S);
 			}
@@ -2651,9 +2651,9 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 				delete[] Source;
 #ifndef UNICODE
 				if (prop->type == PROP_TYPE_TSTR) {
-					std::tstring str = to_tchar(sValue.c_str());
-					memcpy(mem, str.c_str(), t_min<int>((str.length() + 1) * sizeof(TCHAR), prop->size - sizeof(TCHAR)));
-					TCHAR* pTchar = (TCHAR*)(mem + (prop->size - sizeof(TCHAR)));
+					std::tstring str = to_wchar(sValue.c_str());
+					memcpy(mem, str.c_str(), t_min<int>((str.length() + 1) * sizeof(WCHAR), prop->size - sizeof(WCHAR)));
+					WCHAR* pTchar = (WCHAR*)(mem + (prop->size - sizeof(WCHAR)));
 					pTchar = _T('\0');
 				}
 				else
