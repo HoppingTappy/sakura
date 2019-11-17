@@ -28,8 +28,7 @@
 		   distribution.
 */
 
-#ifndef __CMACROMGR_BASE_H_
-#define __CMACROMGR_BASE_H_
+#pragma once
 
 #include <Windows.h>
 class CEditView;
@@ -67,14 +66,14 @@ public:
 		@param hInstance [in]
 		@param pszPath [in] ファイル名
 	*/
-	virtual BOOL LoadKeyMacro( HINSTANCE hInstance, const TCHAR* pszPath) = 0;
+	virtual BOOL LoadKeyMacro( HINSTANCE hInstance, const WCHAR* pszPath) = 0;
 
 	/*! キーボードマクロを文字列から読み込む
 
 		@param hInstance [in]
 		@param pszCode [in] マクロコード
 	*/
-	virtual BOOL LoadKeyMacroStr( HINSTANCE hInstance, const TCHAR* pszCode ) = 0;
+	virtual BOOL LoadKeyMacroStr( HINSTANCE hInstance, const WCHAR* pszCode ) = 0;
 
 	//static CMacroManagerBase* Creator( const char* str );
 	//純粋仮想クラスは実体化できないのでFactoryは不要。
@@ -99,4 +98,3 @@ public:
 	CMacroManagerBase();
 };
 
-#endif

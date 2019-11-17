@@ -22,14 +22,13 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CBINARYSTREAM_F33600DB_8369_4FB2_B7B1_8B59249B7216_H_
-#define SAKURA_CBINARYSTREAM_F33600DB_8369_4FB2_B7B1_8B59249B7216_H_
+#pragma once
 
 #include "CStream.h"
 
-class CBinaryInputStream : public CStream{
+class CBinaryInputStream final : public CStream{
 public:
-	CBinaryInputStream(LPCTSTR tszFilePath);
+	CBinaryInputStream(LPCWSTR pszFilePath);
 
 public:
 	//! ストリームの「残り」サイズを取得
@@ -39,10 +38,9 @@ public:
 	int Read(void* pBuffer, int nSizeInBytes);
 };
 
-class CBinaryOutputStream : public COutputStream{
+class CBinaryOutputStream final : public COutputStream{
 public:
-	CBinaryOutputStream(LPCTSTR tszFilePath, bool bExceptionMode = false);
+	CBinaryOutputStream(LPCWSTR pszFilePath, bool bExceptionMode = false);
 };
 
-#endif /* SAKURA_CBINARYSTREAM_F33600DB_8369_4FB2_B7B1_8B59249B7216_H_ */
 /*[EOF]*/

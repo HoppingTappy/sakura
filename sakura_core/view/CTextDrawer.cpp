@@ -82,7 +82,6 @@ void CTextDrawer::DispText( HDC hdc, DispPos* pDispPos, int marginy, const wchar
 
 	if( pArea->IsRectIntersected(rcClip) && rcClip.top >= pArea->GetAreaTop() ){
 
-		//@@@	From Here 2002.01.30 YAZAKI ExtTextOutW_AnyBuildの制限回避
 		if( rcClip.Width() > pArea->GetAreaWidth() ){
 			rcClip.right = rcClip.left + pArea->GetAreaWidth();
 		}
@@ -192,7 +191,7 @@ void CTextDrawer::DispVerticalLines(
 	const int nPosXLeft   = t_max(pView->GetTextMetrics().GetCharPxWidth(pView->GetTextArea().GetAreaLeft() + (nLeftCol  - nViewLeftCol)), pView->GetTextArea().GetAreaLeft() );
 	const int nPosXRight  = t_min(pView->GetTextMetrics().GetCharPxWidth(pView->GetTextArea().GetAreaLeft() + (nRightCol - nViewLeftCol)), pView->GetTextArea().GetAreaRight() );
 	const int nLineHeight = pView->GetTextMetrics().GetHankakuDy();
-	bool bOddLine = ((((nLineHeight % 2) ? (Int)pView->GetTextArea().GetViewTopLine() : 0) + pView->GetTextArea().GetAreaTop() + nTop) % 2 == 1);
+	bool bOddLine = ((((nLineHeight % 2) ? (Int)pView->GetTextArea().GetViewTopLine() : Int(0)) + pView->GetTextArea().GetAreaTop() + nTop) % 2 == 1);
 
 	// 太線
 	const bool bBold = cVertType.IsBoldFont();

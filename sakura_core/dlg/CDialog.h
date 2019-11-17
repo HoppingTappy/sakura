@@ -16,8 +16,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CDIALOG_H_
-#define _CDIALOG_H_
+#pragma once
 
 class CDialog;
 
@@ -126,7 +125,7 @@ public:
 	static void SetComboBoxDeleter( HWND hwndCtl, SComboBoxItemDeleter* data );
 public:
 
-	static bool DirectoryUp(TCHAR* szDir);
+	static bool DirectoryUp(WCHAR* szDir);
 
 public:
 	HWND GetHwnd() const{ return m_hWnd; }
@@ -164,5 +163,3 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CDIALOG_H_ */
-

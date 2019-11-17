@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CGREPAGENT_89E8C8B7_433B_47F3_A389_75C91E00A4BA9_H_
-#define SAKURA_CGREPAGENT_89E8C8B7_433B_47F3_A389_75C91E00A4BA9_H_
+#pragma once
 
 #include "doc/CDocListener.h"
 class CDlgCancel;
@@ -70,11 +69,11 @@ public:
 	CGrepAgent();
 
 	// イベント
-	ECallbackResult OnBeforeClose();
-	void OnAfterSave(const SSaveInfo& sSaveInfo);
+	ECallbackResult OnBeforeClose() override;
+	void OnAfterSave(const SSaveInfo& sSaveInfo) override;
 
-	static void CreateFolders( const TCHAR* pszPath, std::vector<std::tstring>& vPaths );
-	static std::tstring ChopYen( const std::tstring& str );
+	static void CreateFolders( const WCHAR* pszPath, std::vector<std::wstring>& vPaths );
+	static std::wstring ChopYen( const std::wstring& str );
 	void AddTail( CEditView* pcEditView, const CNativeW& cmem, bool bAddStdout );
 
 	// Grep実行
@@ -83,10 +82,10 @@ public:
 		bool					bGrepReplace,
 		const CNativeW*			pcmGrepKey,
 		const CNativeW*			pcmGrepReplace,
-		const CNativeT*			pcmGrepFile,
-		const CNativeT*			pcmGrepFolder,
-		const CNativeT*			pcmExcludeFile,
-		const CNativeT*			pcmExcludeFolder,
+		const CNativeW*			pcmGrepFile,
+		const CNativeW*			pcmGrepFolder,
+		const CNativeW*			pcmExcludeFile,
+		const CNativeW*			pcmExcludeFolder,
 		bool					bGrepCurFolder,
 		BOOL					bGrepSubFolder,
 		bool					bGrepStdout,
@@ -112,8 +111,8 @@ private:
 		CGrepEnumKeys&			cGrepEnumKeys,		//!< [in] 検索対象ファイルパターン(!で除外指定)
 		CGrepEnumFiles&			cGrepExceptAbsFiles,
 		CGrepEnumFolders&		cGrepExceptAbsFolders,
-		const TCHAR*			pszPath,			//!< [in] 検索対象パス
-		const TCHAR*			pszBasePath,		//!< [in] 検索対象パス(ベース)
+		const WCHAR*			pszPath,			//!< [in] 検索対象パス
+		const WCHAR*			pszBasePath,		//!< [in] 検索対象パス(ベース)
 		const SSearchOption&	sSearchOption,		//!< [in] 検索オプション
 		const SGrepOption&		sGrepOption,		//!< [in] Grepオプション
 		const CSearchStringPattern& pattern,		//!< [in] 検索パターン
@@ -130,16 +129,16 @@ private:
 		CEditView*				pcViewDst,
 		CDlgCancel*				pcDlgCancel,
 		const wchar_t*			pszKey,
-		const TCHAR*			pszFile,
+		const WCHAR*			pszFile,
 		const SSearchOption&	sSearchOption,
 		const SGrepOption&		sGrepOption,
 		const CSearchStringPattern& pattern,
 		CBregexp*				pRegexp,		//	Jun. 27, 2001 genta	正規表現ライブラリの差し替え
 		int*					pnHitCount,
-		const TCHAR*			pszFullPath,
-		const TCHAR*			pszBaseFolder,
-		const TCHAR*			pszFolder,
-		const TCHAR*			pszRelPath,
+		const WCHAR*			pszFullPath,
+		const WCHAR*			pszBaseFolder,
+		const WCHAR*			pszFolder,
+		const WCHAR*			pszRelPath,
 		bool&					bOutputBaseFolder,
 		bool&					bOutputFolderName,
 		CNativeW&				cmemMessage,
@@ -151,16 +150,16 @@ private:
 		CDlgCancel*				pcDlgCancel,
 		const wchar_t*			pszKey,
 		const CNativeW&			cmGrepReplace,
-		const TCHAR*			pszFile,
+		const WCHAR*			pszFile,
 		const SSearchOption&	sSearchOption,
 		const SGrepOption&		sGrepOption,
 		const CSearchStringPattern& pattern,
 		CBregexp*				pRegexp,
 		int*					pnHitCount,
-		const TCHAR*			pszFullPath,
-		const TCHAR*			pszBaseFolder,
-		const TCHAR*			pszFolder,
-		const TCHAR*			pszRelPath,
+		const WCHAR*			pszFullPath,
+		const WCHAR*			pszBaseFolder,
+		const WCHAR*			pszFolder,
+		const WCHAR*			pszRelPath,
 		bool&					bOutputBaseFolder,
 		bool&					bOutputFolderName,
 		CNativeW&				cmemMessage,
@@ -172,8 +171,8 @@ private:
 		// データ格納先
 		CNativeW&		cmemMessage,
 		// マッチしたファイルの情報
-		const TCHAR*	pszFilePath,	//	フルパス or 相対パス
-		const TCHAR*	pszCodeName,	//	文字コード情報"[SJIS]"とか
+		const WCHAR*	pszFilePath,	//	フルパス or 相対パス
+		const WCHAR*	pszCodeName,	//	文字コード情報"[SJIS]"とか
 		// マッチした行の情報
 		LONGLONG		nLine,			//	マッチした行番号
 		int				nColumn,		//	マッチした桁番号
@@ -196,5 +195,4 @@ public: //$$ 仮
 	bool	m_bGrepRunning;		//!< Grep処理中
 };
 
-#endif /* SAKURA_CGREPAGENT_89E8C8B7_433B_47F3_A389_75C91E00A4BA9_H_ */
 /*[EOF]*/

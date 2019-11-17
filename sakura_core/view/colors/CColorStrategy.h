@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CCOLORSTRATEGY_BC7B5956_A0AF_4C9C_9C0E_07FE658028AC9_H_
-#define SAKURA_CCOLORSTRATEGY_BC7B5956_A0AF_4C9C_9C0E_07FE658028AC9_H_
+#pragma once
 
 // 要先行定義
 // #include "view/CEditView.h"
@@ -64,8 +63,8 @@ inline int ToColorInfoArrIndex(const EColorIndexType eColorIndex)
 }
 
 // カラー名＜＞インデックス番号の変換	//@@@ 2002.04.30
-int GetColorIndexByName( const TCHAR *name );
-const TCHAR* GetColorNameByIndex( int index );
+int GetColorIndexByName( const WCHAR *name );
+const WCHAR* GetColorNameByIndex( int index );
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                           基底                              //
@@ -232,5 +231,4 @@ private:
 	bool	m_bSkipBeforeLayoutFound;
 };
 
-#endif /* SAKURA_CCOLORSTRATEGY_BC7B5956_A0AF_4C9C_9C0E_07FE658028AC9_H_ */
 /*[EOF]*/

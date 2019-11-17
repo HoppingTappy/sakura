@@ -25,8 +25,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CHELPMANAGER_979D10EB_B07B_466F_BB28_AB5A7259E2EA9_H_
-#define SAKURA_CHELPMANAGER_979D10EB_B07B_466F_BB28_AB5A7259E2EA9_H_
+#pragma once
 
 // 要先行定義
 // #include "DLLSHAREDATA.h"
@@ -40,13 +39,12 @@ public:
 	}
 	//ヘルプ関連	//@@@ 2002.2.3 YAZAKI
 	bool			ExtWinHelpIsSet( const STypeConfig* pType = NULL );		//	タイプがnTypeのときに、外部ヘルプが設定されているか。
-	const TCHAR*	GetExtWinHelp( const STypeConfig* pType = NULL );		//	タイプがnTypeのときの、外部ヘルプファイル名を取得。
+	const WCHAR*	GetExtWinHelp( const STypeConfig* pType = NULL );		//	タイプがnTypeのときの、外部ヘルプファイル名を取得。
 	bool			ExtHTMLHelpIsSet( const STypeConfig* pType = NULL );	//	タイプがnTypeのときに、外部HTMLヘルプが設定されているか。
-	const TCHAR*	GetExtHTMLHelp( const STypeConfig* pType = NULL );		//	タイプがnTypeのときの、外部HTMLヘルプファイル名を取得。
+	const WCHAR*	GetExtHTMLHelp( const STypeConfig* pType = NULL );		//	タイプがnTypeのときの、外部HTMLヘルプファイル名を取得。
 	bool			HTMLHelpIsSingle( const STypeConfig* pType = NULL );	//	タイプがnTypeのときの、外部HTMLヘルプ「ビューアを複数起動しない」がONかを取得。
 private:
 	DLLSHAREDATA* m_pShareData;
 };
 
-#endif /* SAKURA_CHELPMANAGER_979D10EB_B07B_466F_BB28_AB5A7259E2EA9_H_ */
 /*[EOF]*/

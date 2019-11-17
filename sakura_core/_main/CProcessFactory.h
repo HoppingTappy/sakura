@@ -12,8 +12,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CPROCESSFACTORY_H_
-#define _CPROCESSFACTORY_H_
+#pragma once
 
 #include "global.h"
 
@@ -33,11 +32,11 @@ class CProcess;
 */
 class CProcessFactory {
 public:
-	CProcess* Create( HINSTANCE hInstance, LPCTSTR lpCmdLine );
+	CProcess* Create( HINSTANCE hInstance, LPCWSTR lpCmdLine );
 protected:
 private:
 	bool IsValidVersion();
-	bool ProfileSelect(HINSTANCE hInstance, LPCTSTR lpCmdLine);
+	bool ProfileSelect(HINSTANCE hInstance, LPCWSTR lpCmdLine);
 	bool IsStartingControlProcess();
 	bool IsExistControlProcess();
 	bool StartControlProcess();
@@ -46,5 +45,3 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CPROCESSFACTORY_H_ */
-

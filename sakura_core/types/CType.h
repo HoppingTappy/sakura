@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CTYPE_BF915633_AE38_4C73_8E5B_0411063A1AD89_H_
-#define SAKURA_CTYPE_BF915633_AE38_4C73_8E5B_0411063A1AD89_H_
+#pragma once
 
 #include "CEol.h"
 #include "env/CommonSetting.h"
@@ -131,8 +130,8 @@ struct STypeConfig{
 	//2007.09.07 変数名変更: m_nMaxLineSize→m_nMaxLineKetas
 	int					m_nIdx;
 	int					m_id;
-	TCHAR				m_szTypeName[MAX_TYPES_NAME];	//!< タイプ属性：名称
-	TCHAR				m_szTypeExts[MAX_TYPES_EXTS];	//!< タイプ属性：拡張子リスト
+	WCHAR				m_szTypeName[MAX_TYPES_NAME];	//!< タイプ属性：名称
+	WCHAR				m_szTypeExts[MAX_TYPES_EXTS];	//!< タイプ属性：拡張子リスト
 	int					m_nTextWrapMethod;				//!< テキストの折り返し方法		// 2008.05.30 nasukoji
 	CKetaXInt			m_nMaxLineKetas;				//!< 折り返し桁数
 	int					m_nColumnSpace;					//!< 文字と文字の隙間
@@ -264,8 +263,8 @@ struct STypeConfig{
 struct STypeConfigMini
 {
 	int					m_id;
-	TCHAR				m_szTypeName[MAX_TYPES_NAME];	//!< タイプ属性：名称
-	TCHAR				m_szTypeExts[MAX_TYPES_EXTS];	//!< タイプ属性：拡張子リスト
+	WCHAR				m_szTypeName[MAX_TYPES_NAME];	//!< タイプ属性：名称
+	WCHAR				m_szTypeExts[MAX_TYPES_EXTS];	//!< タイプ属性：拡張子リスト
 	SEncodingConfig		m_encoding;						//!< エンコードオプション
 };
 
@@ -353,5 +352,4 @@ inline bool C_IsSpace( wchar_t c, bool bExtEol )
 	);
 }
 
-#endif /* SAKURA_CTYPE_BF915633_AE38_4C73_8E5B_0411063A1AD89_H_ */
 /*[EOF]*/

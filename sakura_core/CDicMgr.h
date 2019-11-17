@@ -11,8 +11,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CDICMGR_H_
-#define _CDICMGR_H_
+#pragma once
 
 #include <Windows.h>
 #include "util/container.h"
@@ -36,10 +35,10 @@ public:
 //	BOOL Open( char* );
 	static BOOL Search( const wchar_t* pszKey, const int nCmpLen,
 						CNativeW** ppcmemKey, CNativeW** ppcmemMean,
-						const TCHAR* pszKeyWordHelpFile, int * pLine );	// 2006.04.10 fon (const int,CMemory**,int*)引数を追加
+						const WCHAR* pszKeyWordHelpFile, int * pLine );	// 2006.04.10 fon (const int,CMemory**,int*)引数を追加
 	static int HokanSearch( const wchar_t* pszKey, bool bHokanLoHiCase,
 							vector_ex<std::wstring>& vKouho, int nMaxKouho,
-							const TCHAR* pszKeyWordFile );
+							const WCHAR* pszKeyWordFile );
 //	BOOL Close( char* );
 
 protected:
@@ -49,5 +48,3 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CDICMGR_H_ */
-

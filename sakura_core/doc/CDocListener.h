@@ -32,8 +32,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CDOCLISTENER_797F65F5_C90A_4055_944C_AB9256AD8B90_H_
-#define SAKURA_CDOCLISTENER_797F65F5_C90A_4055_944C_AB9256AD8B90_H_
+#pragma once
 
 class CDocListener;
 #include "basis/CMyString.h"
@@ -84,7 +83,7 @@ struct SLoadInfo
 	bool		bOpened;
 
 	SLoadInfo()
-	: cFilePath(_T(""))
+	: cFilePath(L"")
 	, eCharCode(CODE_AUTODETECT)
 	, bViewMode(false)
 	, bWritableNoMsg(false)
@@ -105,7 +104,7 @@ struct SLoadInfo
 	}
 
 	//! ファイルパスの比較
-	bool IsSamePath(LPCTSTR pszPath) const;
+	bool IsSamePath(LPCWSTR pszPath) const;
 };
 
 struct SSaveInfo{
@@ -118,12 +117,12 @@ struct SSaveInfo{
 	//モード
 	bool		bOverwriteMode;	//!< 上書き要求
 
-	SSaveInfo() : cFilePath(_T("")), eCharCode(CODE_AUTODETECT), bBomExist(false), bChgCodeSet(false), cEol(EOL_NONE), bOverwriteMode(false) { }
+	SSaveInfo() : cFilePath(L""), eCharCode(CODE_AUTODETECT), bBomExist(false), bChgCodeSet(false), cEol(EOL_NONE), bOverwriteMode(false) { }
 	SSaveInfo(const CFilePath& _cFilePath, ECodeType _eCodeType, const CEol& _cEol, bool _bBomExist)
 		: cFilePath(_cFilePath), eCharCode(_eCodeType), bBomExist(_bBomExist), bChgCodeSet(false), cEol(_cEol), bOverwriteMode(false) { }
 
 	//! ファイルパスの比較
-	bool IsSamePath(LPCTSTR pszPath) const;
+	bool IsSamePath(LPCWSTR pszPath) const;
 };
 
 class CProgressListener;
@@ -213,5 +212,4 @@ public:
 	const char* what() const throw(){ return "CFlowInterruption"; }
 };
 
-#endif /* SAKURA_CDOCLISTENER_797F65F5_C90A_4055_944C_AB9256AD8B90_H_ */
 /*[EOF]*/

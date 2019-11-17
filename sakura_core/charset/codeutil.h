@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CODEUTIL_E12B274F_2A3B_47A0_AFCB_4BAD1B3308AB_H_
-#define SAKURA_CODEUTIL_E12B274F_2A3B_47A0_AFCB_4BAD1B3308AB_H_
+#pragma once
 
 #include <Windows.h>
 
@@ -179,7 +178,7 @@ inline int MyWideCharToMultiByte_JP( const unsigned short* pSrc, const int nSrcL
 /*!
 	MultiByteToWideChar のラッパー関数
 
-	@param[out] pbNonroundtrip 返還に成功したものの、相互変換性が失われた場合に true
+	@param[out] pbNonroundtrip 変換に成功したものの、相互変換性が失われた場合に true
 
 	nSrcLen は 1 か 2
 */
@@ -207,5 +206,4 @@ inline int MyMultiByteToWideChar_JP( const unsigned char* pSrc, const int nSrcLe
 	return nret;
 }
 
-#endif /* SAKURA_CODEUTIL_E12B274F_2A3B_47A0_AFCB_4BAD1B3308AB_H_ */
 /*[EOF]*/

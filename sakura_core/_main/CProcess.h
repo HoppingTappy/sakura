@@ -12,8 +12,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CPROCESS_H_
-#define _CPROCESS_H_
+#pragma once
 
 #include "global.h"
 #include "env/CShareData.h"
@@ -31,7 +30,7 @@
 */
 class CProcess : public TSingleInstance<CProcess> {
 public:
-	CProcess( HINSTANCE hInstance, LPCTSTR lpCmdLine );
+	CProcess( HINSTANCE hInstance, LPCWSTR lpCmdLine );
 	bool Run();
 	virtual ~CProcess(){}
 	virtual void RefreshString();
@@ -71,5 +70,3 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CPROCESS_H_ */
-

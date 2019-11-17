@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CHARCODE_5A887F7C_8E08_4940_AF65_BD6850C3A7B5_H_
-#define SAKURA_CHARCODE_5A887F7C_8E08_4940_AF65_BD6850C3A7B5_H_
+#pragma once
 
 //2007.09.13 kobake 作成
 #include "parse/CWordParse.h"
@@ -321,8 +320,8 @@ namespace TCODE
 // 文字幅の動的計算用キャッシュ関連
 struct SCharWidthCache {
 	// 文字半角全角キャッシュ
-	TCHAR		m_lfFaceName[LF_FACESIZE];
-	TCHAR		m_lfFaceName2[LF_FACESIZE];
+	WCHAR		m_lfFaceName[LF_FACESIZE];
+	WCHAR		m_lfFaceName2[LF_FACESIZE];
 	short		m_nCharPxWidthCache[0x10000];
 	int			m_nCharWidthCacheTest;				//cache溢れ検出
 };
@@ -344,5 +343,4 @@ void SelectCharWidthCache( ECharWidthFontMode fMode, ECharWidthCacheMode cMode )
 void InitCharWidthCache( const LOGFONT &lf, ECharWidthFontMode fMode=CWM_FONT_EDIT ); //!< フォントを変更したとき
 void InitCharWidthCacheFromDC(const LOGFONT* lfs, ECharWidthFontMode fMode, HDC hdcOrg );
 
-#endif /* SAKURA_CHARCODE_5A887F7C_8E08_4940_AF65_BD6850C3A7B5_H_ */
 /*[EOF]*/

@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CCODEBASE_79FA6B92_246A_4427_89C9_92E1F1335EB9_H_
-#define SAKURA_CCODEBASE_79FA6B92_246A_4427_89C9_92E1F1335EB9_H_
+#pragma once
 
 //定数
 enum EConvertResult{
@@ -62,7 +61,7 @@ public:
 	virtual void GetEol(CMemory* pcmemEol, EEolType eEolType){ S_GetEol(pcmemEol,eEolType); }	//!< 改行データ取得
 
 	// 文字コード表示用		2008/6/9 Uchi
-	virtual EConvertResult UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* pDst, const CommonSetting_Statusbar* psStatusbar);			//!< UNICODE → Hex 変換
+	virtual EConvertResult UnicodeToHex(const wchar_t* cSrc, const int iSLen, WCHAR* pDst, const CommonSetting_Statusbar* psStatusbar);			//!< UNICODE → Hex 変換
 
 	// 変換エラー処理（１バイト <-> U+D800 から U+D8FF）
 	static int BinToText(const unsigned char *pSrc, const int nLen, unsigned short *pDst);
@@ -97,5 +96,4 @@ inline int CCodeBase::TextToBin( const unsigned short cSrc )
 	return static_cast<int>((cSrc - 0xdc00) & 0x00ff);
 }
 
-#endif /* SAKURA_CCODEBASE_79FA6B92_246A_4427_89C9_92E1F1335EB9_H_ */
 /*[EOF]*/

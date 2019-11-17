@@ -28,8 +28,7 @@
 		   distribution.
 */
 
-#ifndef _CMUTEX_H_
-#define _CMUTEX_H_
+#pragma once
 
 #include <Windows.h>
 
@@ -39,7 +38,7 @@
 class CMutex
 {
 public:
-	CMutex( BOOL bInitialOwner, LPCTSTR pszName, LPSECURITY_ATTRIBUTES psa = NULL )
+	CMutex( BOOL bInitialOwner, LPCWSTR pszName, LPSECURITY_ATTRIBUTES psa = NULL )
 	{
 		m_hObj = ::CreateMutex( psa, bInitialOwner, pszName );
 	}
@@ -104,6 +103,4 @@ public:
 		o_.Unlock();
 	}
 };
-
-#endif /* _CMUTEX_H_ */
 

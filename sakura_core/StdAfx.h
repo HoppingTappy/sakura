@@ -4,12 +4,7 @@
 //				プロジェクト専用のインクルード ファイルを記述します。
 //
 
-#if !defined(AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_)
-#define AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_
-
-#if defined(_MSC_VER) && _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // この位置にヘッダーを挿入してください
 // #define WIN32_LEAN_AND_MEAN		// Windows ヘッダーから殆ど使用されないスタッフを除外します
@@ -24,11 +19,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #ifdef _MSC_VER
-
-//#pragma warning(disable: 4786)
-#pragma warning(disable: 4345)	//warning C4345: 動作変更 : 形式 () の初期化子で構築される POD 型のオブジェクトは既定初期化されます。
-#pragma warning(disable: 4996)	//warning C4996: 'xxxx': This function or variable may be unsafe. Consider using wcscpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-#pragma warning(disable: 4355)	//warning C4355: 'this' : ベース メンバ初期化リストで使用されました。
 
 #if defined _M_IX86
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -51,6 +41,8 @@
 #define DUMMYUNION5_MEMBER(x) DUMMYUNIONNAME5.x
 #endif
 #endif
+// MinGW-w64-gcc にない関数をマクロ定義する
+#define _wcstok wcstok
 #endif
 
 //グローバル
@@ -112,7 +104,6 @@
 //よく使うヘッダ
 #include "mem/CNativeW.h"
 #include "mem/CNativeA.h"
-#include "mem/CNativeT.h"
 
 #include "util/string_ex.h"
 #include "util/MessageBoxF.h"
@@ -164,6 +155,4 @@
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ は前行の直前に追加の宣言を挿入します。
-
-#endif // !defined(AFX_STDAFX_H__11490042_E569_11D3_BCE2_444553540001__INCLUDED_)
 

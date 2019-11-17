@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CDATAPROFILE_2DFA1040_7EC7_4593_983E_093E988F7DCFR_H_
-#define SAKURA_CDATAPROFILE_2DFA1040_7EC7_4593_983E_093E988F7DCFR_H_
+#pragma once
 
 #include "util/StaticType.h"
 #include "CProfile.h"
@@ -38,7 +37,7 @@ struct StringBufferW_{
 
 	StringBufferW_& operator = (const StringBufferW_& rhs)
 	{
-		auto_strcpy_s(pData,nDataCount,rhs.pData);
+		wcscpy_s(pData,nDataCount,rhs.pData);
 		return *this;
 	}
 };
@@ -51,20 +50,17 @@ struct StringBufferA_{
 
 	StringBufferA_& operator = (const StringBufferA_& rhs)
 	{
-		auto_strcpy_s(pData,nDataCount,rhs.pData);
+		strcpy_s(pData,nDataCount,rhs.pData);
 		return *this;
 	}
 };
 typedef const StringBufferA_ StringBufferA;
 typedef const StringBufferW_ StringBufferW;
-typedef StringBufferW StringBufferT;
 
 //文字列バッファ型インスタンスの生成マクロ
 #define MakeStringBufferW(S) StringBufferW(S,_countof(S))
 #define MakeStringBufferA(S) StringBufferA(S,_countof(S))
-#define MakeStringBufferT(S) StringBufferT(S,_countof(S))
 #define MakeStringBufferW0(S) StringBufferW(S,0)
-#define MakeStringBufferT0(S) StringBufferT(S,0)
 
 //2007.09.24 kobake データ変換部を子クラスに分離
 //!各種データ変換付きCProfile
@@ -242,5 +238,4 @@ public:
 	}
 };
 
-#endif /* SAKURA_CDATAPROFILE_2DFA1040_7EC7_4593_983E_093E988F7DCFR_H_ */
 /*[EOF]*/

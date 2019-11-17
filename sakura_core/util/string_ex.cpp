@@ -51,11 +51,11 @@ LPWSTR wcscpyn(LPWSTR lpString1,LPCWSTR lpString2,int iMaxLength)
 }
 
 /*
-	TCHAR と WCHAR または ACHAR の変換関数
+	WCHAR と WCHAR または ACHAR の変換関数
 */
 
-ACHAR* tcstostr( ACHAR* dest, const TCHAR* src, size_t count){
-	TCHAR* pr = const_cast<TCHAR*>(src);
+ACHAR* tcstostr( ACHAR* dest, const WCHAR* src, size_t count){
+	WCHAR* pr = const_cast<WCHAR*>(src);
 	ACHAR* pw = dest;
 	for( ; pr < src+count; ++pr ){
 		*pw = static_cast<ACHAR>(*pr);
@@ -63,8 +63,8 @@ ACHAR* tcstostr( ACHAR* dest, const TCHAR* src, size_t count){
 	}
 	return pw;
 }
-WCHAR* tcstostr( WCHAR* dest, const TCHAR* src, size_t count){
-	TCHAR* pr = const_cast<TCHAR*>(src);
+WCHAR* tcstostr( WCHAR* dest, const WCHAR* src, size_t count){
+	WCHAR* pr = const_cast<WCHAR*>(src);
 	WCHAR* pw = dest;
 	for( ; pr < src+count; ++pr ){
 		*pw = static_cast<WCHAR>(*pr);
@@ -73,22 +73,22 @@ WCHAR* tcstostr( WCHAR* dest, const TCHAR* src, size_t count){
 	return pw;
 }
 
-TCHAR* strtotcs( TCHAR* dest, const ACHAR* src, size_t count )
+WCHAR* strtotcs( WCHAR* dest, const ACHAR* src, size_t count )
 {
 	ACHAR* pr = const_cast<ACHAR*>(src);
-	TCHAR* pw = dest;
+	WCHAR* pw = dest;
 	for( ; pr < src+count; ++pr ){
-		*pw = static_cast<TCHAR>(*pr);
+		*pw = static_cast<WCHAR>(*pr);
 		++pw;
 	}
 	return pw;
 }
-TCHAR* strtotcs( TCHAR* dest, const WCHAR* src, size_t count )
+WCHAR* strtotcs( WCHAR* dest, const WCHAR* src, size_t count )
 {
 	WCHAR* pr = const_cast<WCHAR*>(src);
-	TCHAR* pw = dest;
+	WCHAR* pw = dest;
 	for( ; pr < src+count; ++pr ){
-		*pw = static_cast<TCHAR>(*pr);
+		*pw = static_cast<WCHAR>(*pr);
 		++pw;
 	}
 	return pw;
@@ -115,7 +115,7 @@ char *strncpy_ex(char *dst, size_t dst_count, const char* src, size_t src_count)
 	if( src_count >= dst_count ){
 		src_count = dst_count - 1;
 	}
-	auto_memcpy( dst, src, src_count );
+	memcpy( dst, src, src_count );
 	return dst + src_count;
 }
 
@@ -125,7 +125,7 @@ const wchar_t* wcsistr( const wchar_t* s1, const wchar_t* s2 )
 	const wchar_t* p=s1;
 	const wchar_t* q=wcschr(s1,L'\0')-len2;
 	while(p<=q){
-		if(auto_memicmp(p,s2,len2)==0)return p;
+		if(wmemicmp(p,s2,len2)==0)return p;
 		p++;
 	}
 	return NULL;
@@ -138,7 +138,7 @@ const char* stristr(const char* s1, const char* s2)
 	const char* p=s1;
 	const char* q=strchr(s1,L'\0')-len2;
 	while(p<=q){
-		if(auto_memicmp(p,s2,len2)==0)return p;
+		if(amemicmp(p,s2,len2)==0)return p;
 		p++;
 	}
 	return NULL;
@@ -393,34 +393,6 @@ void wcstombs_vector(const wchar_t* pSrc, int nSrcLen, std::vector<char>* ret)
 	(*ret)[nNewLen]='\0';
 }
 
-size_t _tcstowcs(WCHAR* wszDst, const TCHAR* tszSrc, size_t nDstCount)
-{
-	wcsncpy_s(wszDst, nDstCount, tszSrc, _TRUNCATE);
-	return wcslen(wszDst);
-}
-size_t _tcstombs(CHAR*  szDst,  const TCHAR* tszSrc, size_t nDstCount)
-{
-	return wcstombs2(szDst, tszSrc, nDstCount);
-}
-size_t _wcstotcs(TCHAR* tszDst, const WCHAR* wszSrc, size_t nDstCount)
-{
-	wcsncpy_s(tszDst, nDstCount, wszSrc, _TRUNCATE);
-	return wcslen(tszDst);
-}
-size_t _mbstotcs(TCHAR* tszDst, const CHAR*  szSrc,  size_t nDstCount)
-{
-	return mbstowcs2(tszDst, szSrc, nDstCount);
-}
-int _tctomb(const TCHAR* p,ACHAR* mb)
-{
-	return wctomb(mb,*p);
-}
-int _tctowc(const TCHAR* p,WCHAR* wc)
-{
-	*wc=*p;
-	return 1;
-}
-
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                          メモリ                             //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -486,7 +458,7 @@ CHAR_TYPE* my_strtok(
 			{
 				if( auto_strchr( pDelimiter, pBuffer[i] ) )
 				{
-					pBuffer[i++] = _T('\0');
+					pBuffer[i++] = L'\0';
 					break;
 				}
 			}

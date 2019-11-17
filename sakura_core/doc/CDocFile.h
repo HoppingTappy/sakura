@@ -23,8 +23,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CDOCFILE_C6DA01C5_5BB2_4361_9B6A_648953CB9CA19_H_
-#define SAKURA_CDOCFILE_C6DA01C5_5BB2_4361_9B6A_648953CB9CA19_H_
+#pragma once
 
 #include "io/CFile.h"
 #include "util/file.h"
@@ -70,14 +69,13 @@ public:
 	const SYSTEMTIME	GetFileSysTime() const	{ return m_sFileInfo.cFileTime.GetSYSTEMTIME(); }
 	void			SetFileTime( FILETIME& Time )	{ m_sFileInfo.cFileTime.SetFILETIME( Time ); }
 
-	const TCHAR*	GetFileName() const{ return GetFileTitlePointer(GetFilePath()); }	//!< ファイル名(パスなし)を取得
-	const TCHAR*	GetSaveFilePath(void) const;
-	void			SetSaveFilePath(LPCTSTR pszPath){ m_szSaveFilePath.Assign(pszPath); }
+	const WCHAR*	GetFileName() const{ return GetFileTitlePointer(GetFilePath()); }	//!< ファイル名(パスなし)を取得
+	const WCHAR*	GetSaveFilePath(void) const;
+	void			SetSaveFilePath(LPCWSTR pszPath){ m_szSaveFilePath.Assign(pszPath); }
 public: //####
 	CEditDoc*	m_pcDocRef;
 	SFileInfo	m_sFileInfo;
 	CFilePath	m_szSaveFilePath;	/* 保存時のファイルのパス（マクロ用） */	// 2006.09.04 ryoji
 };
 
-#endif /* SAKURA_CDOCFILE_C6DA01C5_5BB2_4361_9B6A_648953CB9CA19_H_ */
 /*[EOF]*/

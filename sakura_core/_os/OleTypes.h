@@ -10,8 +10,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 
 */
-#ifndef __OLE_TYPES_WRAP__
-#define __OLE_TYPES_WRAP__
+#pragma once
 
 #include <Windows.h>
 #include <OleAuto.h>
@@ -63,11 +62,9 @@ struct SysString
 	}
 	void GetW(std::wstring* str)
 	{
-		int Len = ::SysStringLen(Data);
+		size_t Len = ::SysStringLen(Data);
 		str->assign(Data, Len);
 	}
-	void GetT(TCHAR **S, int *L){GetW(S, L);}
-	void GetT(std::wstring* str){GetW(str);}
 };
 
 /*! VARIANTのWrapper class
@@ -121,4 +118,4 @@ inline SysString* Wrap(BSTR *Value)
 {
 	return reinterpret_cast<SysString*>(Value);
 }
-#endif
+

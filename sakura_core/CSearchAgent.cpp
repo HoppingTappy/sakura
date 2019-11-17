@@ -329,8 +329,8 @@ const wchar_t* CSearchAgent::SearchStringWord(
 		for( size_t iSW = 0; iSW < nSize; ++iSW ) {
 			if( searchWords[iSW].second == nNextWordTo2 - nNextWordFrom2 ){
 				/* 1==大文字小文字の区別 */
-				if( (!bLoHiCase && 0 == auto_memicmp( &(pLine[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) ) ||
-					(bLoHiCase && 0 == auto_memcmp( &(pLine[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) )
+				if( (!bLoHiCase && 0 == wmemicmp( &(pLine[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) ) ||
+					(bLoHiCase && 0 == wmemcmp( &(pLine[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) )
 				){
 					*pnMatchLen = searchWords[iSW].second;
 					return &pLine[nNextWordFrom2];
@@ -603,8 +603,8 @@ int CSearchAgent::SearchWord(
 							if( searchWords[iSW].second == nNextWordTo2 - nNextWordFrom2 ){
 								const wchar_t* pData = pDocLine->GetPtr();	// 2002/2/10 aroka CMemory変更
 								/* 1==大文字小文字の区別 */
-								if( (!sSearchOption.bLoHiCase && 0 == auto_memicmp( &(pData[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) ) ||
-									(sSearchOption.bLoHiCase && 0 ==	 auto_memcmp( &(pData[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) )
+								if( (!sSearchOption.bLoHiCase && 0 == wmemicmp( &(pData[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) ) ||
+									(sSearchOption.bLoHiCase && 0 ==   wmemcmp( &(pData[nNextWordFrom2]) , searchWords[iSW].first, searchWords[iSW].second ) )
 								){
 									pMatchRange->SetFromY(nLinePos);	// マッチ行
 									pMatchRange->SetToY  (nLinePos);	// マッチ行
@@ -748,9 +748,9 @@ int CSearchAgent::SearchWord(
 end_of_func:;
 #ifdef MEASURE_SEARCH_TIME
 	clockEnd = clock();
-	TCHAR buf[100];
+	WCHAR buf[100];
 	memset(buf, 0x00, sizeof(buf));
-	wsprintf( buf, _T("%d"), clockEnd - clockStart);
+	wsprintf( buf, L"%d", clockEnd - clockStart);
 	::MessageBox( NULL, buf, GSTR_APPNAME, MB_OK );
 #endif
 
@@ -1128,7 +1128,8 @@ prev_line:;
 		// 2002/2/10 aroka 何度も GetPtr を呼ばない
 		if( !bInsertLineMode ){
 			cmemCurLine.swap(pCDocLine->_GetDocLineData());
-			pLine = cmemCurLine.GetStringPtr(&nLineLen);
+			nLineLen = cmemCurLine.GetStringLength();
+			pLine = cmemCurLine.GetStringPtr();
 			cPrevLine = CStringRef(pLine, pArg->sDelRange.GetFrom().x);
 			cNextLine = CStringRef(&pLine[pArg->sDelRange.GetFrom().x], nLineLen - pArg->sDelRange.GetFrom().x);
 			pArg->nInsSeq = CModifyVisitor().GetLineModifiedSeq(pCDocLine);

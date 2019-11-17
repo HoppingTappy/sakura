@@ -31,8 +31,7 @@
 		   distribution.
 */
 
-#ifndef _CMRUFOLDER_H_
-#define _CMRUFOLDER_H_
+#pragma once
 
 #include <Windows.h> /// BOOL,HMENU // 2002/2/10 aroka
 #include "recent/CRecentFolder.h"
@@ -52,14 +51,14 @@ public:
 	BOOL DestroyMenu( HMENU hMenu ) const;
 	
 	//	フォルダ名の一覧を教えて
-	std::vector<LPCTSTR> GetPathList() const;
+	std::vector<LPCWSTR> GetPathList() const;
 
 	//	アクセス関数
 	int Length() const;	//	アイテムの数。
 	int MenuLength(void) const{ return t_min(Length(), m_cRecentFolder.GetViewCount()); }	//	メニューに表示されるアイテムの数
 	void ClearAll();					//	アイテムを削除～。
-	void Add( const TCHAR* pszFolder );	//	pszFolderを追加する。
-	const TCHAR* GetPath(int num) const;
+	void Add( const WCHAR* pszFolder );	//	pszFolderを追加する。
+	const WCHAR* GetPath(int num) const;
 
 protected:
 	//	共有メモリアクセス用。
@@ -69,4 +68,3 @@ private:
 	CRecentFolder	m_cRecentFolder;	//履歴	//@@@ 2003.04.08 MIK
 };
 
-#endif

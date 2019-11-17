@@ -28,8 +28,7 @@
 //2007.09.23 kobake m_nTagJumpKeywordArrNum, m_szTagJumpKeywordArr を m_aTagJumpKeywords にまとめました
 //2007.12.13 kobake DLLSHAREDATAへの簡易アクセサを用意
 
-#ifndef SAKURA_ENV_CSHAREDATA_H_
-#define SAKURA_ENV_CSHAREDATA_H_
+#pragma once
 
 #include "CSelectLang.h"		// 2011.04.10 nasukoji
 
@@ -69,11 +68,11 @@ public:
 	void RefreshString();	/* 言語選択後に共有メモリ内の文字列を更新する */
 	
 	//MRU系
-	BOOL IsPathOpened( const TCHAR* pszPath, HWND* phwndOwner ); /* 指定ファイルが開かれているか調べる */
-	BOOL ActiveAlreadyOpenedWindow( const TCHAR* pszPath, HWND* phwndOwner, ECodeType nCharCode );/* 指定ファイルが開かれているか調べつつ、多重オープン時の文字コード衝突も確認 */	// 2007.03.16
+	BOOL IsPathOpened( const WCHAR* pszPath, HWND* phwndOwner ); /* 指定ファイルが開かれているか調べる */
+	BOOL ActiveAlreadyOpenedWindow( const WCHAR* pszPath, HWND* phwndOwner, ECodeType nCharCode );/* 指定ファイルが開かれているか調べつつ、多重オープン時の文字コード衝突も確認 */	// 2007.03.16
 
 	//デバッグ  今は主にマクロ・外部コマンド実行用
-	void TraceOut( LPCTSTR lpFmt, ...);	/* アウトプットウィンドウに出力(printfフォーマット) */
+	void TraceOut( LPCWSTR lpFmt, ...);	/* アウトプットウィンドウに出力(printfフォーマット) */
 	void TraceOutString( const wchar_t* pszStr, int len = -1);	/* アウトプットウィンドウに出力(未加工文字列) */
 	void SetTraceOutSource( HWND hwnd ){ m_hwndTraceOutSource = hwnd; }	/* TraceOut起動元ウィンドウの設定 */
 	bool OpenDebugWindow( HWND hwnd, bool bAllwaysActive );	//!<  デバッグウィンドウを開く
@@ -81,7 +80,7 @@ public:
 	BOOL IsPrivateSettings( void );
 
 	//マクロ関連
-	int			GetMacroFilename( int idx, TCHAR* pszPath, int nBufLen ); // idxで指定したマクロファイル名（フルパス）を取得する	//	Jun. 14, 2003 genta 引数追加．書式変更
+	int			GetMacroFilename( int idx, WCHAR* pszPath, int nBufLen ); // idxで指定したマクロファイル名（フルパス）を取得する	//	Jun. 14, 2003 genta 引数追加．書式変更
 	bool		BeReloadWhenExecuteMacro( int idx );	//	idxで指定したマクロは、実行するたびにファイルを読み込む設定か？
 
 	//タイプ別設定(コントロールプロセス専用)
@@ -118,5 +117,3 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* SAKURA_ENV_CSHAREDATA_H_ */
-

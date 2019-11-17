@@ -18,8 +18,7 @@
 	Please contact the copyright holders to use this code for other purpose.
 */
 
-#ifndef SAKURA_CPROPTYPES_E8B842DB_7434_4B94_8B6F_52C4FA9D1F3AP_H_
-#define SAKURA_CPROPTYPES_E8B842DB_7434_4B94_8B6F_52C4FA9D1F3AP_H_
+#pragma once
 
 #include "types/CType.h" // STypeConfig
 
@@ -34,7 +33,7 @@ class CKeyWordSetMgr;
 template <class TYPE>
 struct TYPE_NAME {
 	TYPE			nMethod;
-	const TCHAR*	pszName;
+	const WCHAR*	pszName;
 };
 
 template <class TYPE>
@@ -47,7 +46,7 @@ template <class TYPE>
 struct TYPE_NAME_ID2 {
 	TYPE			nMethod;
 	int				nNameId;
-	const TCHAR*	pszName;
+	const WCHAR*	pszName;
 };
 
 //!< プロパティシート番号
@@ -227,7 +226,7 @@ protected:
 private:
 	BOOL RegexKakomiCheck(const wchar_t *s);	//@@@ 2001.11.17 add MIK
 
-	bool CheckKeywordList(HWND hwndDlg, const TCHAR* szNewKeyWord, int nUpdateItem);
+	bool CheckKeywordList(HWND hwndDlg, const WCHAR* szNewKeyWord, int nUpdateItem);
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -254,4 +253,3 @@ void InitTypeNameId2( std::vector<TYPE_NAME_ID2<T> >& vec, TYPE_NAME_ID<T>* arr,
 }
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* SAKURA_CPROPTYPES_E8B842DB_7434_4B94_8B6F_52C4FA9D1F3AP_H_ */

@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CHARSET_51A8CEE7_80CB_463F_975E_B30715B1C385_H_
-#define SAKURA_CHARSET_51A8CEE7_80CB_463F_975E_B30715B1C385_H_
+#pragma once
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                           定数                              //
@@ -119,9 +118,9 @@ public:
 	CCodeTypeName(ECodeType eCodeType) : m_eCodeType(eCodeType) { InitCodeSet(); }
 	CCodeTypeName(int eCodeType) : m_eCodeType((ECodeType)eCodeType) { InitCodeSet(); }
 	ECodeType GetCode() const { return m_eCodeType; }
-	LPCTSTR	Normal() const;
-	LPCTSTR	Short() const;
-	LPCTSTR	Bracket() const;
+	LPCWSTR	Normal() const;
+	LPCWSTR	Short() const;
+	LPCWSTR	Bracket() const;
 	bool	UseBom();
 	bool	CanDefault();
 	bool	IsBomDefOn();
@@ -138,8 +137,7 @@ public:
 	CCodeTypesForCombobox() { InitCodeSet(); }
 	int			GetCount() const;
 	ECodeType	GetCode(int nIndex) const;
-	LPCTSTR		GetName(int nIndex) const;
+	LPCWSTR		GetName(int nIndex) const;
 };
 
-#endif /* SAKURA_CHARSET_51A8CEE7_80CB_463F_975E_B30715B1C385_H_ */
 /*[EOF]*/

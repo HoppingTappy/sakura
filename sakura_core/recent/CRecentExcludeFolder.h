@@ -21,29 +21,27 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CRECENTExcludeFOLDER_6162D952_F009_44DB_9C13_80E73507D8E7_H_
-#define SAKURA_CRECENTExcludeFOLDER_6162D952_F009_44DB_9C13_80E73507D8E7_H_
+#pragma once
 
 #include "CRecentImp.h"
 #include "util/StaticType.h"
 
-typedef StaticString<TCHAR, MAX_EXCLUDE_PATH> CExcludeFolderString;
+typedef StaticString<WCHAR, MAX_EXCLUDE_PATH> CExcludeFolderString;
 
 //! Excludeフォルダの履歴を管理 (RECENT_FOR_Exclude_FOLDER)
-class CRecentExcludeFolder : public CRecentImp<CExcludeFolderString, LPCTSTR>{
+class CRecentExcludeFolder final : public CRecentImp<CExcludeFolderString, LPCWSTR>{
 public:
 	//生成
 	CRecentExcludeFolder();
 
 	//オーバーライド
-	int				CompareItem( const CExcludeFolderString* p1, LPCTSTR p2 ) const;
-	void			CopyItem( CExcludeFolderString* dst, LPCTSTR src ) const;
-	const TCHAR*	GetItemText( int nIndex ) const;
-	bool			DataToReceiveType( LPCTSTR* dst, const CExcludeFolderString* src ) const;
-	bool			TextToDataType( CExcludeFolderString* dst, LPCTSTR pszText ) const;
-	bool			ValidateReceiveType( LPCTSTR p ) const;
+	int				CompareItem( const CExcludeFolderString* p1, LPCWSTR p2 ) const override;
+	void			CopyItem( CExcludeFolderString* dst, LPCWSTR src ) const override;
+	const WCHAR*	GetItemText( int nIndex ) const;
+	bool			DataToReceiveType( LPCWSTR* dst, const CExcludeFolderString* src ) const override;
+	bool			TextToDataType( CExcludeFolderString* dst, LPCWSTR pszText ) const override;
+	bool			ValidateReceiveType( LPCWSTR p ) const override;
 	size_t			GetTextMaxLength() const;
 };
 
-#endif /* SAKURA_CRECENTExcludeFOLDER_6162D952_F009_44DB_9C13_80E73507D8E7_H_ */
 /*[EOF]*/

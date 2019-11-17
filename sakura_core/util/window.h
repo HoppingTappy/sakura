@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_WINDOW_E7B899CD_2106_4A3B_BBA1_EB29FD9640F39_H_
-#define SAKURA_WINDOW_E7B899CD_2106_4A3B_BBA1_EB29FD9640F39_H_
+#pragma once
 
 /*!
 	@brief 画面 DPI スケーリング
@@ -121,9 +120,9 @@ public:
 	void SetDefaultExtend(int extCx = 0){ nExt = 0; }
 	bool SetWidthIfMax(int width);
 	bool SetWidthIfMax(int width, int extCx);
-	bool SetTextWidthIfMax(LPCTSTR pszText);
-	bool SetTextWidthIfMax(LPCTSTR pszText, int extCx);
-	int GetTextWidth(LPCTSTR pszText) const;
+	bool SetTextWidthIfMax(LPCWSTR pszText);
+	bool SetTextWidthIfMax(LPCWSTR pszText, int extCx);
+	int GetTextWidth(LPCWSTR pszText) const;
 	int GetTextHeight() const;
 	HDC GetDC() const{ return hDC; }
 	int GetCx(){ return nCx; }
@@ -191,5 +190,4 @@ private:
 	HFONT m_hFont;
 };
 
-#endif /* SAKURA_WINDOW_E7B899CD_2106_4A3B_BBA1_EB29FD9640F39_H_ */
 /*[EOF]*/

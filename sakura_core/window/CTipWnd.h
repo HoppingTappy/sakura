@@ -14,17 +14,16 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-class CTipWnd;
+#pragma once
 
-#ifndef _CTIPWND_H_
-#define _CTIPWND_H_
+class CTipWnd;
 
 #include "CWnd.h"
 #include "mem/CMemory.h"
 /*-----------------------------------------------------------------------
 クラスの宣言
 -----------------------------------------------------------------------*/
-class CTipWnd : public CWnd
+class CTipWnd final : public CWnd
 {
 public:
 	/*
@@ -37,7 +36,7 @@ public:
 	/*
 	||  Attributes & Operations
 	*/
-	void Show( int nX, int nY, const TCHAR* szText, RECT* pRect = NULL );	/* Tipを表示 */
+	void Show( int nX, int nY, const WCHAR* szText, RECT* pRect = NULL );	/* Tipを表示 */
 	void Hide( void );	/* Tipを消す */
 	void GetWindowSize(LPRECT pRect);		// 2001/06/19 asa-o ウィンドウのサイズを得る
 
@@ -57,7 +56,7 @@ public:
 	int			m_nSearchLine;	/* 辞書のヒット行 */	// 2006.04.10 fon
 	int			m_nSearchDict;	/* ヒット辞書番号 */	// 2006.04.10 fon
 
-	CNativeT	m_cInfo;		/* Tipの内容データ */
+	CNativeW	m_cInfo;		/* Tipの内容データ */
 	bool		m_bAlignLeft;	// 右側揃えでチップを表示
 
 protected:
@@ -69,12 +68,10 @@ protected:
 
 	/* 仮想関数 */
 	//	Jan. 9, 2006 genta
-	virtual void AfterCreateWindow( void );
+	void AfterCreateWindow( void ) override;
 
 	/* 仮想関数 メッセージ処理 詳しくは実装を参照 */
-	LRESULT OnPaint(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);/* 描画処理 */
+	LRESULT OnPaint(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) override;/* 描画処理 */
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CTIPWND_H_ */
-

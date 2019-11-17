@@ -89,8 +89,8 @@ EConvertResult CUtf8::_UTF8ToUnicode( const CMemory& cSrc, CNativeW* pDstMem, bo
 	bool bError = false;
 
 	// データ取得
-	int nSrcLen;
-	const char* pSrc = reinterpret_cast<const char*>( cSrc.GetRawPtr(&nSrcLen) );
+	int nSrcLen = cSrc.GetRawLength();
+	const char* pSrc = reinterpret_cast<const char*>( cSrc.GetRawPtr() );
 
 	if( &cSrc == pDstMem->_GetMemory() )
 	{
@@ -212,12 +212,12 @@ EConvertResult CUtf8::_UnicodeToUTF8( const CNativeW& cSrc, CMemory* pDstMem, bo
 }
 
 // 文字コード表示用	UNICODE → Hex 変換	2008/6/21 Uchi
-EConvertResult CUtf8::_UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* pDst, const CommonSetting_Statusbar* psStatusbar, const bool bCESUMode)
+EConvertResult CUtf8::_UnicodeToHex(const wchar_t* cSrc, const int iSLen, WCHAR* pDst, const CommonSetting_Statusbar* psStatusbar, const bool bCESUMode)
 {
 	CNativeW		cBuff;
 	EConvertResult	res;
 	int				i;
-	TCHAR*			pd;
+	WCHAR*			pd;
 	unsigned char*	ps;
 	bool			bbinary=false;
 
@@ -253,10 +253,10 @@ EConvertResult CUtf8::_UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR*
 	pd = pDst;
 	if( bbinary == false ){
 		for (i = cBuff._GetMemory()->GetRawLength(); i >0; i--, ps ++, pd += 2) {
-			auto_sprintf( pd, _T("%02X"), *ps);
+			auto_sprintf( pd, L"%02X", *ps);
 		}
 	}else{
-		auto_sprintf( pd, _T("?%02X"), *ps );
+		auto_sprintf( pd, L"?%02X", *ps );
 	}
 
 	return RESULT_COMPLETE;

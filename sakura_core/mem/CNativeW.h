@@ -22,11 +22,9 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CNATIVEW_59D44E96_F966_471D_A399_73D86F939DDA9_H_
-#define SAKURA_CNATIVEW_59D44E96_F966_471D_A399_73D86F939DDA9_H_
+#pragma once
 
 #include "CNative.h"
-#include "mem/CNativeT.h"
 #include "basis/SakuraBasis.h"
 #include "debug/Debug2.h" //assert
 
@@ -38,12 +36,12 @@ public:
 };
 
 //! 文字列への参照を保持するクラス
-class CStringRef : public IStringRef{
+class CStringRef final : public IStringRef{
 public:
 	CStringRef() : m_pData(NULL), m_nDataLen(0) { }
 	CStringRef(const wchar_t* pData, int nDataLen) : m_pData(pData), m_nDataLen(nDataLen) { }
-	const wchar_t*	GetPtr()		const{ return m_pData;    }
-	int				GetLength()		const{ return m_nDataLen; }
+	const wchar_t*	GetPtr()		const override{ return m_pData;    }
+	int				GetLength()		const override{ return m_nDataLen; }
 
 	//########補助
 	bool			IsValid()		const{ return m_pData!=NULL; }
@@ -54,11 +52,12 @@ private:
 };
 
 //! UNICODE文字列管理クラス
-class CNativeW : public CNative{
+class CNativeW final : public CNative{
 public:
 	//コンストラクタ・デストラクタ
-	CNativeW();
-	CNativeW( const CNativeW& );
+	CNativeW() noexcept;
+	CNativeW( const CNativeW& rhs );
+	CNativeW( CNativeW&& other ) noexcept;
 	CNativeW( const wchar_t* pData, int nDataLen ); //!< nDataLenは文字単位。
 	CNativeW( const wchar_t* pData);
 
@@ -67,7 +66,7 @@ public:
 
 	//WCHAR
 	void SetString( const wchar_t* pData, int nDataLen );      //!< バッファの内容を置き換える。nDataLenは文字単位。
-	void SetString( const wchar_t* pszData );                  //!< バッファの内容を置き換える
+	void SetString( const wchar_t* pszData );                  //!< バッファの内容を置き換える。NULL 指定時はメモリ解放を行い、文字列長はゼロになる
 	void SetStringHoldBuffer( const wchar_t* pData, int nDataLen );
 	void AppendString( const wchar_t* pszData );               //!< バッファの最後にデータを追加する
 	void AppendString( const wchar_t* pszData, int nLength );  //!< バッファの最後にデータを追加する。nLengthは文字単位。成功すればtrue。メモリ確保に失敗したらfalseを返す。
@@ -78,10 +77,11 @@ public:
 	void AppendNativeData( const CNativeW& );                  //!< バッファの最後にデータを追加する
 
 	//演算子
+	CNativeW& operator = (const CNativeW& rhs)			{ CNative::operator=(rhs); return *this; }
+	CNativeW& operator = (CNativeW&& rhs) noexcept		{ CNative::operator=(std::forward<CNativeW>(rhs)); return *this; }
 	const CNativeW& operator+=(wchar_t wch)				{ AppendString(&wch,1);   return *this; }
 	const CNativeW& operator=(wchar_t wch)				{ SetString(&wch,1);      return *this; }
 	const CNativeW& operator+=(const CNativeW& rhs)		{ AppendNativeData(rhs); return *this; }
-	const CNativeW& operator=(const CNativeW& rhs)		{ SetNativeData(rhs);    return *this; }
 	CNativeW operator+(const CNativeW& rhs) const		{ CNativeW tmp=*this; return tmp+=rhs; }
 
 	//ネイティブ取得インターフェース
@@ -98,20 +98,6 @@ public:
 	{
 		return reinterpret_cast<wchar_t*>(GetRawPtr());
 	}
-	const wchar_t* GetStringPtr(int* pnLength) const //[out]pnLengthは文字単位。
-	{
-		*pnLength=GetStringLength();
-		return reinterpret_cast<const wchar_t*>(GetRawPtr());
-	}
-#ifdef USE_STRICT_INT
-	const wchar_t* GetStringPtr(CLogicInt* pnLength) const //[out]pnLengthは文字単位。
-	{
-		int n;
-		const wchar_t* p=GetStringPtr(&n);
-		*pnLength=CLogicInt(n);
-		return p;
-	}
-#endif
 
 	//特殊
 	void _SetStringLength(int nLength)
@@ -146,39 +132,7 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 	void Replace( const wchar_t* pszFrom, const wchar_t* pszTo );   //!< 文字列置換
-	void ReplaceT( const wchar_t* pszFrom, const wchar_t* pszTo ){
-		Replace( pszFrom, pszTo );
-	}
 	void Replace( const wchar_t* pszFrom, int nFromLen, const wchar_t* pszTo, int nToLen );   //!< 文字列置換
-
-	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	//                  型限定インターフェース                     //
-	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	// 使用はできるだけ控えるのが望ましい。
-	// ひとつはオーバーヘッドを抑える意味で。
-	// ひとつは変換によるデータ喪失を抑える意味で。
-
-	//ACHAR
-	void SetStringOld( const char* pData, int nDataLen );    //!< バッファの内容を置き換える。pDataはSJIS。nDataLenは文字単位。
-	void SetStringOld( const char* pszData );                //!< バッファの内容を置き換える。pszDataはSJIS。
-	void AppendStringOld( const char* pData, int nDataLen ); //!< バッファの最後にデータを追加する。pszDataはSJIS。
-	void AppendStringOld( const char* pszData );             //!< バッファの最後にデータを追加する。pszDataはSJIS。
-	const char* GetStringPtrOld() const; //ShiftJISに変換して返す
-
-	//WCHAR
-	void SetStringW(const wchar_t* pszData)				{ return SetString(pszData); }
-	void SetStringW(const wchar_t* pData, int nLength)		{ return SetString(pData,nLength); }
-	void AppendStringW(const wchar_t* pszData)				{ return AppendString(pszData); }
-	void AppendStringW(const wchar_t* pData, int nLength)	{ return AppendString(pData,nLength); }
-	const wchar_t* GetStringW() const						{ return GetStringPtr(); }
-
-	//TCHAR
-	void SetStringT( const TCHAR* pData, int nDataLen )	{ return SetString(pData,nDataLen); }
-	void SetStringT( const TCHAR* pszData )				{ return SetString(pszData); }
-	void AppendStringT(const TCHAR* pszData)			{ return AppendString(pszData); }
-	void AppendStringT(const TCHAR* pData, int nLength)	{ return AppendString(pData,nLength); }
-	void AppendNativeDataT(const CNativeT& rhs)			{ return AppendNativeData(rhs); }
-	const TCHAR* GetStringT() const						{ return GetStringPtr(); }
 
 public:
 	// -- -- staticインターフェース -- -- //
@@ -209,5 +163,4 @@ template <>
 	}
 }
 
-#endif /* SAKURA_CNATIVEW_59D44E96_F966_471D_A399_73D86F939DDA9_H_ */
 /*[EOF]*/

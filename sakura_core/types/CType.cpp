@@ -91,8 +91,8 @@ void CShareData::InitTypeConfigs(DLLSHAREDATA* pShareData, std::vector<STypeConf
 		STypeConfig* type = new STypeConfig;
 		types.push_back(type);
 		table[i]->InitTypeConfig(i, *type);
-		auto_strcpy(pShareData->m_TypeMini[i].m_szTypeExts, type->m_szTypeExts);
-		auto_strcpy(pShareData->m_TypeMini[i].m_szTypeName, type->m_szTypeName);
+		wcscpy(pShareData->m_TypeMini[i].m_szTypeExts, type->m_szTypeExts);
+		wcscpy(pShareData->m_TypeMini[i].m_szTypeName, type->m_szTypeName);
 		pShareData->m_TypeMini[i].m_encoding = type->m_encoding;
 		pShareData->m_TypeMini[i].m_id = type->m_id;
 		SAFE_DELETE(table[i]);
@@ -182,7 +182,7 @@ void _DefaultConfig(STypeConfig* pType)
 	pType->m_nColorInfoArrNum = COLORIDX_LAST;
 
 	// 2001/06/14 Start by asa-o
-	pType->m_szHokanFile[0] = _T('\0');		/* 入力補完 単語ファイル */
+	pType->m_szHokanFile[0] = L'\0';		/* 入力補完 単語ファイル */
 	// 2001/06/14 End
 
 	pType->m_nHokanType = 0;
@@ -272,8 +272,8 @@ void _DefaultConfig(STypeConfig* pType)
 //@@@ 2006.04.10 fon ADD-start
 	for(int i = 0; i < MAX_KEYHELP_FILE; i++){
 		pType->m_KeyHelpArr[i].m_bUse = false;
-		pType->m_KeyHelpArr[i].m_szAbout[0] = _T('\0');
-		pType->m_KeyHelpArr[i].m_szPath[0] = _T('\0');
+		pType->m_KeyHelpArr[i].m_szAbout[0] = L'\0';
+		pType->m_KeyHelpArr[i].m_szPath[0] = L'\0';
 	}
 	pType->m_bUseKeyWordHelp = false;		// 辞書選択機能の使用可否
 	pType->m_nKeyHelpNum = 0;				// 登録辞書数

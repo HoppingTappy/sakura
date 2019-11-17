@@ -30,14 +30,13 @@
 		   distribution.
 */
 
-#ifndef	SAKURA_CDLGTAGJUMPLIST_H_
-#define	SAKURA_CDLGTAGJUMPLIST_H_
+#pragma once
 
 #include "dlg/CDialog.h"
 #include "recent/CRecentTagjumpKeyword.h"
 
 //タグファイル名	//	@@ 2005.03.31 MIK 定数化
-#define TAG_FILENAME_T        _T("tags")
+#define TAG_FILENAME_T        L"tags"
 
 // 2010.07.22 いくつかcppへ移動
 
@@ -48,7 +47,7 @@ class CSortedTagJumpList;
 	ダイレクトタグジャンプで複数の候補がある場合及び
 	キーワード指定タグジャンプのためのダイアログボックス制御
 */
-class CDlgTagJumpList : public CDialog
+class CDlgTagJumpList final : public CDialog
 {
 public:
 	/*
@@ -64,29 +63,29 @@ public:
 
 	//	@@ 2005.03.31 MIK 階層パラメータを追加
 //	bool AddParamA( const ACHAR*, const ACHAR*, int, const ACHAR*, const ACHAR*, int depth, int baseDirId );	//登録
-	void SetFileName( const TCHAR *pszFileName );
+	void SetFileName( const WCHAR *pszFileName );
 	void SetKeyword( const wchar_t *pszKeyword );	//	@@ 2005.03.31 MIK
 	int  FindDirectTagJump();
 
-	bool GetSelectedFullPathAndLine( TCHAR* fullPath, int count, int* lineNum, int* depth );
+	bool GetSelectedFullPathAndLine( WCHAR* fullPath, int count, int* lineNum, int* depth );
 
 protected:
 	/*
 	||  実装ヘルパ関数
 	*/
-	BOOL	OnInitDialog(HWND hwndDlg, WPARAM wParam, LPARAM lParam);
-	BOOL	OnBnClicked(int wID);
-	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );
-	BOOL	OnSize( WPARAM wParam, LPARAM lParam );
-	BOOL	OnMove( WPARAM wParam, LPARAM lParam );
+	BOOL	OnInitDialog(HWND hwndDlg, WPARAM wParam, LPARAM lParam) override;
+	BOOL	OnBnClicked(int wID) override;
+	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam ) override;
+	BOOL	OnSize( WPARAM wParam, LPARAM lParam ) override;
+	BOOL	OnMove( WPARAM wParam, LPARAM lParam ) override;
 	BOOL	OnMinMaxInfo( LPARAM lParam );
-	BOOL	OnNotify( WPARAM wParam, LPARAM lParam );
+	BOOL	OnNotify( WPARAM wParam, LPARAM lParam ) override;
 	//	@@ 2005.03.31 MIK キーワード入力エリアのイベント処理
-	BOOL	OnCbnSelChange( HWND hwndCtl, int wID );
-	BOOL	OnCbnEditChange( HWND hwndCtl, int wID );
-	//BOOL	OnEnChange( HWND hwndCtl, int wID );
-	BOOL	OnTimer( WPARAM wParam );
-	LPVOID	GetHelpIdTable( void );
+	BOOL	OnCbnSelChange( HWND hwndCtl, int wID ) override;
+	BOOL	OnCbnEditChange( HWND hwndCtl, int wID ) override;
+	//BOOL	OnEnChange( HWND hwndCtl, int wID ) override;
+	BOOL	OnTimer( WPARAM wParam ) override;
+	LPVOID	GetHelpIdTable( void ) override;
 
 private:
 	struct STagFindState {
@@ -95,7 +94,7 @@ private:
 		int   m_nNextMode;
 		int   m_nLoop;
 		bool  m_bJumpPath;
-		TCHAR m_szCurPath[1024];
+		WCHAR m_szCurPath[1024];
 	};
 
 	struct STagSearchRule {
@@ -109,15 +108,15 @@ private:
 	void	StopTimer( void );
 	void	StartTimer(int nDelay);
 
-	void	SetData( void );	/* ダイアログデータの設定 */
-	int		GetData( void );	/* ダイアログデータの取得 */
+	void	SetData( void ) override;	/* ダイアログデータの設定 */
+	int		GetData( void ) override;	/* ダイアログデータの取得 */
 	void	UpdateData(bool bInit);	//	@@ 2005.03.31 MIK
 
-	TCHAR	*GetNameByType( const TCHAR type, const TCHAR *name );	//タイプを名前に変換する。
+	WCHAR	*GetNameByType( const WCHAR type, const WCHAR *name );	//タイプを名前に変換する。
 	int		SearchBestTag( void );	//もっとも確率の高そうなインデックスを返す。
 	//	@@ 2005.03.31 MIK
-	const TCHAR *GetFileName( void );
-	const TCHAR *GetFilePath( void ){ return m_pszFileName != NULL ? m_pszFileName : _T(""); }
+	const WCHAR *GetFileName( void );
+	const WCHAR *GetFilePath( void ){ return m_pszFileName != NULL ? m_pszFileName : L""; }
 	void Empty( void );
 	void SetTextDir();
 	void FindNext(bool bNewFind);
@@ -131,20 +130,20 @@ private:
 	bool IsDirectTagJump();
 
 	void ClearPrevFindInfo();
-	bool GetFullPathAndLine( int index, TCHAR *fullPath, int count, int *lineNum, int *depth );
+	bool GetFullPathAndLine( int index, WCHAR *fullPath, int count, int *lineNum, int *depth );
 
 	//! depthから完全パス名(相対パス/絶対パス)を作成する
-	static TCHAR* GetFullPathFromDepth(TCHAR* pszOutput, int count, TCHAR* basePath, const TCHAR* fileName, int depth);
-	static TCHAR* CopyDirDir( TCHAR* dest, const TCHAR* target, const TCHAR* base );
+	static WCHAR* GetFullPathFromDepth(WCHAR* pszOutput, int count, WCHAR* basePath, const WCHAR* fileName, int depth);
+	static WCHAR* CopyDirDir( WCHAR* dest, const WCHAR* target, const WCHAR* base );
 public:
-	static int CalcMaxUpDirectory(const TCHAR* p);
-	static TCHAR* DirUp( TCHAR* dir );
+	static int CalcMaxUpDirectory(const WCHAR* p);
+	static WCHAR* DirUp( WCHAR* dir );
 
 private:
 	bool	m_bDirectTagJump;
 
 	int		m_nIndex;		//!< 選択された要素番号
-	TCHAR	*m_pszFileName;	//!< 編集中のファイル名
+	WCHAR	*m_pszFileName;	//!< 編集中のファイル名
 	wchar_t	*m_pszKeyword;	//!< キーワード(DoModalのlParam!=0を指定した場合に指定できる)
 	int		m_nLoop;		//!< さかのぼれる階層数
 	CSortedTagJumpList*	m_pcList;	//!< タグジャンプ情報
@@ -172,6 +171,4 @@ private:
 
 	DISALLOW_COPY_AND_ASSIGN(CDlgTagJumpList);
 };
-
-#endif	//SAKURA_CDLGTAGJUMPLIST_H_
 

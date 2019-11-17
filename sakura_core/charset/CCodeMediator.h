@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CCODEMEDIATOR_653AC1CB_8935_4F2A_AF03_8FE669F6FA9F_H_
-#define SAKURA_CCODEMEDIATOR_653AC1CB_8935_4F2A_AF03_8FE669F6FA9F_H_
+#pragma once
 
 #include "charset/CESI.h"
 class CEditDoc;
@@ -43,7 +42,7 @@ public:
 	/* 日本語コードセット判別 */
 	ECodeType CheckKanjiCode( const char* pBuf, int nBufLen );
 	/* ファイルの日本語コードセット判別 */
-	ECodeType CheckKanjiCodeOfFile( const TCHAR* pszFile );
+	ECodeType CheckKanjiCodeOfFile( const WCHAR* pszFile );
 
 	static ECodeType CheckKanjiCode( CESI* pcesi );  // CESI 構造体（？）を外部で構築した場合に使用
 
@@ -51,5 +50,4 @@ private:
 	const SEncodingConfig* m_pEncodingConfig;
 };
 
-#endif /* SAKURA_CCODEMEDIATOR_653AC1CB_8935_4F2A_AF03_8FE669F6FA9F_H_ */
 /*[EOF]*/

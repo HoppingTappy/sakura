@@ -60,7 +60,7 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 			ErrorMessage(
 				CEditWnd::getInstance()->GetHwnd(),
 				LS(STR_SAVEAGENT_OTHER),
-				(LPCTSTR)pSaveInfo->cFilePath
+				(LPCWSTR)pSaveInfo->cFilePath
 			);
 			return CALLBACK_INTERRUPT;
 		}
@@ -74,7 +74,7 @@ ECallbackResult CSaveAgent::OnCheckSave(SSaveInfo* pSaveInfo)
 		if( bLock ) pcDoc->m_cDocFileOperation.DoFileUnlock();
 		try{
 			bool bExist = fexist(pSaveInfo->cFilePath);
-			CStream out(pSaveInfo->cFilePath, _T("ab"), true);	// 実際の保存は "wb" だがここは "ab"（ファイル内容は破棄しない）でチェックする	// 2009.08.21 ryoji
+			CStream out(pSaveInfo->cFilePath, L"ab", true);	// 実際の保存は "wb" だがここは "ab"（ファイル内容は破棄しない）でチェックする	// 2009.08.21 ryoji
 			out.Close();
 			if(!bExist){
 				::DeleteFile(pSaveInfo->cFilePath);
@@ -138,7 +138,11 @@ void CSaveAgent::OnAfterSave(const SSaveInfo& sSaveInfo)
 	// 上書き（明示的な上書きや自動保存）では変更しない
 	// ---> 上書きの場合は一時的な折り返し桁変更やタブ幅変更を維持したままにする
 	if(!sSaveInfo.bOverwriteMode){
-		pcDoc->OnChangeSetting();
+		// 文書種別が変更になった場合にのみ設定変更を反映させる
+		int prevIndex = pcDoc->m_cDocType.GetDocumentType().GetIndex();
+		int newIndex = CDocTypeManager().GetDocumentTypeOfPath( sSaveInfo.cFilePath ).GetIndex();
+		if(newIndex != prevIndex)
+			pcDoc->OnChangeSetting();
 	}
 }
 

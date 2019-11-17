@@ -25,8 +25,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CRECENTIMP_083F499E_59DF_486A_828B_BF7A535B6893_H_
-#define SAKURA_CRECENTIMP_083F499E_59DF_486A_828B_BF7A535B6893_H_
+#pragma once
 
 #include "recent/CRecent.h"
 
@@ -73,8 +72,8 @@ public:
 
 	//アイテム制御
 	bool AppendItem( ReceiveType pItemData );	//アイテムを先頭に追加
-	bool AppendItemText( LPCTSTR pszText );
-	bool EditItemText( int nIndex, LPCTSTR pszText );
+	bool AppendItemText( LPCWSTR pszText );
+	bool EditItemText( int nIndex, LPCWSTR pszText );
 	bool DeleteItem( int nIndex );				//アイテムをクリア
 	bool DeleteItem( ReceiveType pItemData )
 	{
@@ -93,7 +92,7 @@ public:
 	virtual int  CompareItem( const DataType* p1, ReceiveType p2 ) const = 0;
 	virtual void CopyItem( DataType* dst, ReceiveType src ) const = 0;
 	virtual bool DataToReceiveType( ReceiveType* dst, const DataType* src ) const = 0;
-	virtual bool TextToDataType( DataType* dst, LPCTSTR pszText ) const = 0;
+	virtual bool TextToDataType( DataType* dst, LPCWSTR pszText ) const = 0;
 	virtual bool ValidateReceiveType( ReceiveType p ) const = 0;
 
 	//実装補助
@@ -131,5 +130,4 @@ protected:
 #include "CRecentEditNode.h"
 #include "CRecentTagjumpKeyword.h"
 
-#endif /* SAKURA_CRECENTIMP_083F499E_59DF_486A_828B_BF7A535B6893_H_ */
 /*[EOF]*/

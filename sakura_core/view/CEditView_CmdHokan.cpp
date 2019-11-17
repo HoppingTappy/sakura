@@ -273,9 +273,9 @@ int CEditView::HokanSearchByFile(
 
 			// キーと比較する
 			if( bHokanLoHiCase ){
-				nRet = auto_memicmp( pszKey, word, nKeyLen );
+				nRet = wmemicmp( pszKey, word, nKeyLen );
 			}else{
-				nRet = auto_memcmp( pszKey, word, nKeyLen );
+				nRet = wmemcmp( pszKey, word, nKeyLen );
 			}
 			if( nRet!=0 )continue;
 
@@ -286,7 +286,7 @@ int CEditView::HokanSearchByFile(
 
 			// 候補を追加(重複は除く)
 			{
-				std::wstring strWord = std::wstring(word, nWordLen);
+				std::wstring strWord(word, nWordLen);
 				CHokanMgr::AddKouhoUnique(vKouho, strWord);
 			}
 			if( 0 != nMaxKouho && nMaxKouho <= (int)vKouho.size() ){

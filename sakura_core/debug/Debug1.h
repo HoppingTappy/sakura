@@ -12,15 +12,13 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef SAKURA_DEBUG1_587B8A50_4B0A_4E5E_A638_40FB1EC301CA_H_
-#define SAKURA_DEBUG1_587B8A50_4B0A_4E5E_A638_40FB1EC301CA_H_
+#pragma once
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                   メッセージ出力：実装                      //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 #if defined(_DEBUG) || defined(USE_RELPRINT)
 void DebugOutW( LPCWSTR lpFmt, ...);
-void DebugOutA( LPCSTR lpFmt, ...);
 #endif	// _DEBUG || USE_RELPRINT
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -51,5 +49,3 @@ void DebugOutA( LPCSTR lpFmt, ...);
 #endif	// USE_RELPRINT
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* SAKURA_DEBUG1_587B8A50_4B0A_4E5E_A638_40FB1EC301CA_H_ */
-

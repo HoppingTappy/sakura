@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_EDITINFO_38A7E267_160D_4250_9012_AC3FC31993D69_H_
-#define SAKURA_EDITINFO_38A7E267_160D_4250_9012_AC3FC31993D69_H_
+#pragma once
 
 #include "basis/SakuraBasis.h"
 #include "config/maxdata.h"
@@ -36,10 +35,10 @@
 */
 struct EditInfo {
 	//ファイル
-	TCHAR		m_szPath[_MAX_PATH];					//!< ファイル名
+	WCHAR		m_szPath[_MAX_PATH];					//!< ファイル名
 	ECodeType	m_nCharCode;							//!< 文字コード種別
 	bool		m_bBom;									//!< BOM(GetFileInfo)
-	TCHAR		m_szDocType[MAX_DOCTYPE_LEN + 1];		//!< 文書タイプ
+	WCHAR		m_szDocType[MAX_DOCTYPE_LEN + 1];		//!< 文書タイプ
 	int 		m_nTypeId;								//!< 文書タイプ(MRU)
 
 	//表示域
@@ -91,5 +90,4 @@ struct EditInfo {
 	}
 };
 
-#endif /* SAKURA_EDITINFO_38A7E267_160D_4250_9012_AC3FC31993D69_H_ */
 /*[EOF]*/

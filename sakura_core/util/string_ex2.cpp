@@ -9,7 +9,7 @@ wchar_t *wcs_pushW(wchar_t *dst, size_t dst_count, const wchar_t* src, size_t sr
 	if( src_count >= dst_count ){
 		src_count = dst_count - 1;
 	}
-	auto_memcpy( dst, src, src_count );
+	wmemcpy( dst, src, src_count );
 	return dst + src_count;
 }
 wchar_t *wcs_pushW(wchar_t *dst, size_t dst_count, const wchar_t* src)
@@ -20,7 +20,7 @@ wchar_t *wcs_pushW(wchar_t *dst, size_t dst_count, const wchar_t* src)
 /*! 文字のエスケープ
 
 	@param org [in] 変換したい文字列
-	@param buf [out] 返還後の文字列を入れるバッファ
+	@param buf [out] 変換後の文字列を入れるバッファ
 	@param cesc  [in] エスケープしないといけない文字
 	@param cwith [in] エスケープに使う文字
 	
@@ -39,17 +39,17 @@ wchar_t *wcs_pushW(wchar_t *dst, size_t dst_count, const wchar_t* src)
 	@date 2002/02/01 genta bugfix エスケープする文字とされる文字の出力順序が逆だった
 	@date 2004/06/19 genta Generic mapping対応
 */
-int cescape(const TCHAR* org, TCHAR* buf, TCHAR cesc, TCHAR cwith)
+int cescape(const WCHAR* org, WCHAR* buf, WCHAR cesc, WCHAR cwith)
 {
-	TCHAR *out = buf;
-	for( ; *org != _T('\0'); ++org, ++out ){
+	WCHAR *out = buf;
+	for( ; *org != L'\0'; ++org, ++out ){
 		if( *org == cesc ){
 			*out = cwith;
 			++out;
 		}
 		*out = *org;
 	}
-	*out = _T('\0');
+	*out = L'\0';
 	return out - buf;
 }
 
@@ -64,15 +64,15 @@ int cescape(const TCHAR* org, TCHAR* buf, TCHAR cesc, TCHAR cwith)
 	@retval -1 バッファが足りず、\を付加できなかった
 	@date 2003.06.24 Moca 新規作成
 */
-int AddLastChar( TCHAR* pszPath, int nMaxLen, TCHAR c ){
-	int pos = _tcslen( pszPath );
+int AddLastChar( WCHAR* pszPath, int nMaxLen, WCHAR c ){
+	int pos = wcslen( pszPath );
 	// 何もないときは\を付加
 	if( 0 == pos ){
 		if( nMaxLen <= pos + 1 ){
 			return -1;
 		}
 		pszPath[0] = c;
-		pszPath[1] = _T('\0');
+		pszPath[1] = L'\0';
 		return 1;
 	}
 	// 最後が\でないときも\を付加(日本語を考慮)
@@ -81,7 +81,7 @@ int AddLastChar( TCHAR* pszPath, int nMaxLen, TCHAR c ){
 			return -1;
 		}
 		pszPath[pos] = c;
-		pszPath[pos + 1] = _T('\0');
+		pszPath[pos + 1] = L'\0';
 		return 1;
 	}
 	return 0;
@@ -173,7 +173,7 @@ static EEolType GetEOLTypeUniBE( const wchar_t* pszData, int nDataLen )
 
 	for( int i = 1; i < EOL_TYPE_NUM; ++i ){
 		CEol cEol((EEolType)i);
-		if( cEol.GetLen()<=nDataLen && 0==auto_memcmp(pszData,aEolTable[i],cEol.GetLen()) ){
+		if( cEol.GetLen()<=nDataLen && 0==wmemcmp(pszData,aEolTable[i],cEol.GetLen()) ){
 			return gm_pnEolTypeArr[i];
 		}
 	}

@@ -36,8 +36,7 @@
 		   distribution.
 */
 
-#ifndef SAKURA_CPROPCOMMON_8B67EE84_54E5_4541_A820_EE4FC61CCF0D_H_
-#define SAKURA_CPROPCOMMON_8B67EE84_54E5_4541_A820_EE4FC61CCF0D_H_
+#pragma once
 
 #include "func/CFuncLookup.h"
 #include "env/CommonSetting.h"
@@ -101,7 +100,7 @@ public:
 	INT_PTR DoPropertySheet(int nPageNum, bool bTrayProc);	/* プロパティシートの作成 */
 
 	// 2002.12.11 Moca 追加
-	void InitData(const int* tempTypeKeywordSet = NULL, const TCHAR* name = NULL, const TCHAR* exts = NULL );	//!< DLLSHAREDATAから一時データ領域に設定を複製する
+	void InitData(const int* tempTypeKeywordSet = NULL, const WCHAR* name = NULL, const WCHAR* exts = NULL );	//!< DLLSHAREDATAから一時データ領域に設定を複製する
 	void ApplyData(int* tempTypeKeywordSet = NULL );	//!< 一時データ領域からにDLLSHAREDATA設定をコピーする
 	int GetPageNum(){ return m_nPageNum; }
 
@@ -137,8 +136,8 @@ public:
 		int index[MAX_KEYWORDSET_PER_TYPE];
 	};
 	std::vector<SKeywordSetIndex>	m_Types_nKeyWordSetIdx;
-	TCHAR			m_tempTypeName[MAX_TYPES_NAME];	//!< タイプ属性：名称
-	TCHAR			m_tempTypeExts[MAX_TYPES_EXTS];	//!< タイプ属性：拡張子リスト
+	WCHAR			m_tempTypeName[MAX_TYPES_NAME];	//!< タイプ属性：名称
+	WCHAR			m_tempTypeExts[MAX_TYPES_EXTS];	//!< タイプ属性：拡張子リスト
 	bool			m_bTrayProc;
 	HFONT			m_hKeywordHelpFont;		//!< キーワードヘルプ フォント ハンドル
 	HFONT			m_hTabFont;				//!< タブ フォント ハンドル
@@ -191,7 +190,7 @@ protected:
 */
 //==============================================================
 //!	全般ページ
-class CPropGeneral : CPropCommon
+class CPropGeneral final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -206,7 +205,7 @@ protected:
 
 //==============================================================
 //!	ファイルページ
-class CPropFile : CPropCommon
+class CPropFile final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -225,7 +224,7 @@ private:
 
 //==============================================================
 //!	キー割り当てページ
-class CPropKeybind : CPropCommon
+class CPropKeybind final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -246,7 +245,7 @@ private:
 
 //==============================================================
 //!	ツールバーページ
-class CPropToolbar : CPropCommon
+class CPropToolbar final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -264,7 +263,7 @@ private:
 
 //==============================================================
 //!	キーワードページ
-class CPropKeyword : CPropCommon
+class CPropKeyword final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -292,7 +291,7 @@ private:
 
 //==============================================================
 //!	カスタムメニューページ
-class CPropCustmenu : CPropCommon
+class CPropCustmenu final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -310,7 +309,7 @@ protected:
 
 //==============================================================
 //!	書式ページ
-class CPropFormat : CPropCommon
+class CPropFormat final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -332,7 +331,7 @@ private:
 
 //==============================================================
 //!	支援ページ
-class CPropHelper : CPropCommon
+class CPropHelper final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -347,7 +346,7 @@ protected:
 
 //==============================================================
 //!	バックアップページ
-class CPropBackup : CPropCommon
+class CPropBackup final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -368,7 +367,7 @@ private:
 
 //==============================================================
 //!	ウィンドウページ
-class CPropWin : CPropCommon
+class CPropWin final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -387,7 +386,7 @@ private:
 
 //==============================================================
 //!	タブ動作ページ
-class CPropTab : CPropCommon
+class CPropTab final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -405,7 +404,7 @@ private:
 
 //==============================================================
 //!	編集ページ
-class CPropEdit : CPropCommon
+class CPropEdit final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -423,7 +422,7 @@ private:
 
 //==============================================================
 //!	検索ページ
-class CPropGrep : CPropCommon
+class CPropGrep final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -441,7 +440,7 @@ private:
 
 //==============================================================
 //!	マクロページ
-class CPropMacro : CPropCommon
+class CPropMacro final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -465,7 +464,7 @@ private:
 
 //==============================================================
 //!	ファイル名表示ページ
-class CPropFileName : CPropCommon
+class CPropFileName final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -478,14 +477,14 @@ protected:
 	int  GetData(HWND hwndDlg);	//!< ダイアログデータの取得
 
 private:
-	static int SetListViewItem_FILENAME( HWND hListView, int, LPTSTR, LPTSTR, bool );//!<ListViewのアイテムを設定
-	static void GetListViewItem_FILENAME( HWND hListView, int, LPTSTR, LPTSTR );//!<ListViewのアイテムを取得
+	static int SetListViewItem_FILENAME( HWND hListView, int, LPWSTR, LPWSTR, bool );//!<ListViewのアイテムを設定
+	static void GetListViewItem_FILENAME( HWND hListView, int, LPWSTR, LPWSTR );//!<ListViewのアイテムを取得
 	static int MoveListViewItem_FILENAME( HWND hListView, int, int );//!<ListViewのアイテムを移動する
 };
 
 //==============================================================
 //!	ステータスバーページ
-class CPropStatusbar : CPropCommon
+class CPropStatusbar final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -500,14 +499,14 @@ protected:
 
 //==============================================================
 //!	プラグインページ
-class CPropPlugin : CPropCommon
+class CPropPlugin final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
 	static INT_PTR CALLBACK DlgProc_page(
 		HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam );
-	std::tstring GetReadMeFile(const std::tstring& sName);	//	Readme ファイルの取得
-	bool BrowseReadMe(const std::tstring& sReadMeName);		//	Readme ファイルの表示
+	std::wstring GetReadMeFile(const std::wstring& sName);	//	Readme ファイルの取得
+	bool BrowseReadMe(const std::wstring& sReadMeName);		//	Readme ファイルの表示
 protected:
 	//! Message Handler
 	INT_PTR DispatchEvent(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -522,7 +521,7 @@ private:
 
 //==============================================================
 //!	メインメニューページ
-class CPropMainMenu : CPropCommon
+class CPropMainMenu final : CPropCommon
 {
 public:
 	//!	Dialog Procedure
@@ -544,4 +543,3 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* SAKURA_CPROPCOMMON_8B67EE84_54E5_4541_A820_EE4FC61CCF0D_H_ */

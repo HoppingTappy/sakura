@@ -18,8 +18,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef SAKURA_CDLGFUNCLIST_H_
-#define SAKURA_CDLGFUNCLIST_H_
+#pragma once
 
 #include <Windows.h>
 #include "dlg/CDialog.h"
@@ -58,7 +57,7 @@ public:
 };
 
 //!	アウトライン解析ダイアログボックス
-class CDlgFuncList : public CDialog
+class CDlgFuncList final : public CDialog
 {
 public:
 	/*
@@ -74,7 +73,7 @@ public:
 	EDockSide GetDockSide() { return m_eDockSide; }
 
 protected:
-	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam );	// 2007.11.07 ryoji 標準以外のメッセージを捕捉する
+	INT_PTR DispatchEvent( HWND hWnd, UINT wMsg, WPARAM wParam, LPARAM lParam ) override;	// 2007.11.07 ryoji 標準以外のメッセージを捕捉する
 
 	CommonSetting_OutLine& CommonSet(void){ return m_pShareData->m_Common.m_sOutline; }
 	STypeConfig& TypeSet(void){ return m_type; }
@@ -97,7 +96,7 @@ public:
 	bool ChangeLayout( int nId );
 	void OnOutlineNotify( WPARAM wParam, LPARAM lParam );
 	void SyncColor( void );
-	void SetWindowText( const TCHAR* szTitle );		//ダイアログタイトルの設定
+	void SetWindowText( const WCHAR* szTitle );		//ダイアログタイトルの設定
 	EFunctionCode GetFuncCodeRedraw(int outlineType);
 	void LoadFileTreeSetting( CFileTreeSetting& data, SFilePath& IniDirPath );
 
@@ -118,16 +117,16 @@ public:
 	int				m_nOutlineType;		/* アウトライン解析の種別 */
 	bool			m_bEditWndReady;	/* エディタ画面の準備完了 */
 protected:
-	BOOL OnInitDialog(HWND hwndDlg, WPARAM wParam, LPARAM lParam);
-	BOOL OnBnClicked(int wID);
-	BOOL OnNotify(WPARAM wParam, LPARAM lParam);
-	BOOL OnSize( WPARAM wParam, LPARAM lParam );
+	BOOL OnInitDialog(HWND hwndDlg, WPARAM wParam, LPARAM lParam) override;
+	BOOL OnBnClicked(int wID) override;
+	BOOL OnNotify(WPARAM wParam, LPARAM lParam) override;
+	BOOL OnSize( WPARAM wParam, LPARAM lParam ) override;
 	BOOL OnMinMaxInfo( LPARAM lParam );
-	BOOL OnDestroy(void); // 20060201 aroka
+	BOOL OnDestroy(void) override; // 20060201 aroka
 	BOOL OnCbnSelEndOk( HWND hwndCtl, int wID );
-	BOOL OnContextMenu(WPARAM wParam, LPARAM lParam);
-	void SetData();	/* ダイアログデータの設定 */
-	int GetData( void );	/* ダイアログデータの取得 */
+	BOOL OnContextMenu(WPARAM wParam, LPARAM lParam) override;
+	void SetData() override;	/* ダイアログデータの設定 */
+	int GetData( void ) override;	/* ダイアログデータの取得 */
 
 	/*
 	||  実装ヘルパ関数
@@ -139,7 +138,7 @@ protected:
 	void SetListVB( void );			/* リストビューコントロールの初期化：VisualBasic */		// Jul 10, 2003  little YOSHI
 	void SetDocLineFuncList();
 
-	void SetTreeFileSub(HTREEITEM hParent, const TCHAR* pszFile);
+	void SetTreeFileSub(HTREEITEM hParent, const WCHAR* pszFile);
 	// 2002/11/1 frozen 
 	void SortTree(HWND hWndTree,HTREEITEM htiParent);//!< ツリービューの項目をソートする（ソート基準はm_nSortTypeを使用）
 #if 0
@@ -156,7 +155,7 @@ protected:
 
 	// 2001.12.03 hor
 //	void SetTreeBookMark( HWND );		/* ツリーコントロールの初期化：ブックマーク */
-	LPVOID GetHelpIdTable(void);	//@@@ 2002.01.18 add
+	LPVOID GetHelpIdTable(void) override;	//@@@ 2002.01.18 add
 	void Key2Command(WORD KeyCode);		//	キー操作→コマンド変換
 	bool HitTestSplitter( int xPos, int yPos );
 	int HitTestCaptionButton( int xPos, int yPos );
@@ -175,8 +174,8 @@ protected:
 	BOOL PostOutlineNotifyToAllEditors( WPARAM wParam, LPARAM lParam );
 	EDockSide GetDropRect( POINT ptDrag, POINT ptDrop, LPRECT pRect, bool bForceFloat );
 	BOOL Track( POINT ptDrag );
-	bool GetTreeFileFullName(HWND, HTREEITEM, std::tstring*, int*);
-	bool TagJumpTimer(const TCHAR*, CMyPoint, bool);
+	bool GetTreeFileFullName(HWND, HTREEITEM, std::wstring*, int*);
+	bool TagJumpTimer(const WCHAR*, CMyPoint, bool);
 
 private:
 	//	May 18, 2001 genta
@@ -198,9 +197,9 @@ private:
 
 	// 選択中の関数情報
 	CFuncInfo* m_cFuncInfo;
-	std::tstring m_sJumpFile;
+	std::wstring m_sJumpFile;
 
-	const TCHAR* m_pszTimerJumpFile;
+	const WCHAR* m_pszTimerJumpFile;
 	CMyPoint	m_pointTimerJump;
 	bool		m_bTimerJumpAutoClose;
 
@@ -224,5 +223,3 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* SAKURA_CDLGFUNCLIST_H_ */
-

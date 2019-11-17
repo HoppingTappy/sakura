@@ -14,8 +14,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _CWND_H_
-#define _CWND_H_
+#pragma once
 
 #include <Windows.h>
 #include "_main/global.h"
@@ -39,7 +38,7 @@ protected:
 	friend LRESULT CALLBACK CWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 public:
 	/* Constructors */
-	CWnd(const TCHAR* pszInheritanceAppend = _T(""));
+	CWnd(const WCHAR* pszInheritanceAppend = L"");
 	virtual ~CWnd();
 	/*
 	||  Attributes & Operations
@@ -52,16 +51,16 @@ public:
 		HICON		hIconSm,		// Handle to a small icon
 		HCURSOR		hCursor,		// Handle to the class cursor.
 		HBRUSH		hbrBackground,	// Handle to the class background brush.
-		LPCTSTR		lpszMenuName,	// Pointer to a null-terminated character string that specifies the resource name of the class menu, as the name appears in the resource file.
-		LPCTSTR		lpszClassName	// Pointer to a null-terminated string or is an atom.
+		LPCWSTR		lpszMenuName,	// Pointer to a null-terminated character string that specifies the resource name of the class menu, as the name appears in the resource file.
+		LPCWSTR		lpszClassName	// Pointer to a null-terminated string or is an atom.
 	);
 
 	//ウィンドウ作成
 	HWND Create(
 		HWND		hwndParent,
 		DWORD		dwExStyle,		// extended window style
-		LPCTSTR		lpszClassName,	// Pointer to a null-terminated string or is an atom.
-		LPCTSTR		lpWindowName,	// pointer to window name
+		LPCWSTR		lpszClassName,	// Pointer to a null-terminated string or is an atom.
+		LPCWSTR		lpWindowName,	// pointer to window name
 		DWORD		dwStyle,		// window style
 		int			x,				// horizontal position of window
 		int			y,				// vertical position of window
@@ -127,10 +126,8 @@ private: // 2002/2/10 aroka アクセス権変更
 	HWND		m_hwndParent;	// オーナーウィンドウのハンドル
 	HWND		m_hWnd;			// このダイアログのハンドル
 #ifdef _DEBUG
-	TCHAR		m_szClassInheritances[1024];
+	WCHAR		m_szClassInheritances[1024];
 #endif
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CWND_H_ */
-

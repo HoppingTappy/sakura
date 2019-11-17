@@ -60,7 +60,7 @@ void CViewCommander::Command_SEARCH_DIALOG( void )
 	else{
 		/* アクティブにする */
 		ActivateFrameWindow( GetEditWindow()->m_cDlgFind.GetHwnd() );
-		::DlgItem_SetText( GetEditWindow()->m_cDlgFind.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringT() );
+		::DlgItem_SetText( GetEditWindow()->m_cDlgFind.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringPtr() );
 	}
 	return;
 }
@@ -315,7 +315,7 @@ end_of_func:;
 			);
 		}
 		else{
-			AlertNotFound(hwndParent, bReplaceAll, _T("%ls"), pszNotFoundMessage);
+			AlertNotFound(hwndParent, bReplaceAll, L"%ls", pszNotFoundMessage);
 		}
 	}
 }
@@ -511,7 +511,7 @@ void CViewCommander::Command_REPLACE_DIALOG( void )
 	else {
 		/* アクティブにする */
 		ActivateFrameWindow( GetEditWindow()->m_cDlgReplace.GetHwnd() );
-		::DlgItem_SetText( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringT() );
+		::DlgItem_SetText( GetEditWindow()->m_cDlgReplace.GetHwnd(), IDC_COMBO_TEXT, cmemCurText.GetStringPtr() );
 	}
 	//	To Here Jul. 2, 2001 genta 置換ウィンドウの2重開きを抑止
 	return;
@@ -700,7 +700,7 @@ void CViewCommander::Command_REPLACE( HWND hwndParent )
 		m_pCommanderView->Redraw();
 
 		/* 次を検索 */
-		Command_SEARCH_NEXT( true, true, false, hwndParent, LSW(STR_ERR_CEDITVIEW_CMD11) );
+		Command_SEARCH_NEXT( true, true, false, hwndParent, LS(STR_ERR_CEDITVIEW_CMD11) );
 	}
 }
 
@@ -798,7 +798,7 @@ void CViewCommander::Command_REPLACE_ALL()
 	/* 置換個数初期化 */
 	int			nReplaceNum = 0;
 	HWND		hwndStatic = ::GetDlgItem( hwndCancel, IDC_STATIC_KENSUU );
-	TCHAR szLabel[64];
+	WCHAR szLabel[64];
 	_itot( nReplaceNum, szLabel, 10 );
 	::SendMessage( hwndStatic, WM_SETTEXT, 0, (LPARAM)szLabel );
 
@@ -848,7 +848,6 @@ void CViewCommander::Command_REPLACE_ALL()
 	//<< 2002/03/26 Azumaiya
 	// 速く動かすことを最優先に組んでみました。
 	// ループの外で文字列の長さを特定できるので、一時変数化。
-	const wchar_t *szREPLACEKEY;		// 置換後文字列。
 	bool		bColumnSelect = false;	// 矩形貼り付けを行うかどうか。
 	bool		bLineSelect = false;	// ラインモード貼り付けを行うかどうか
 	CNativeW	cmemClip;				// 置換後文字列のデータ（データを格納するだけで、ループ内ではこの形ではデータを扱いません）。
@@ -904,15 +903,16 @@ void CViewCommander::Command_REPLACE_ALL()
 		cmemClip.SetString( GetEditWindow()->m_cDlgReplace.m_strText2.c_str() );
 	}
 
-	CLogicInt nREPLACEKEY;			// 置換後文字列の長さ。
-	szREPLACEKEY = cmemClip.GetStringPtr(&nREPLACEKEY);
+	CLogicInt nREPLACEKEY = cmemClip.GetStringLength();
+	const wchar_t* szREPLACEKEY = cmemClip.GetStringPtr();
 
 	// 行コピー（MSDEVLineSelect形式）のテキストで末尾が改行になっていなければ改行を追加する
 	// ※レイアウト折り返しの行コピーだった場合は末尾が改行になっていない
 	if( bLineSelect ){
 		if( !WCODE::IsLineDelimiter(szREPLACEKEY[nREPLACEKEY - 1], GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol) ){
 			cmemClip.AppendString(GetDocument()->m_cDocEditor.GetNewLineCode().GetValue2());
-			szREPLACEKEY = cmemClip.GetStringPtr( &nREPLACEKEY );
+			nREPLACEKEY = cmemClip.GetStringLength();
+			szREPLACEKEY = cmemClip.GetStringPtr();
 		}
 	}
 
@@ -921,7 +921,8 @@ void CViewCommander::Command_REPLACE_ALL()
 		wchar_t	*pszConvertedText = new wchar_t[nConvertedTextLen];
 		ConvertEol(szREPLACEKEY, nREPLACEKEY, pszConvertedText);
 		cmemClip.SetString(pszConvertedText, nConvertedTextLen);
-		szREPLACEKEY = cmemClip.GetStringPtr(&nREPLACEKEY);
+		nREPLACEKEY = cmemClip.GetStringLength();
+		szREPLACEKEY = cmemClip.GetStringPtr();
 		delete [] pszConvertedText;
 	}
 

@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CGRAPHICS_BA5156BF_99C6_4854_8131_CE8B091A5EFF9_H_
-#define SAKURA_CGRAPHICS_BA5156BF_99C6_4854_8131_CE8B091A5EFF9_H_
+#pragma once
 
 /*
 2008.05.20 kobake 作成
@@ -293,7 +292,7 @@ public:
 	//! 矩形塗り潰し
 	void FillMyRectTextBackColor(const RECT& rc)
 	{
-		::ExtTextOut(m_hdc, rc.left, rc.top, ETO_OPAQUE|ETO_CLIPPED, &rc, _T(""), 0, NULL);
+		::ExtTextOut(m_hdc, rc.left, rc.top, ETO_OPAQUE|ETO_CLIPPED, &rc, L"", 0, NULL);
 	}
 
 	static void DrawDropRect(LPCRECT lpRectNew, SIZE sizeNew, LPCRECT lpRectLast, SIZE sizeLast);	// ドロップ先の矩形を描画する
@@ -329,5 +328,4 @@ private:
 	bool				m_bDynamicBrush;	//m_hbrCurrentを動的に作成した場合はtrue
 };
 
-#endif /* SAKURA_CGRAPHICS_BA5156BF_99C6_4854_8131_CE8B091A5EFF9_H_ */
 /*[EOF]*/

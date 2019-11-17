@@ -10,11 +10,9 @@
 	This source code is designed for sakura editor.
 	Please contact the copyright holder to use this code for other purpose.
 */
+#pragma once
 
 class CDlgInput1;
-
-#ifndef _CDLGINPUT1_H_
-#define _CDLGINPUT1_H_
 
 /*-----------------------------------------------------------------------
 クラスの宣言
@@ -30,10 +28,9 @@ public:
 	*/
 	CDlgInput1();
 	~CDlgInput1();
-	BOOL DoModal( HINSTANCE hInstApp, HWND hwndParent, const TCHAR* pszTitle,
-				  const TCHAR* pszMessage, int nMaxTextLen, TCHAR* pszText );	/* モードレスダイアログの表示 */
-	BOOL DoModal( HINSTANCE hInstApp, HWND hwndParent, const TCHAR* pszTitle,
-				  const TCHAR* pszMessage, int nMaxTextLen, NOT_TCHAR* pszText );	/* モードレスダイアログの表示 */
+	BOOL DoModal( HINSTANCE hInstApp, HWND hwndParent, const WCHAR* pszTitle,
+				  const WCHAR* pszMessage, int nMaxTextLen, WCHAR* pszText );	/* モードレスダイアログの表示 */
+
 	/*
 	||  Attributes & Operations
 	*/
@@ -43,11 +40,11 @@ public:
 	HWND		m_hwndParent;	/* オーナーウィンドウのハンドル */
 	HWND		m_hWnd;			/* このダイアログのハンドル */
 
-	const TCHAR*	m_pszTitle;		/* ダイアログタイトル */
-	const TCHAR*	m_pszMessage;	/* メッセージ */
+	const WCHAR*	m_pszTitle;		/* ダイアログタイトル */
+	const WCHAR*	m_pszMessage;	/* メッセージ */
 	int			m_nMaxTextLen;	/* 入力サイズ上限 */
 //	char*		m_pszText;		/* テキスト */
-	CNativeT	m_cmemText;		/* テキスト */
+	CNativeW	m_cmemText;		/* テキスト */
 protected:
 	/*
 	||  実装ヘルパ関数
@@ -55,5 +52,3 @@ protected:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _CDLGINPUT1_H_ */
-

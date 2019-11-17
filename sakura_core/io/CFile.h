@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CFILE_4C6F2C6F_75E4_470C_8AB0_0A8567BF032E9_H_
-#define SAKURA_CFILE_4C6F2C6F_75E4_470C_8AB0_0A8567BF032E9_H_
+#pragma once
 
 #include "basis/CMyString.h" //CFilePath
 #include "util/file.h"
@@ -38,13 +37,13 @@ enum EShareMode{
 class CFile{
 public:
 	//コンストラクタ・デストラクタ
-	CFile(LPCTSTR pszPath = NULL);
+	CFile(LPCWSTR pszPath = NULL);
 	virtual ~CFile();
 	//パス
 	const CFilePath& GetFilePathClass() const { return m_szFilePath; }
-	LPCTSTR GetFilePath() const { return m_szFilePath; }
+	LPCWSTR GetFilePath() const { return m_szFilePath; }
 	//設定
-	void SetFilePath(LPCTSTR pszPath){ m_szFilePath.Assign(pszPath); }
+	void SetFilePath(LPCWSTR pszPath){ m_szFilePath.Assign(pszPath); }
 	//各種判定
 	bool IsFileExist() const;
 	bool HasWritablePermission() const;
@@ -72,5 +71,4 @@ private:
 	FILE* m_fp;
 };
 
-#endif /* SAKURA_CFILE_4C6F2C6F_75E4_470C_8AB0_0A8567BF032E9_H_ */
 /*[EOF]*/

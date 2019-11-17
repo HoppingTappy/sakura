@@ -39,8 +39,7 @@
 		   distribution.
 */
 
-#ifndef _DLL_BREGEXP_H_
-#define _DLL_BREGEXP_H_
+#pragma once
 
 #include "CBregexpDll2.h"
 
@@ -90,7 +89,7 @@ public:
 	};
 
 	//! DLLのバージョン情報を取得
-	const TCHAR* GetVersionT(){ return IsAvailable() ? to_tchar(BRegexpVersion()) : _T(""); }
+	const WCHAR* GetVersionW() noexcept { return IsAvailable() ? BRegexpVersion() : L""; }
 
 	//	CJreエミュレーション関数
 	//!	検索パターンのコンパイル
@@ -167,7 +166,7 @@ public:
 	/*! BREGEXPメッセージを取得する
 		@retval メッセージへのポインタ
 	*/
-	const TCHAR* GetLastMessage() const;// { return m_szMsg; }
+	const WCHAR* GetLastMessage() const;// { return m_szMsg; }
 
 	/*!	先読みパターンが存在するかを返す
 		この関数は、コンパイル後であることが前提なので、コンパイル前はfalse
@@ -226,6 +225,4 @@ private:
 bool CheckRegexpVersion( HWND hWnd, int nCmpId, bool bShowMsg = false );
 bool CheckRegexpSyntax( const wchar_t* szPattern, HWND hWnd, bool bShowMessage, int nOption = -1, bool bKakomi = false );// 2002/2/1 hor追加
 bool InitRegexp( HWND hWnd, CBregexp& rRegexp, bool bShowMessage );
-
-#endif
 

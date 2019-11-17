@@ -29,8 +29,7 @@
 		   distribution.
 */
 
-#ifndef _CIMAGELIST_MGR_H_
-#define _CIMAGELIST_MGR_H_
+#pragma once
 
 #include "_main/global.h"
 
@@ -82,7 +81,7 @@ public:
 	int  cy(void) const { return m_cy; }
 	
 	//! アイコンを追加する
-	int Add(const TCHAR* szPath);
+	int Add(const WCHAR* szPath);
 
 	//! アイコンの追加を元に戻す
 	void ResetExtend();
@@ -127,6 +126,4 @@ protected:
 	//! ビットマップを一行拡張する
 	void Extend(bool = true);
 };
-
-#endif
 

@@ -25,8 +25,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_COUTLINEIFOBJ_5C2DD72B_8550_40AB_9C49_2B1C5D17C91FW_H_
-#define SAKURA_COUTLINEIFOBJ_5C2DD72B_8550_40AB_9C49_2B1C5D17C91FW_H_
+#pragma once
 
 #include "macro/CWSHIfObj.h"
 #include "outline/CFuncInfo.h"	// FUNCINFO_INFOMASK
@@ -113,7 +112,7 @@ public:
 			break;
 		case F_OL_SETTITLE:				//アウトラインダイアログタイトルを指定
 			if( Arguments[0] == NULL )return false;
-			m_sOutlineTitle = to_tchar( Arguments[0] );
+			m_sOutlineTitle = Arguments[0];
 			break;
 		case F_OL_SETLISTTYPE:			//アウトラインリスト種別を指定
 			if( Arguments[0] == NULL )return false;
@@ -134,7 +133,7 @@ public:
 
 	// メンバ変数
 public:
-	tstring m_sOutlineTitle;
+	wstring m_sOutlineTitle;
 	EOutlineType m_nListType;
 private:
 	CFuncInfoArr& m_cFuncInfoArr;
@@ -169,5 +168,4 @@ MacroFuncInfo COutlineIfObj::m_MacroFuncInfoArr[] =
 	{F_INVALID,	NULL, {VT_EMPTY, VT_EMPTY, VT_EMPTY, VT_EMPTY},	VT_EMPTY,	NULL}
 };
 
-#endif /* SAKURA_COUTLINEIFOBJ_5C2DD72B_8550_40AB_9C49_2B1C5D17C91FW_H_ */
 /*[EOF]*/

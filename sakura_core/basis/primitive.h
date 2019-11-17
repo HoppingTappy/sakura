@@ -22,21 +22,15 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_PRIMITIVE_0AE619F1_2A04_42A0_92F6_72C9B845799E_H_
-#define SAKURA_PRIMITIVE_0AE619F1_2A04_42A0_92F6_72C9B845799E_H_
+#pragma once
 
 // -- -- -- -- 文字 -- -- -- -- //
 
 //char,wchar_t の変わりに、別名の ACHAR,WCHAR を使うと、ソース整形がしやすいケースがある。
 typedef char ACHAR;
 
-//TCHAR追加機能
-//TCHARと逆の文字型をNOT_TCHARとして定義する
-typedef char NOT_TCHAR;
-
 //WIN_CHAR (WinAPIに渡すので、必ずTCHARでなければならないもの)
-typedef TCHAR WIN_CHAR;
-#define _WINT(A) _T(A)
+typedef WCHAR WIN_CHAR;
 
 //EDIT_CHAR
 typedef wchar_t WChar;      //エディタで用いるテキスト管理データ型
@@ -61,5 +55,4 @@ typedef char KEYCODE;
 	typedef int Int;
 #endif
 
-#endif /* SAKURA_PRIMITIVE_0AE619F1_2A04_42A0_92F6_72C9B845799E_H_ */
 /*[EOF]*/

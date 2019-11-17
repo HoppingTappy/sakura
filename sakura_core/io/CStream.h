@@ -22,8 +22,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CSTREAM_BB8B6415_7CBF_48F0_9454_2AC4D39C7CD1_H_
-#define SAKURA_CSTREAM_BB8B6415_7CBF_48F0_9454_2AC4D39C7CD1_H_
+#pragma once
 
 class CFileAttribute;
 
@@ -49,7 +48,7 @@ class CError_FileRead{};	//!< 例外：ファイル読み込み失敗
 class CStream{
 public:
 	//コンストラクタ・デストラクタ
-	CStream(const TCHAR* tszPath, const TCHAR* tszMode, bool bExceptionMode = false);
+	CStream(const WCHAR* pszPath, const WCHAR* pszMode, bool bExceptionMode = false);
 //	CStream();
 	virtual ~CStream();
 
@@ -57,7 +56,7 @@ public:
 	operator bool() const{ return Good(); }
 
 	//オープン・クローズ
-	void Open(const TCHAR* tszPath, const TCHAR* tszMode);
+	void Open(const WCHAR* pszPath, const WCHAR* pszMode);
 	void Close();
 
 	//操作
@@ -85,8 +84,8 @@ private:
 
 class COutputStream : public CStream{
 public:
-	COutputStream(const TCHAR* tszPath, const TCHAR* tszMode, bool bExceptionMode = false)
-	: CStream(tszPath, tszMode, bExceptionMode)
+	COutputStream(const WCHAR* pszPath, const WCHAR* pszMode, bool bExceptionMode = false)
+	: CStream(pszPath, pszMode, bExceptionMode)
 	{
 	}
 
@@ -99,5 +98,4 @@ public:
 	}
 };
 
-#endif /* SAKURA_CSTREAM_BB8B6415_7CBF_48F0_9454_2AC4D39C7CD1_H_ */
 /*[EOF]*/

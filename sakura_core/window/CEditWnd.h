@@ -39,8 +39,7 @@
 		   distribution.
 */
 
-#ifndef SAKURA_CEDITWND_E9E9A41A_05E0_48D5_8F66_9C734A98FB30_H_
-#define SAKURA_CEDITWND_E9E9A41A_05E0_48D5_8F66_9C734A98FB30_H_
+#pragma once
 
 #include <ShellAPI.h>// HDROP
 #include "_main/global.h"
@@ -131,7 +130,7 @@ public:
 	//                         イベント                            //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//ドキュメントイベント
-	void OnAfterSave(const SSaveInfo& sSaveInfo);
+	void OnAfterSave(const SSaveInfo& sSaveInfo) override;
 
 	//管理
 	void MessageLoop( void );								/* メッセージループ */
@@ -165,7 +164,7 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 
 	//ファイル名変更通知
-	void ChangeFileNameNotify( const TCHAR* pszTabCaption, const TCHAR* pszFilePath, bool bIsGrep );	//@@@ 2003.05.31 MIK, 2006.01.28 ryoji ファイル名、Grepモードパラメータを追加
+	void ChangeFileNameNotify( const WCHAR* pszTabCaption, const WCHAR* pszFilePath, bool bIsGrep );	//@@@ 2003.05.31 MIK, 2006.01.28 ryoji ファイル名、Grepモードパラメータを追加
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                         メニュー                            //
@@ -201,7 +200,7 @@ public:
 	//アイコン
 	void SetWindowIcon(HICON hIcon, int flag);	//	Sep. 10, 2002 genta
 	void GetDefaultIcon( HICON* hIconBig, HICON* hIconSmall ) const;	//	Sep. 10, 2002 genta
-	bool GetRelatedIcon(const TCHAR* szFile, HICON* hIconBig, HICON* hIconSmall) const;	//	Sep. 10, 2002 genta
+	bool GetRelatedIcon(const WCHAR* szFile, HICON* hIconBig, HICON* hIconSmall) const;	//	Sep. 10, 2002 genta
 	void SetPageScrollByWheel( BOOL bState ) { m_bPageScrollByWheel = bState; }		// ホイール操作によるページスクロール有無を設定する（TRUE=あり, FALSE=なし）	// 2009.01.17 nasukoji
 	void SetHScrollByWheel( BOOL bState ) { m_bHorizontalScrollByWheel = bState; }	// ホイール操作による横スクロール有無を設定する（TRUE=あり, FALSE=なし）	// 2009.01.17 nasukoji
 	void ClearMouseState( void );		// 2009.01.17 nasukoji	マウスの状態をクリアする（ホイールスクロール有無状態をクリア）
@@ -214,7 +213,7 @@ public:
 	bool IsActiveApp() const { return m_bIsActiveApp; }
 
 	//!ツールチップのテキストを取得。2007.09.08 kobake 追加
-	void GetTooltipText(TCHAR* wszBuf, size_t nBufCount, int nID) const;
+	void GetTooltipText(WCHAR* pszBuf, size_t nBufCount, int nID) const;
 
 	//!印刷プレビュー中かどうか
 	bool IsInPreviewMode()
@@ -228,8 +227,8 @@ public:
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           表示                              //
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	void PrintMenubarMessage( const TCHAR* msg );
-	void SendStatusMessage( const TCHAR* msg );		//	Dec. 4, 2002 genta 実体をCEditViewから移動
+	void PrintMenubarMessage( const WCHAR* msg );
+	void SendStatusMessage( const WCHAR* msg );		//	Dec. 4, 2002 genta 実体をCEditViewから移動
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                      ウィンドウ操作                         //
@@ -389,8 +388,8 @@ private:
 
 	//状態
 	bool			m_bIsActiveApp;		//!< 自アプリがアクティブかどうか	// 2007.03.08 ryoji
-	LPTSTR			m_pszLastCaption;
-	LPTSTR			m_pszMenubarMessage; //!< メニューバー右端に表示するメッセージ
+	LPWSTR			m_pszLastCaption;
+	LPWSTR			m_pszMenubarMessage; //!< メニューバー右端に表示するメッセージ
 public:
 	int				m_nTimerCount;		//!< OnTimer用 2003.08.29 wmlhq
 	CLogicPointEx*	m_posSaveAry;		//!< フォント変更前の座標
@@ -421,4 +420,3 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* SAKURA_CEDITWND_E9E9A41A_05E0_48D5_8F66_9C734A98FB30_H_ */

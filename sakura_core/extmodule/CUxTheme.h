@@ -30,8 +30,7 @@
 		   distribution.
 */
 
-#ifndef _SAKURA_UXTHEME_H_
-#define _SAKURA_UXTHEME_H_
+#pragma once
 
 #include <vsstyle.h>
 #include "CDllHandler.h"
@@ -50,9 +49,9 @@ class CUxTheme : public TSingleton<CUxTheme>, public CDllImp {
 protected:
 	bool m_bInitialized;
 
-	bool InitThemeDll( TCHAR* str = NULL );
+	bool InitThemeDll( WCHAR* str = NULL );
 	virtual bool InitDllImp();
-	virtual LPCTSTR GetDllNameImp(int nIndex);
+	virtual LPCWSTR GetDllNameImp(int nIndex);
 
 protected:
 	// UxTheme API Entry Points
@@ -72,6 +71,4 @@ public:
 	HRESULT DrawThemeParentBackground( HWND hwnd, HDC hdc, RECT* prc );
 	BOOL IsThemeBackgroundPartiallyTransparent( HTHEME htheme, int iPartId, int iStateId );
 };
-
-#endif
 

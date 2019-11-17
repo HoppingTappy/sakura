@@ -25,8 +25,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CFORMATMANAGER_7FC73E49_281C_4417_BBBC_DE176142E6BC9_H_
-#define SAKURA_CFORMATMANAGER_7FC73E49_281C_4417_BBBC_DE176142E6BC9_H_
+#pragma once
 
 // 要先行定義
 // #include "DLLSHAREDATA.h"
@@ -40,15 +39,14 @@ public:
 	}
 	//書式 //@@@ 2002.2.9 YAZAKI
 	// 共有DLLSHAREDATA依存
-	const TCHAR* MyGetDateFormat( const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen );
-	const TCHAR* MyGetTimeFormat( const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen );
+	const WCHAR* MyGetDateFormat( const SYSTEMTIME& systime, WCHAR* pszDest, int nDestLen );
+	const WCHAR* MyGetTimeFormat( const SYSTEMTIME& systime, WCHAR* pszDest, int nDestLen );
 
 	// 共有DLLSHAREDATA非依存
-	const TCHAR* MyGetDateFormat( const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen, int nDateFormatType, const TCHAR* szDateFormat );
-	const TCHAR* MyGetTimeFormat( const SYSTEMTIME& systime, TCHAR* pszDest, int nDestLen, int nTimeFormatType, const TCHAR* szTimeFormat );
+	const WCHAR* MyGetDateFormat( const SYSTEMTIME& systime, WCHAR* pszDest, int nDestLen, int nDateFormatType, const WCHAR* szDateFormat );
+	const WCHAR* MyGetTimeFormat( const SYSTEMTIME& systime, WCHAR* pszDest, int nDestLen, int nTimeFormatType, const WCHAR* szTimeFormat );
 private:
 	DLLSHAREDATA* m_pShareData;
 };
 
-#endif /* SAKURA_CFORMATMANAGER_7FC73E49_281C_4417_BBBC_DE176142E6BC9_H_ */
 /*[EOF]*/

@@ -2,29 +2,36 @@
 #include "StdAfx.h"
 #include "mem/CNativeW.h"
 #include "CEol.h"
-#include "charset/CShiftJis.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //               コンストラクタ・デストラクタ                  //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-CNativeW::CNativeW()
+CNativeW::CNativeW() noexcept
+	: CNative()
 {
 }
 
 CNativeW::CNativeW(const CNativeW& rhs)
+	: CNative(rhs)
 {
-	SetNativeData(rhs);
+}
+
+CNativeW::CNativeW(CNativeW&& other) noexcept
+	: CNative(std::forward<CNativeW>(other))
+{
 }
 
 //! nDataLenは文字単位。
 CNativeW::CNativeW( const wchar_t* pData, int nDataLen )
+	: CNative()
 {
-	SetString(pData,nDataLen);
+	SetString(pData, nDataLen);
 }
 
-CNativeW::CNativeW( const wchar_t* pData)
+CNativeW::CNativeW( const wchar_t* pData )
+	: CNative()
 {
-	SetString(pData,wcslen(pData));
+	SetString(pData);
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -40,7 +47,10 @@ void CNativeW::SetString( const wchar_t* pData, int nDataLen )
 // バッファの内容を置き換える
 void CNativeW::SetString( const wchar_t* pszData )
 {
-	CNative::SetRawData(pszData,wcslen(pszData) * sizeof(wchar_t));
+	if (pszData)
+		CNative::SetRawData(pszData,wcslen(pszData) * sizeof(wchar_t));
+	else
+		CMemory::Clear();
 }
 
 void CNativeW::SetStringHoldBuffer( const wchar_t* pData, int nDataLen )
@@ -99,37 +109,6 @@ void CNativeW::AppendNativeData( const CNativeW& cmemData )
 	CNative::AppendRawData(cmemData.GetStringPtr(), cmemData.GetRawLength());
 }
 
-// -- -- charからの移行用 -- -- //
-
-//! バッファの内容を置き換える。nDataLenは文字単位。
-void CNativeW::SetStringOld( const char* pData, int nDataLen )
-{
-	int nLen;
-	wchar_t* szTmp=mbstowcs_new(pData,nDataLen,&nLen);
-	SetString(szTmp,nLen);
-	delete[] szTmp;
-}
-
-//! バッファの内容を置き換える
-void CNativeW::SetStringOld( const char* pszData )
-{
-	SetStringOld(pszData,strlen(pszData));
-}
-
-void CNativeW::AppendStringOld( const char* pData, int nDataLen )
-{
-	int nLen;
-	wchar_t* szTmp=mbstowcs_new(pData,nDataLen,&nLen);
-	AppendString(szTmp,nLen);
-	delete[] szTmp;
-}
-
-//! バッファの最後にデータを追加する。pszDataはSJIS。
-void CNativeW::AppendStringOld( const char* pszData )
-{
-	AppendStringOld(pszData,strlen(pszData));
-}
-
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //              ネイティブ取得インターフェース                 //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -149,14 +128,11 @@ bool CNativeW::IsEqual( const CNativeW& cmem1, const CNativeW& cmem2 )
 {
 	if(&cmem1==&cmem2)return true;
 
-	const wchar_t* psz1;
-	const wchar_t* psz2;
-	int nLen1;
-	int nLen2;
-
-	psz1 = cmem1.GetStringPtr( &nLen1 );
-	psz2 = cmem2.GetStringPtr( &nLen2 );
+	const int nLen1 = cmem1.GetStringLength();
+	const int nLen2 = cmem2.GetStringLength();
 	if( nLen1 == nLen2 ){
+		const wchar_t* psz1 = cmem1.GetStringPtr();
+		const wchar_t* psz2 = cmem2.GetStringPtr();
 		if( 0 == wmemcmp( psz1, psz2, nLen1 ) ){
 			return true;
 		}
@@ -321,12 +297,5 @@ const wchar_t* CNativeW::GetCharPrev( const wchar_t* pData, int nDataLen, const 
 	}
 
 	return pPrev;
-//	return ::CharPrevW_AnyBuild( pData, pDataCurrent );
+//	return ::CharPrev( pData, pDataCurrent );
 }
-
-//ShiftJISに変換して返す
-const char* CNativeW::GetStringPtrOld() const
-{
-	return to_achar(GetStringPtr(),GetStringLength());
-}
-

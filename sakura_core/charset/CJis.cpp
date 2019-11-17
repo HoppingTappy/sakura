@@ -245,8 +245,8 @@ EConvertResult CJis::JISToUnicode(const CMemory& cSrc, CNativeW* pDstMem, bool b
 	bool berror;
 
 	// ソースを取得
-	int nSrcLen;
-	const char* pSrc = reinterpret_cast<const char*>( cSrc.GetRawPtr(&nSrcLen) );
+	int nSrcLen = cSrc.GetRawLength();
+	const char* pSrc = reinterpret_cast<const char*>( cSrc.GetRawPtr() );
 
 	// ソースバッファポインタとソースの長さ
 	const char* psrc = pSrc;
@@ -307,7 +307,7 @@ int CJis::_SjisToJis_char( const unsigned char* pSrc, unsigned char* pDst, EChar
 		ctemp_ = SjisFilter_ibm2nec( ctemp_ );
 		ctemp = _mbcjmstojis( ctemp_ );
 		if( ctemp != 0 ){
-			// 返還に成功。
+			// 変換に成功。
 			pDst[0] = static_cast<char>( (ctemp & 0x0000ff00) >> 8 );
 			pDst[1] = static_cast<char>( ctemp & 0x000000ff );
 			nret = 2;
@@ -470,12 +470,12 @@ EConvertResult CJis::UnicodeToJIS(const CNativeW& cSrc, CMemory* pDstMem)
 }
 
 // 文字コード表示用	UNICODE → Hex 変換	2008/6/9 Uchi
-EConvertResult CJis::UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* pDst, const CommonSetting_Statusbar* psStatusbar)
+EConvertResult CJis::UnicodeToHex(const wchar_t* cSrc, const int iSLen, WCHAR* pDst, const CommonSetting_Statusbar* psStatusbar)
 {
 	CNativeW		cCharBuffer;
 	EConvertResult	res;
 	int				i;
-	TCHAR*			pd; 
+	WCHAR*			pd; 
 	unsigned char*	ps; 
 
 	// 2008/6/21 Uchi
@@ -507,7 +507,7 @@ EConvertResult CJis::UnicodeToHex(const wchar_t* cSrc, const int iSLen, TCHAR* p
 			}
 		}
 		else {
-			auto_sprintf( pd, _T("%02X"), *ps);
+			auto_sprintf( pd, L"%02X", *ps);
 			pd += 2;
 		}
 	}

@@ -42,9 +42,9 @@
 /*! テストのベースとなる値 */
 static constexpr MYDEVMODE myDevMode = {
 	FALSE, //BOOL	m_bPrinterNotFound;
-	{_T("m_szPrinterDriverName")}, //TCHAR	m_szPrinterDriverName[_MAX_PATH + 1];
-	{_T("m_szPrinterDeviceName")}, //TCHAR	m_szPrinterDeviceName[_MAX_PATH + 1];
-	{_T("m_szPrinterOutputName")}, //TCHAR	m_szPrinterOutputName[_MAX_PATH + 1];
+	{L"m_szPrinterDriverName"}, //WCHAR	m_szPrinterDriverName[_MAX_PATH + 1];
+	{L"m_szPrinterDeviceName"}, //WCHAR	m_szPrinterDeviceName[_MAX_PATH + 1];
+	{L"m_szPrinterOutputName"}, //WCHAR	m_szPrinterOutputName[_MAX_PATH + 1];
 	std::numeric_limits<DWORD>::min(), //DWORD	dmFields;
 	std::numeric_limits<short>::min(), //short	dmOrientation;
 	std::numeric_limits<short>::min(), //short	dmPaperSize;
@@ -59,7 +59,7 @@ static constexpr MYDEVMODE myDevMode = {
 	std::numeric_limits<short>::min(), //short	dmYResolution;
 	std::numeric_limits<short>::min(), //short	dmTTOption;
 	std::numeric_limits<short>::min(), //short	dmCollate;
-	{_T("dmFormName")}, //BCHAR	dmFormName[CCHFORMNAME];
+	{L"dmFormName"}, //BCHAR	dmFormName[CCHFORMNAME];
 	std::numeric_limits<WORD>::min(), //WORD	dmLogPixels;
 	std::numeric_limits<DWORD>::min(), //DWORD	dmBitsPerPel;
 	std::numeric_limits<DWORD>::min(), //DWORD	dmPelsWidth;
@@ -137,19 +137,19 @@ TEST(MYDEVMODETest, operatorNotEqual)
 	value.m_bPrinterNotFound = myDevMode.m_bPrinterNotFound;
 	EXPECT_EQ(myDevMode, value);
 
-	::_tcscpy_s(value.m_szPrinterDriverName, _T("PrinterDriverName"));
+	::wcscpy_s(value.m_szPrinterDriverName, L"PrinterDriverName");
 	EXPECT_NE(myDevMode, value);
-	::_tcscpy_s(value.m_szPrinterDriverName, myDevMode.m_szPrinterDriverName);
+	::wcscpy_s(value.m_szPrinterDriverName, myDevMode.m_szPrinterDriverName);
 	EXPECT_EQ(myDevMode, value);
 
-	::_tcscpy_s(value.m_szPrinterDeviceName, _T("PrinterDeviceName"));
+	::wcscpy_s(value.m_szPrinterDeviceName, L"PrinterDeviceName");
 	EXPECT_NE(myDevMode, value);
-	::_tcscpy_s(value.m_szPrinterDeviceName, myDevMode.m_szPrinterDeviceName);
+	::wcscpy_s(value.m_szPrinterDeviceName, myDevMode.m_szPrinterDeviceName);
 	EXPECT_EQ(myDevMode, value);
 
-	::_tcscpy_s(value.m_szPrinterOutputName, _T("PrinterOutputName"));
+	::wcscpy_s(value.m_szPrinterOutputName, L"PrinterOutputName");
 	EXPECT_NE(myDevMode, value);
-	::_tcscpy_s(value.m_szPrinterOutputName, myDevMode.m_szPrinterOutputName);
+	::wcscpy_s(value.m_szPrinterOutputName, myDevMode.m_szPrinterOutputName);
 	EXPECT_EQ(myDevMode, value);
 
 	value.dmFields = std::numeric_limits<decltype(value.dmFields)>::max();
@@ -222,9 +222,9 @@ TEST(MYDEVMODETest, operatorNotEqual)
 	value.dmCollate = myDevMode.dmCollate;
 	EXPECT_EQ(myDevMode, value);
 
-	::_tcscpy_s(value.dmFormName, _T("FormName"));
+	::wcscpy_s(value.dmFormName, L"FormName");
 	EXPECT_NE(myDevMode, value);
-	::_tcscpy_s(value.dmFormName, myDevMode.dmFormName);
+	::wcscpy_s(value.dmFormName, myDevMode.dmFormName);
 	EXPECT_EQ(myDevMode, value);
 
 	value.dmLogPixels = std::numeric_limits<decltype(value.dmLogPixels)>::max();
@@ -258,12 +258,35 @@ TEST(MYDEVMODETest, operatorNotEqual)
 	EXPECT_EQ(myDevMode, value);
 }
 
-/* アクセス不可のメモリ領域にアクセスしても、例外が発生しない事象があるので、
- * 当面MSVCのリリース版では以下のテストを実行しない。
- *
- * 参考: https://github.com/google/googletest/blob/9d4cde44a4a3952cf21861f9370b3bed9265dfd7/googletest/docs/advanced.md#temporarily-disabling-tests
+/*!
+ * @brief 否定の等価演算子のテスト
+ *  文字列メンバの末尾(通常はNUL文字)が異なるパターンを検出できるかチェックする
  */
-#if defined(_DEBUG) || defined(__MINGW64__)
+TEST(MYDEVMODETest, operatorNotEqualAntiLazyCode)
+{
+	// デフォルトで初期化
+	MYDEVMODE value, other;
+
+	// スタック変数のアドレスをchar*にキャストしてデータを書き替える
+	char* buf1 = reinterpret_cast<char*>(&value);
+	::memset(buf1, 'a', sizeof(MYDEVMODE));
+	char* buf2 = reinterpret_cast<char*>(&other);
+	::memset(buf2, 'a', sizeof(MYDEVMODE));
+
+	// まったく同じなので等価になる
+	EXPECT_TRUE(value == other);
+	EXPECT_FALSE(value != other);
+	EXPECT_EQ(other, value);
+
+	// 文字列メンバをNUL終端する
+	value.m_szPrinterDriverName[_countof(value.m_szPrinterDriverName) - 1] = 0;
+
+	// NUL終端された文字列 != NUL終端されてない文字列、となるはず。
+	EXPECT_FALSE(value == other);
+	EXPECT_TRUE(value != other);
+	EXPECT_NE(other, value);
+}
+
 /*!
  * @brief 等価比較演算子が一般保護違反を犯さないことを保証する非機能要件テスト
  *
@@ -271,9 +294,6 @@ TEST(MYDEVMODETest, operatorNotEqual)
  *  実際にどういうケースで一般保護例外違反となるか、コード的に発生させる方法の共有を兼ねて実装したもの。
  */
 TEST(MYDEVMODETest, StrategyForSegmentationFault)
-#else
-TEST(MYDEVMODETest, DISABLED_StrategyForSegmentationFault)
-#endif /* if defined(_DEBUG) || defined(__MINGW64__) */
 {
 	// システムのページサイズを取得する
 	SYSTEM_INFO systemInfo = { 0 };
@@ -286,14 +306,19 @@ TEST(MYDEVMODETest, DISABLED_StrategyForSegmentationFault)
 
 	// 仮想メモリ範囲を予約する。予約時点では全体をNOACCESS指定にしておく。
 	LPVOID memBlock1 = ::VirtualAlloc(NULL, allocSize, MEM_RESERVE, PAGE_NOACCESS);
-	assert(memBlock1);
+	EXPECT_TRUE(memBlock1 != NULL);
 
-	// 仮想メモリを1ページ分だけコミット(=確保)する。2ページ目はNOACCESSのまま。
-	wchar_t* buf1 = static_cast<wchar_t*>(::VirtualAlloc(memBlock1, pageSize, MEM_COMMIT, PAGE_READWRITE));
-	assert(buf1);
+	// 仮想メモリ全域をコミット(=確保)する。
+	wchar_t* buf1 = static_cast<wchar_t*>(::VirtualAlloc(memBlock1, allocSize, MEM_COMMIT, PAGE_READWRITE));
+	EXPECT_TRUE(buf1 != NULL);
 
-	// 確保したメモリ領域をASCII文字'a'で埋める
-	::wmemset(buf1, L'a', pageSize / sizeof(wchar_t));
+	// 確保したメモリ全域をASCII文字'a'で埋める
+	::wmemset(buf1, L'a', pageSize);
+
+	// 2ページ目の保護モードをNOACCESSにする。
+	DWORD flOldProtect = 0;
+	volatile BOOL retVirtualProtect = ::VirtualProtect((char*)buf1 + pageSize, pageSize, PAGE_NOACCESS, &flOldProtect);
+	EXPECT_TRUE(retVirtualProtect);
 
 	// メモリデータをテスト対象型にマップする。実態として配列のように扱えるポインタを取得している。
 	MYDEVMODE* pValues = reinterpret_cast<MYDEVMODE*>(buf1);
@@ -309,7 +334,9 @@ TEST(MYDEVMODETest, DISABLED_StrategyForSegmentationFault)
 	 * 想定結果：一般保護違反で落ちる
 	 * 備考：例外メッセージは無視する(例外が起きたことが検知できればよいから。)
 	 */
-	ASSERT_DEATH({ ::_tcscmp(pValues[0].m_szPrinterDeviceName, pLargeStr); }, ".*");
+	volatile int ret = 0;
+	ASSERT_DEATH({ ret = ::wcscmp(pValues[0].m_szPrinterDeviceName, pLargeStr); }, ".*");
+	(void)ret;
 
 	// 等価比較演算子を使った場合には落ちないことを確認する
 	EXPECT_TRUE(pValues[0] == pValues[1]);

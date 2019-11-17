@@ -104,8 +104,8 @@ void CMruListener::OnBeforeLoad(SLoadInfo* pLoadInfo)
 	if(IsValidCodeOrCPType(ePrevCode) && pLoadInfo->eCharCode!=ePrevCode){
 		//オプション：前回と文字コードが異なるときに問い合わせを行う
 		if( GetDllShareData().m_Common.m_sFile.m_bQueryIfCodeChange && !pLoadInfo->bRequestReload ){
-			TCHAR szCpNameNew[260];
-			TCHAR szCpNameOld[260];
+			WCHAR szCpNameNew[260];
+			WCHAR szCpNameOld[260];
 			CCodePage::GetNameLong(szCpNameOld, ePrevCode);
 			CCodePage::GetNameLong(szCpNameNew, pLoadInfo->eCharCode);
 			ConfirmBeep();
@@ -199,7 +199,7 @@ void CMruListener::OnAfterLoad(const SLoadInfo& sLoadInfo)
 		if( GetDllShareData().m_Common.m_sFile.GetRestoreBookmarks() ){
 			// SetBookMarksでデータがNUL区切りに書き換わっているので再取得
 			cMRU.GetEditInfo(pcDoc->m_cDocFile.GetFilePath(),&eiOld);
-			auto_strcpy(eiNew.m_szMarkLines, eiOld.m_szMarkLines);
+			wcscpy(eiNew.m_szMarkLines, eiOld.m_szMarkLines);
 		}
 	}
 	cMRU.Add( &eiNew );

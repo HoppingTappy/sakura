@@ -18,8 +18,7 @@
 	Please contact the copyright holder to use this code for other purpose.
 */
 
-#ifndef _GLOBAL_H_
-#define _GLOBAL_H_
+#pragma once
 
 //////////////////////////////////////////////////////////////
 #ifndef STRICT
@@ -88,7 +87,7 @@ enum EBarChangeNotifyType {
 #define COLOR_ATTRIB_NO_EFFECTS		0x00000F00
 
 struct SColorAttributeData{
-	const TCHAR*	szName;
+	const WCHAR*	szName;
 	unsigned int	fAttribute;
 };
 extern const SColorAttributeData g_ColorAttributeArr[];
@@ -193,5 +192,3 @@ extern CEditWnd* g_pcEditWnd;
 HINSTANCE G_AppInstance();
 
 ///////////////////////////////////////////////////////////////////////
-#endif /* _GLOBAL_H_ */
-

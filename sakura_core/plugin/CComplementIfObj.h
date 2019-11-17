@@ -26,8 +26,7 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#ifndef SAKURA_CCOMPLEMENTIFOBJ_CE6919C7_F8F8_479E_BC70_7BA4651351D27_H_
-#define SAKURA_CCOMPLEMENTIFOBJ_CE6919C7_F8F8_479E_BC70_7BA4651351D27_H_
+#pragma once
 
 #include "macro/CWSHIfObj.h"
 #include "util/ole_convert.h"
@@ -86,7 +85,7 @@ public:
 				const wchar_t* word = keyword.c_str();
 				int nWordLen = keyword.length();
 				if( nWordLen <= 0 ) return false;
-				std::wstring strWord = std::wstring(word, nWordLen);
+				std::wstring strWord(word, nWordLen);
 				if( CHokanMgr::AddKouhoUnique( m_pHokanMgr->m_vKouho, strWord ) ){
 					Wrap( &Result )->Receive( m_pHokanMgr->m_vKouho.size() );
 				}else{
@@ -133,4 +132,3 @@ MacroFuncInfo CComplementIfObj::m_MacroFuncInfoArr[] =
 	{F_INVALID,	NULL, {VT_EMPTY, VT_EMPTY, VT_EMPTY, VT_EMPTY},	VT_EMPTY,	NULL}
 };
 
-#endif /* SAKURA_CCOMPLEMENTIFOBJ_CE6919C7_F8F8_479E_BC70_7BA4651351D27_H_ */

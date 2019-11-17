@@ -32,8 +32,7 @@
 		   distribution.
 */
 
-#ifndef __CNAMELOOKUP_H__
-#define __CNAMELOOKUP_H__
+#pragma once
 
 #include <Windows.h>
 #include "_main/global.h"
@@ -44,12 +43,12 @@ struct CommonSetting;// 2002/2/10 aroka
 
 //! マクロ情報
 struct MacroRec {
-	TCHAR	m_szName[MACRONAME_MAX];	//!< 表示名
-	TCHAR	m_szFile[_MAX_PATH+1];	//!< ファイル名(ディレクトリを含まない)
+	WCHAR	m_szName[MACRONAME_MAX];	//!< 表示名
+	WCHAR	m_szFile[_MAX_PATH+1];	//!< ファイル名(ディレクトリを含まない)
 	bool	m_bReloadWhenExecute;	//	実行時に読み込みなおすか（デフォルトon）
 	
-	bool IsEnabled() const { return m_szFile[0] != _T('\0'); }
-	const TCHAR* GetTitle() const { return m_szName[0] == _T('\0') ? m_szFile: m_szName; }	// 2007.11.02 ryoji 追加
+	bool IsEnabled() const { return m_szFile[0] != L'\0'; }
+	const WCHAR* GetTitle() const { return m_szName[0] == L'\0' ? m_szFile: m_szName; }	// 2007.11.02 ryoji 追加
 };
 
 /*!
@@ -74,7 +73,7 @@ public:
 	EFunctionCode Pos2FuncCode( int category, int position, bool bGetUnavailable = true ) const;	// 2007.10.31 ryoji bGetUnavailableパラメータ追加
 	bool Pos2FuncName( int category, int position, WCHAR* ptr, int bufsize ) const;
 	bool Funccode2Name( int funccode, WCHAR* ptr, int bufsize ) const ;
-	const TCHAR* Category2Name( int category ) const;
+	const WCHAR* Category2Name( int category ) const;
 	const WCHAR* Custmenu2Name( int index, WCHAR buf[], int bufSize ) const;
 
 	void SetCategory2Combo( HWND hComboBox ) const ;
@@ -92,5 +91,4 @@ private:
 	CommonSetting* m_pCommon;	//! 共通設定データ領域へのポインタ
 };
 
-#endif
 /* [EOF] */
