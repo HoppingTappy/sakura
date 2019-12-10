@@ -22,7 +22,6 @@
     <ProjectName>sakura</ProjectName>
     <ProjectGuid>{AF03508C-515E-4A0E-87BE-67ED1E254BD0}</ProjectGuid>
     <GenerateFuncCodeEnum>true</GenerateFuncCodeEnum>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(ProjectDir)..\vcx-props\vcxcompat.props" />
@@ -304,6 +303,7 @@
     <ClInclude Include="..\sakura_core\charset\CUnicodeBe.h" />
     <ClInclude Include="..\sakura_core\charset\CUtf7.h" />
     <ClInclude Include="..\sakura_core\charset\CUtf8.h" />
+    <ClInclude Include="..\sakura_core\charset\icu4c\CharsetDetector.h" />
     <ClInclude Include="..\sakura_core\CHokanMgr.h" />
     <ClInclude Include="..\sakura_core\CKeyWordSetMgr.h" />
     <ClInclude Include="..\sakura_core\CLoadAgent.h" />
@@ -414,6 +414,7 @@
     <ClInclude Include="..\sakura_core\extmodule\CBregexpDll2.h" />
     <ClInclude Include="..\sakura_core\extmodule\CDllHandler.h" />
     <ClInclude Include="..\sakura_core\extmodule\CHtmlHelp.h" />
+    <ClInclude Include="..\sakura_core\extmodule\CIcu4cI18n.h" />
     <ClInclude Include="..\sakura_core\extmodule\CMigemo.h" />
     <ClInclude Include="..\sakura_core\extmodule\CUxTheme.h" />
     <ClInclude Include="..\sakura_core\Funccode_define.h" />
@@ -648,6 +649,7 @@
     <ClCompile Include="..\sakura_core\charset\CUnicodeBe.cpp" />
     <ClCompile Include="..\sakura_core\charset\CUtf7.cpp" />
     <ClCompile Include="..\sakura_core\charset\CUtf8.cpp" />
+    <ClCompile Include="..\sakura_core\charset\icu4c\CharsetDetector.cpp" />
     <ClCompile Include="..\sakura_core\CHokanMgr.cpp" />
     <ClCompile Include="..\sakura_core\CKeyWordSetMgr.cpp" />
     <ClCompile Include="..\sakura_core\CLoadAgent.cpp" />
@@ -777,6 +779,7 @@
     <ClCompile Include="..\sakura_core\extmodule\CBregexpDll2.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CDllHandler.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CHtmlHelp.cpp" />
+    <ClCompile Include="..\sakura_core\extmodule\CIcu4cI18n.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CMigemo.cpp" />
     <ClCompile Include="..\sakura_core\extmodule\CUxTheme.cpp" />
     <ClCompile Include="..\sakura_core\func\CFuncKeyWnd.cpp" />
