@@ -72,5 +72,3 @@ private:
 	std::vector<POINT> m_apt;
 	std::vector<DWORD> m_asz;
 };
-
-/*[EOF]*/

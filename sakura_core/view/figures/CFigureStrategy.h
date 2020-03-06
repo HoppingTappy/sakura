@@ -100,5 +100,3 @@ protected:
 protected:
 	EColorIndexType m_nDispColorIndex;
 };
-
-/*[EOF]*/

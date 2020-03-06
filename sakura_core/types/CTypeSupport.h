@@ -145,5 +145,3 @@ private:
 
 	CGraphics* m_gr;        //設定を変更したHDC
 };
-
-/*[EOF]*/

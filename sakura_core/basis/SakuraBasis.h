@@ -143,5 +143,3 @@ inline void TwoPointToRect(
 		prcRect->right	= pt1.GetX2();
 	}
 }
-
-/*[EOF]*/

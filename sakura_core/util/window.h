@@ -189,5 +189,3 @@ private:
 	HFONT m_hFontOld;
 	HFONT m_hFont;
 };
-
-/*[EOF]*/

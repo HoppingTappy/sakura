@@ -6,22 +6,26 @@ if not defined CMD_7Z (
 	exit /b 1
 )
 
+
+@rem for GIT_TAG_NAME
+call %~dp0sakura\githash.bat %~dp0sakura_core
+
 @rem ----------------------------------------------------------------
 @rem prepare environment variable
 @rem ----------------------------------------------------------------
-@echo checking APPVEYOR_ACCOUNT_NAME %APPVEYOR_ACCOUNT_NAME%
+@echo checking CI_REPO_NAME %CI_REPO_NAME%
 set BUILD_ACCOUNT=
-if "%APPVEYOR_ACCOUNT_NAME%" == "sakuraeditor" (
+if "%CI_REPO_NAME%" == "sakura-editor/sakura" (
 	set BUILD_ACCOUNT=
-) else if "%APPVEYOR_ACCOUNT_NAME%" == "" (
+) else if "%CI_REPO_NAME%" == "" (
 	set BUILD_ACCOUNT=
 ) else (
-	set BUILD_ACCOUNT=%APPVEYOR_ACCOUNT_NAME%
+	set BUILD_ACCOUNT=%CI_ACCOUNT_NAME%
 )
 
-@echo checking APPVEYOR_BUILD_NUMBER %APPVEYOR_BUILD_NUMBER%
-if not "%APPVEYOR_BUILD_NUMBER%" == "" (
-	set BUILD_NUMBER=build%APPVEYOR_BUILD_NUMBER%
+@echo checking CI_BUILD_NUMBER %CI_BUILD_NUMBER%
+if not "%CI_BUILD_NUMBER%" == "" (
+	set BUILD_NUMBER=build%CI_BUILD_NUMBER%
 ) else (
 	set BUILD_NUMBER=buildLocal
 )
@@ -41,13 +45,13 @@ if not "%GIT_TAG_NAME%" == "" (
 	@echo TAG_NAME = !TEMP_NAME2!
 )
 
-@echo checking APPVEYOR_PULL_REQUEST_NUMBER %APPVEYOR_PULL_REQUEST_NUMBER%
-if not "%APPVEYOR_PULL_REQUEST_NUMBER%" == "" (
-	set PR_NAME=PR%APPVEYOR_PULL_REQUEST_NUMBER%
+@echo checking GITHUB_PR_NUMBER %GITHUB_PR_NUMBER%
+if not "%GITHUB_PR_NUMBER%" == "" (
+	set PR_NAME=PR%GITHUB_PR_NUMBER%
 )
 
 @echo hash name
-set SHORTHASH=%TEMP_GIT_COMMIT_HASH%
+set SHORTHASH=%GIT_SHORT_COMMIT_HASH%
 
 @rem ----------------------------------------------------------------
 @rem build BASENAME

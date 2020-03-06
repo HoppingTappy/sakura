@@ -44,7 +44,7 @@
 #define _APP_NAME_3_(TYPE) TYPE("")
 #endif
 
-#ifdef APPVEYOR_DEV_VERSION
+#ifdef DEV_VERSION
 #define _APP_NAME_DEV_(TYPE) TYPE("(dev Version)")
 #else
 #define _APP_NAME_DEV_(TYPE) TYPE("")
@@ -111,4 +111,3 @@ int WINAPI wWinMain(
 	::OleUninitialize();	// 2009.01.07 ryoji 追加
 	return 0;
 }
-

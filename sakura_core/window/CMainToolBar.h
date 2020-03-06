@@ -78,5 +78,3 @@ private:
 	CRecentSearch			m_cRecentSearch;
 	CImageListMgr*			m_pcIcons;
 };
-
-/*[EOF]*/

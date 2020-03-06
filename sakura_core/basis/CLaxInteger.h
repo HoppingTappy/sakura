@@ -42,5 +42,3 @@ public:
 private:
 	int m_value;
 };
-
-/*[EOF]*/

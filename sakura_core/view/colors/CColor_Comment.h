@@ -78,5 +78,3 @@ private:
 	const CBlockComment* m_pcBlockComment;
 	int m_nCOMMENTEND;
 };
-
-/*[EOF]*/

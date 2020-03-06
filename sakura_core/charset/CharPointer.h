@@ -108,5 +108,3 @@ private:
 };
 
 typedef CharPointerW CharPointerT;
-
-/*[EOF]*/

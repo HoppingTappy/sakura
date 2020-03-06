@@ -166,5 +166,3 @@ public:
 	STDMETHOD( Reset )(void);
 	STDMETHOD( Clone )(IEnumFORMATETC** ppenum);
 };
-
-///////////////////////////////////////////////////////////////////////

@@ -35,5 +35,3 @@ public:
 private:
 	SSaveInfo	m_sSaveInfoForRollback;
 };
-
-/*[EOF]*/

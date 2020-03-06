@@ -81,5 +81,3 @@ public:
 };
 
 #include "CRecentImp.h"
-
-/*[EOF]*/

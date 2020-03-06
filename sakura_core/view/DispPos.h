@@ -113,5 +113,3 @@ private:
 	//キャッシュ############
 	const CLayout*		m_pcLayoutRef;
 };
-
-/*[EOF]*/

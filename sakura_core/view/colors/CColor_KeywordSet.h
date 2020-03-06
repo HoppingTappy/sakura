@@ -38,5 +38,3 @@ private:
 	int m_nKeywordIndex;
 	int m_nCOMMENTEND;
 };
-
-/*[EOF]*/

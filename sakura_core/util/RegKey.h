@@ -187,5 +187,3 @@ public:
 		return RegDeleteKey(root, path);
 	}
 };
-
-/*[EOF]*/

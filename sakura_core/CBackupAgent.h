@@ -34,5 +34,3 @@ protected:
 	int MakeBackUp( const WCHAR* target_file );								//!< バックアップの作成
 	bool FormatBackUpPath( WCHAR*, size_t, const WCHAR* );	//!< バックアップパスの作成 2005.11.21 aroka
 };
-
-/*[EOF]*/

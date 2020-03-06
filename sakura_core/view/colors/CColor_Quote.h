@@ -71,5 +71,3 @@ public:
 	CColor_DoubleQuote() : CColor_Quote(L'"') { }
 	EColorIndexType GetStrategyColor() const override{ return COLORIDX_WSTRING; }
 };
-
-/*[EOF]*/

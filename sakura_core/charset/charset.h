@@ -139,5 +139,3 @@ public:
 	ECodeType	GetCode(int nIndex) const;
 	LPCWSTR		GetName(int nIndex) const;
 };
-
-/*[EOF]*/

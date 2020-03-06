@@ -352,4 +352,6 @@ inline bool C_IsSpace( wchar_t c, bool bExtEol )
 	);
 }
 
-/*[EOF]*/
+//! C/C++のファイル名による判定
+EOutlineType GetCLangOutlineType( const wchar_t* pszFileName );
+

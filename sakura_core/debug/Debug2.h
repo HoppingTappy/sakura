@@ -58,5 +58,3 @@
 	#define assert(exp)
 	#define assert_warning(exp)
 #endif
-
-/*[EOF]*/

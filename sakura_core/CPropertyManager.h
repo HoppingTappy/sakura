@@ -48,5 +48,3 @@ private:
 	int				m_nPropComPageNum;
 	int				m_nPropTypePageNum;
 };
-
-/*[EOF]*/

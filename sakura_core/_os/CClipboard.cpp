@@ -33,11 +33,6 @@
 #include "charset/CUtf8.h"
 #include "CEol.h"
 
-// MinGW<=4.5.0のコンパイルエラー対策
-#ifndef CF_DIBV5
-#define CF_DIBV5 17
-#endif
-
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //               コンストラクタ・デストラクタ                  //
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -679,4 +674,3 @@ int CClipboard::GetDataType()
 	if(::IsClipboardFormatAvailable(CF_HDROP))return CF_HDROP;
 	return -1;
 }
-

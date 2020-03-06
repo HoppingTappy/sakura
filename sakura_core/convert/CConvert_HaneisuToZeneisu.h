@@ -31,5 +31,3 @@ class CConvert_HaneisuToZeneisu final : public CConvert{
 public:
 	bool DoConvert(CNativeW* pcData) override;
 };
-
-/*[EOF]*/

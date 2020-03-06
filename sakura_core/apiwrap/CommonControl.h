@@ -99,5 +99,3 @@ namespace ApiWrap
 }
 
 using namespace ApiWrap;
-
-/*[EOF]*/

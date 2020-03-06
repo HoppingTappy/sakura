@@ -111,5 +111,3 @@ public:
 		return pt;
 	}
 };
-
-/*[EOF]*/

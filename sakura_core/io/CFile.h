@@ -70,5 +70,3 @@ public:
 private:
 	FILE* m_fp;
 };
-
-/*[EOF]*/

@@ -1,6 +1,6 @@
 ﻿/*! @file */
 /*
-	Copyright (C) 2018-2019 Sakura Editor Organization
+	Copyright (C) 2018-2020 Sakura Editor Organization
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -40,9 +40,8 @@ CIcu4cI18n::~CIcu4cI18n() noexcept
 /*!
  * @brief DLLの名前を返す
  */
-LPCWSTR CIcu4cI18n::GetDllNameImp(int index)
+LPCWSTR CIcu4cI18n::GetDllNameImp( [[maybe_unused]] int index )
 {
-	(void*)index;
 	return L"icuin66.dll"; //バージョンは固定
 }
 

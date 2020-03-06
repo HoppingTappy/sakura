@@ -104,5 +104,3 @@ enum EJisESCSeqType {
 };
 
 #endif
-
-/*[EOF]*/

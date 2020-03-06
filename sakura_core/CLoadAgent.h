@@ -34,5 +34,3 @@ public:
 	void OnAfterLoad(const SLoadInfo& sLoadInfo) override;
 	void OnFinalLoad(ELoadResult eLoadResult) override;
 };
-
-/*[EOF]*/

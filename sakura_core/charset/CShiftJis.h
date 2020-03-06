@@ -137,5 +137,3 @@ inline int CShiftJis::_UniToSjis_char( const unsigned short* pSrc, unsigned char
 
 	return nret;
 }
-
-/*[EOF]*/

@@ -403,5 +403,3 @@ HINSTANCE CSelectLang::ChangeLang( UINT nIndex )
 
 	return m_psLangInfo->hInstance;
 }
-
-/*[EOF]*/

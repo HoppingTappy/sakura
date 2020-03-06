@@ -40,5 +40,3 @@ public:
 		SFileInfo*			pFileInfo
 	);
 };
-
-/*[EOF]*/

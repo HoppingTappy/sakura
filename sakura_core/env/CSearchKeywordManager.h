@@ -58,5 +58,3 @@ public:
 private:
 	DLLSHAREDATA* m_pShareData;
 };
-
-/*[EOF]*/

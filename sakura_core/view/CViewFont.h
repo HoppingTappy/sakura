@@ -68,5 +68,3 @@ private:
 	LOGFONT	m_LogFont;
 	bool	m_bMiniMap;
 };
-
-/*[EOF]*/

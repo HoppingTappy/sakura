@@ -39,5 +39,3 @@ public:
 		const SSaveInfo&	sSaveInfo		//!< [in]
 	);
 };
-
-/*[EOF]*/

@@ -97,5 +97,3 @@ public:
 		return nRet;
 	}
 };
-
-/*[EOF]*/

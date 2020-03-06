@@ -39,5 +39,3 @@ private:
 	int m_nCOMMENTEND;
 	EColorIndexType m_nCOMMENTMODE;
 };
-
-/*[EOF]*/

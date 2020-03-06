@@ -129,5 +129,3 @@ protected:
 #include "CRecentCurDir.h"
 #include "CRecentEditNode.h"
 #include "CRecentTagjumpKeyword.h"
-
-/*[EOF]*/

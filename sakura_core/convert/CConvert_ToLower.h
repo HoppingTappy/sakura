@@ -30,5 +30,3 @@ class CConvert_ToLower final : public CConvert{
 public:
 	bool DoConvert(CNativeW* pcData) override;
 };
-
-/*[EOF]*/

@@ -1,5 +1,5 @@
 ﻿/*
-	Copyright (C) 2018-2019 Sakura Editor Organization
+	Copyright (C) 2018-2020 Sakura Editor Organization
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -132,4 +132,3 @@ private:
 	Node* m_currentBlock = nullptr; // 現在のブロック
 	Node* m_currentNode = nullptr; // 要素確保処理時に現在のブロックの中から切り出すNodeを指すポインタ、メモリ確保時に未割当領域が無い場合はここを使う
 };
-
