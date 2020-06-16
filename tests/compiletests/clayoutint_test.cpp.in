@@ -22,13 +22,28 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
-#include <gtest/gtest.h>
-#include "apiwrap/StdControl.h"
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif /* #ifndef NOMINMAX */
+
+#include <tchar.h>
+#include <Windows.h>
+
+#ifndef USE_STRICT_INT
+#define USE_STRICT_INT
+#endif /* #ifndef USE_STRICT_INT */
+
+#include "basis/SakuraBasis.h"
 
 /*!
-*/
-TEST(StdControl, Wnd_GetText)
+ * @brief テンプレートのテスト
+ * このファイルはビルドエラーになる
+ */
+void main()
 {
-	CNativeW tempText;
-	ASSERT_FALSE(Wnd_GetText(NULL, tempText));
+	CLayoutInt a( 1 );
+	CLogicInt b( 2 );
+
+	//${TEST_DESCRIPTION}
+	${TEST_BODY}
 }

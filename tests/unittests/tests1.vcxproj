@@ -21,7 +21,6 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{701e3407-ec27-49f7-adc7-520cf2b4b438}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(ProjectDir)..\..\vcx-props\vcxcompat.props" />
@@ -41,6 +40,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <Import Project="$(ProjectDir)..\googletest.targets" />
+  <Import Project="$(ProjectDir)..\compiletests.targets" />
   <ItemDefinitionGroup Label="tests1.common">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)sakura_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -102,20 +102,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Link Include="$(SolutionDir)sakura\$(Platform)\$(Configuration)\*.obj" />
+    <Link Include="$(SolutionDir)sakura\$(Platform)\$(Configuration)\*.res" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="test-ccommandline.cpp" />
+    <ClCompile Include="test-cdlgprofilemgr.cpp" />
+    <ClCompile Include="test-clayoutint.cpp" />
     <ClCompile Include="test-cmemory.cpp" />
     <ClCompile Include="test-cnative.cpp" />
+    <ClCompile Include="test-editinfo.cpp" />
+    <ClCompile Include="test-grepinfo.cpp" />
     <ClCompile Include="test-int2dec.cpp" />
     <ClCompile Include="test-is_mailaddress.cpp" />
+    <ClCompile Include="test-loadstring.cpp" />
     <ClCompile Include="test-mydevmode.cpp" />
     <ClCompile Include="test-parameterized.cpp" />
     <ClCompile Include="test-sample-disabled.cpp" />
     <ClCompile Include="test-sample.cpp" />
+    <ClCompile Include="test-ssearchoption.cpp" />
     <ClCompile Include="test-StdControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup Condition="Exists('$(VCInstallDir)\Auxiliary\VS\include\CodeCoverage\CodeCoverage.h')">
+    <ClCompile Include="coverage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(ProjectDir)..\..\sakura\sakura.vcxproj">
