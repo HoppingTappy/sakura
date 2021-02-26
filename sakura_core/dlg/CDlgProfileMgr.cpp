@@ -6,6 +6,7 @@
 */
 /*
 	Copyright (C) 2013, Moca
+	Copyright (C) 2018-2021, Sakura Editor Organization
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -512,7 +513,7 @@ static bool IOProfSettings( SProfileSettings& settings, bool bWrite )
 	if( settings.m_nDefaultIndex < -1 ){
 		settings.m_nDefaultIndex = -1;
 	}
-	cProf.IOProfileData( pSection, L"szDllLanguage", StringBufferW(settings.m_szDllLanguage, _countof(settings.m_szDllLanguage)) );
+	cProf.IOProfileData(pSection, L"szDllLanguage", StringBufferW(settings.m_szDllLanguage));
 	cProf.IOProfileData( pSection, L"bDefaultSelect", settings.m_bDefaultSelect );
 
 	if( bWrite ){
