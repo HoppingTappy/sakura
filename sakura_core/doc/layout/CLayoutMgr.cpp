@@ -32,6 +32,7 @@
 #include "basis/SakuraBasis.h"
 #include "CSearchAgent.h"
 #include "debug/CRunningTimer.h"
+#include "charset/charcode.h"
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 //                        生成と破棄                           //
@@ -117,7 +118,8 @@ void CLayoutMgr::SetLayoutInfo(
 	int					nTsvMode,
 	CKetaXInt			nMaxLineKetas,
 	CLayoutXInt			nCharLayoutXPerKeta,
-	const LOGFONT*		pLogfont
+	const LOGFONT*		pLogfont,
+	CCharWidthCache&	cache
 )
 {
 	MY_RUNNINGTIMER( cRunningTimer, "CLayoutMgr::SetLayoutInfo" );
@@ -149,7 +151,7 @@ void CLayoutMgr::SetLayoutInfo(
 		m_nCharLayoutXPerKeta = nCharLayoutXPerKeta;
 	}
 	// 最大文字幅の計算
-	m_tsvInfo.m_nMaxCharLayoutX = WCODE::CalcPxWidthByFont(L'W');
+	m_tsvInfo.m_nMaxCharLayoutX = cache.CalcPxWidthByFont(L'W');
 	if (m_tsvInfo.m_nMaxCharLayoutX < m_nCharLayoutXPerKeta) {
 		m_tsvInfo.m_nMaxCharLayoutX = m_nCharLayoutXPerKeta;
 	}
@@ -1029,7 +1031,7 @@ void CLayoutMgr::LayoutToLogic( const CLayoutPoint& ptLayout, CLogicPoint* pptLo
 {
 	CLogicPointEx ptEx;
 	LayoutToLogicEx( ptLayout, &ptEx );
-	*pptLogic = std::move(ptEx);
+	*pptLogic = static_cast<CLogicPoint&>(ptEx);
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

@@ -38,6 +38,8 @@
 #include "COpe.h"
 #include "util/container.h"
 #include "util/design_template.h"
+#include "charset/charcode.h"
+#include "env/DLLSHAREDATA.h"
 
 class CBregexp;// 2002/2/10 aroka
 class CLayout;// 2002/2/10 aroka
@@ -258,7 +260,8 @@ public:
 		int				nTsvMode,
 		CKetaXInt		nMaxLineKetas,
 		CLayoutXInt		nCharLayoutXPerKeta,
-		const LOGFONT*	pLogfont
+		const LOGFONT*	pLogfont,
+		CCharWidthCache& cache = GetCharWidthCache()
 	);
 
 	/* 文字列置換 */
@@ -273,7 +276,8 @@ public:
 		if( m_nSpacing ){
 			nSpace = CLayoutXInt(CNativeW::GetKetaOfChar(pData, nDataLen, i)) * m_nSpacing;
 		}
-		return CNativeW::GetColmOfChar( pData, nDataLen, i ) + nSpace;
+		return CNativeW::GetColmOfChar( pData, nDataLen, i,
+			GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol) + nSpace;
 	}
 	CLayoutXInt GetLayoutXOfChar( const CStringRef& str, int i ) const {
 		return GetLayoutXOfChar(str.GetPtr(), str.GetLength(), i);

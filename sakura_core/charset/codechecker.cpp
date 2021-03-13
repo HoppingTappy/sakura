@@ -141,7 +141,7 @@ const char* TABLE_JISESCDATA[] = {
 
 	@return 確認した文字の長さ
 */
-int CheckSjisChar( const char* pS, const int nLen, ECharSet *peCharset )
+int CheckSjisChar( const char* pS, const size_t nLen, ECharSet *peCharset )
 {
 	unsigned char uc;
 
@@ -199,7 +199,7 @@ int CheckSjisChar( const char* pS, const int nLen, ECharSet *peCharset )
 
 	@date 2006.09.23 EUCJP 半角カタカナ判別が間違っていたのを修正．genta
 */
-int CheckEucjpChar( const char* pS, const int nLen, ECharSet *peCharset )
+int CheckEucjpChar( const char* pS, const size_t nLen, ECharSet *peCharset )
 {
 	unsigned char uc;
 
@@ -260,7 +260,7 @@ int CheckEucjpChar( const char* pS, const int nLen, ECharSet *peCharset )
 		戻り値がゼロより大きい場合に限り，*pnEscType が更新される．\n
 		pnEscType は NULL でも良い．\n
 */
-int DetectJisEscseq( const char* pS, const int nLen, EMyJisEscseq* peEscType )
+int DetectJisEscseq( const char* pS, const size_t nLen, EMyJisEscseq* peEscType )
 {
 	const char *pr, *pr_end;
 	int expected_esc_len;

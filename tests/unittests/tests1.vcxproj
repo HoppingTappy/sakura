@@ -108,6 +108,8 @@
     <ClCompile Include="code-main.cpp" />
     <ClCompile Include="test-cclipboard.cpp" />
     <ClCompile Include="test-ccommandline.cpp" />
+    <ClCompile Include="test-cconvert.cpp" />
+    <ClCompile Include="test-cdecode.cpp" />
     <ClCompile Include="test-cdlgprofilemgr.cpp" />
     <ClCompile Include="test-cerrorinfo.cpp" />
     <ClCompile Include="test-clayoutint.cpp" />
@@ -117,6 +119,7 @@
     <ClCompile Include="test-csakuraenvironment.cpp" />
     <ClCompile Include="test-ctextmetrics.cpp" />
     <ClCompile Include="test-cwordparse.cpp" />
+    <ClCompile Include="test-design_template.cpp" />
     <ClCompile Include="test-editinfo.cpp" />
     <ClCompile Include="test-file.cpp" />
     <ClCompile Include="test-charcode.cpp" />

@@ -408,9 +408,9 @@ inline int GuessEucjpCharsz( const char uc_ ){
 	文字長検査
 */
 /* --- ローカル文字コードチェック */
-int CheckSjisChar( const char*, const int, ECharSet* );
-int CheckEucjpChar( const char*, const int, ECharSet* );
-int DetectJisEscseq( const char*, const int, EMyJisEscseq* ); // JIS エスケープシーケンス検出器
+int CheckSjisChar( const char*, const size_t, ECharSet* );
+int CheckEucjpChar( const char*, const size_t, ECharSet* );
+int DetectJisEscseq( const char*, const size_t, EMyJisEscseq* ); // JIS エスケープシーケンス検出器
 int _CheckJisAnyPart( const char*, const int, const char **ppNextChar, EMyJisEscseq *peNextEsc, int *pnErrorCount, const int nType );
 enum EJisChecker{
 	JISCHECK_ASCII7,
