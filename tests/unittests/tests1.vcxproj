@@ -107,11 +107,16 @@
   <ItemGroup>
     <ClCompile Include="code-main.cpp" />
     <ClCompile Include="test-cclipboard.cpp" />
+    <ClCompile Include="test-ccodebase.cpp" />
     <ClCompile Include="test-ccommandline.cpp" />
     <ClCompile Include="test-cconvert.cpp" />
     <ClCompile Include="test-cdecode.cpp" />
+    <ClCompile Include="test-cdlgopenfile.cpp" />
     <ClCompile Include="test-cdlgprofilemgr.cpp" />
+    <ClCompile Include="test-cdoctypemanager.cpp" />
+    <ClCompile Include="test-ceol.cpp" />
     <ClCompile Include="test-cerrorinfo.cpp" />
+    <ClCompile Include="test-cfileext.cpp" />
     <ClCompile Include="test-clayoutint.cpp" />
     <ClCompile Include="test-cmemory.cpp" />
     <ClCompile Include="test-cnative.cpp" />
