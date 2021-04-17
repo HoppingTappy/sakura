@@ -26,6 +26,9 @@
 #include "charset/CCodeFactory.h"
 
 #include <cstdlib>
+#include <ostream>
+
+#include "env/CommonSetting.h"
 
 TEST(CCodeBase, MIMEHeaderDecode)
 {
@@ -34,36 +37,36 @@ TEST(CCodeBase, MIMEHeaderDecode)
 	// Base64 JIS
 	std::string source1("From: =?iso-2022-jp?B?GyRCJTUlLyVpGyhC?=");
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source1.c_str(), source1.length(), &m, CODE_JIS));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), "From: $B%5%/%i(B");
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), "From: $B%5%/%i(B");
 
 	// Base64 UTF-8
 	std::string source2("From: =?utf-8?B?44K144Kv44Op?=");
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source2.c_str(), source2.length(), &m, CODE_UTF8));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), "From: \xe3\x82\xb5\xe3\x82\xaf\xe3\x83\xa9");
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), "From: \xe3\x82\xb5\xe3\x82\xaf\xe3\x83\xa9");
 
 	// QP UTF-8
 	std::string source3("From: =?utf-8?Q?=E3=82=B5=E3=82=AF=E3=83=A9!?=");
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source3.c_str(), source3.length(), &m, CODE_UTF8));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), "From: \xe3\x82\xb5\xe3\x82\xaf\xe3\x83\xa9!");
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), "From: \xe3\x82\xb5\xe3\x82\xaf\xe3\x83\xa9!");
 
 	// 引数の文字コードとヘッダー内の文字コードが異なる場合は変換しない
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source1.c_str(), source1.length(), &m, CODE_UTF8));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), source1.c_str());
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), source1.c_str());
 
 	// 対応していない文字コードなら変換しない
 	std::string source4("From: =?utf-7?B?+MLUwrzDp-");
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source4.c_str(), source4.length(), &m, CODE_UTF7));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), source4.c_str());
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), source4.c_str());
 
 	// 謎の符号化方式が指定されていたら何もしない
 	std::string source5("From: =?iso-2022-jp?X?GyRCJTUlLyVpGyhC?=");
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source5.c_str(), source5.length(), &m, CODE_JIS));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), source5.c_str());
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), source5.c_str());
 
 	// 末尾の ?= がなければ変換しない
 	std::string source6("From: =?iso-2022-jp?B?GyRCJTUlLyVpGyhC");
 	EXPECT_TRUE(CCodeBase::MIMEHeaderDecode(source6.c_str(), source6.length(), &m, CODE_JIS));
-	EXPECT_STREQ(static_cast<char*>(m.GetRawPtr()), source6.c_str());
+	EXPECT_STREQ(reinterpret_cast<char*>(m.GetRawPtr()), source6.c_str());
 }
 
 /*!
@@ -444,4 +447,300 @@ TEST(CCodeBase, codeUtf32Le)
 	auto decoded2 = pCodeBase->UnicodeToCode( encoded2, &bComplete2_2 );
 	ASSERT_EQ( 0, memcmp( bin.data(), decoded2.data(), decoded2.size() ) );
 	ASSERT_TRUE( bComplete2_2 );
+}
+
+//! googletestの出力に文字セットIDを出力させる
+std::ostream& operator << (std::ostream& os, const ECodeType& eCodeType);
+/*!
+ * @brief 文字コード変換のテスト
+ */
+TEST(CCodeBase, codeUtf32Be)
+{
+	const auto eCodeType = (ECodeType)12001;
+	auto pCodeBase = CCodeFactory::CreateCodeBase( eCodeType );
+
+	// 7bit ASCII範囲（等価変換）
+	constexpr auto& mbsAscii = "\x01\x02\x03\x04\x05\x06\a\b\t\n\v\f\r\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7F";
+	constexpr auto& wcsAscii = L"\x01\x02\x03\x04\x05\x06\a\b\t\n\v\f\r\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\x7F";
+
+	// ビッグエンディアンのバイナリを作成
+	std::basic_string<uint32_t> bin;
+	for( const auto ch : mbsAscii ){
+		bin.append( 1, ::_byteswap_ulong( ch ) );
+	}
+
+	bool bComplete1_1 = false;
+	auto encoded = pCodeBase->CodeToUnicode( BinarySequenceView( reinterpret_cast<const std::byte*>(bin.data()), bin.size() * sizeof(decltype(bin)::value_type)), &bComplete1_1 );
+	ASSERT_STREQ( wcsAscii, encoded.GetStringPtr() );
+	ASSERT_TRUE( bComplete1_1 );
+
+	bool bComplete1_2 = false;
+	auto decoded = pCodeBase->UnicodeToCode( encoded, &bComplete1_2 );
+	ASSERT_EQ( 0, memcmp( bin.data(), decoded.data(), decoded.size() ) );
+	ASSERT_TRUE( bComplete1_2 );
+
+	// かな漢字の変換（UTF-32BE仕様）
+	constexpr const auto& wcsKanaKanji = L"ｶﾅかなカナ漢字";
+
+	// ビッグエンディアンのバイナリを作成
+	bin.clear();
+	for( const auto ch : wcsKanaKanji ){
+		bin.append( 1, ::_byteswap_ulong( ch ) );
+	}
+
+	bool bComplete2_1 = false;
+	auto encoded2 = pCodeBase->CodeToUnicode( BinarySequenceView( reinterpret_cast<const std::byte*>(bin.data()), bin.size() * sizeof(decltype(bin)::value_type) ), &bComplete2_1 );
+	ASSERT_STREQ( wcsKanaKanji, encoded2.GetStringPtr() );
+	ASSERT_TRUE( bComplete2_1 );
+
+	bool bComplete2_2 = false;
+	auto decoded2 = pCodeBase->UnicodeToCode( encoded2, &bComplete2_2 );
+	ASSERT_EQ( 0, memcmp( bin.data(), decoded2.data(), decoded2.size() ) );
+	ASSERT_TRUE( bComplete2_2 );
+}
+
+
+//! EOLテストのためのフィクスチャクラス
+class EolTest : public ::testing::TestWithParam<ECodeType> {};
+
+/*!
+ * @brief GetEol代替関数のテスト
+ */
+TEST_P(EolTest, test)
+{
+	const auto eCodeType = GetParam();
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	auto map = pCodeBase->GetEolDefinitions();
+	for( const auto&[t,bin] : map ){
+		CMemory m;
+		pCodeBase->GetEol( &m, t );
+		EXPECT_EQ(0, memcmp(m.GetRawPtr(), bin.data(), bin.length()));
+		EXPECT_EQ(m.GetRawLength(), bin.length());
+	}
+}
+
+/*!
+ * @brief パラメータテストをインスタンス化する
+ */
+INSTANTIATE_TEST_CASE_P(ParameterizedTestEol
+	, EolTest
+	, ::testing::Values(
+		CODE_SJIS,
+		CODE_JIS,
+		CODE_EUC,
+		CODE_UNICODE,
+		CODE_UTF8,
+		CODE_UTF7,
+		CODE_UNICODEBE,
+		(ECodeType)12000,	// UTF-32LE
+//		(ECodeType)12001,	// UTF-32BE実装は機能していないため除外
+		CODE_CESU8,
+		CODE_LATIN1
+	)
+);
+
+//! BOMテストのためのパラメータ型
+using BomTestParamType = std::tuple<ECodeType, std::string_view>;
+
+//! BOMテストのためのフィクスチャクラス
+class BomTest : public ::testing::TestWithParam<BomTestParamType> {};
+
+/*!
+ * @brief GetBom代替関数のテスト
+ */
+TEST_P(BomTest, test) {
+	const auto eCodeType = std::get<0>(GetParam());
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	const auto str = std::get<1>(GetParam());
+	BinarySequenceView expected(reinterpret_cast<const std::byte*>(str.data()), str.length());
+
+	const auto actual = pCodeBase->GetBomDefinition();
+
+	ASSERT_EQ(expected, actual);
+
+	CMemory m;
+	pCodeBase->GetBom( &m );
+	EXPECT_EQ(0, memcmp(m.GetRawPtr(), actual.data(), actual.length()));
+	EXPECT_EQ(m.GetRawLength(), actual.length());
+}
+
+/*!
+ * @brief パラメータテストをインスタンス化する
+ */
+INSTANTIATE_TEST_CASE_P(ParameterizedTestBom
+	, BomTest
+	, ::testing::Values(
+		BomTestParamType{ CODE_SJIS,		{} },				// 非Unicodeなので実施する意味はない
+		BomTestParamType{ CODE_JIS,			{} },				// 非Unicodeなので実施する意味はない
+		BomTestParamType{ CODE_EUC,			{} },				// 非Unicodeなので実施する意味はない
+		BomTestParamType{ CODE_UNICODE,		"\xFF\xFE" },
+		BomTestParamType{ CODE_UTF8,		"\xEF\xBB\xBF" },
+		BomTestParamType{ CODE_UTF7,		"+/v8-" },			// 対象外なので実施する意味はない
+		BomTestParamType{ CODE_UNICODEBE,	"\xFE\xFF" },
+		BomTestParamType{ CODE_LATIN1,		{} },				// 非Unicodeなので実施する意味はない
+		BomTestParamType{ CODE_CESU8,		"\xEF\xBB\xBF" }
+	)
+);
+
+//! 表示用16進変換テストのためのフィクスチャクラス
+class CodeToHexTest : public ::testing::TestWithParam<ECodeType> {};
+
+/*!
+ * @brief UnicodeToHex代替関数のテスト
+ */
+TEST_P(CodeToHexTest, test)
+{
+	const auto eCodeType = GetParam();
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	// Unicodeコードポイントを表示する設定
+	CommonSetting_Statusbar sStatusbar;
+	sStatusbar.m_bDispUniInSjis = true;
+	sStatusbar.m_bDispUniInJis = true;
+	sStatusbar.m_bDispUniInEuc = true;
+	sStatusbar.m_bDispUtf8Codepoint = true;
+	sStatusbar.m_bDispSPCodepoint = true;
+
+	// 日本語 ひらがな「あ」（文字セットがサポートしない文字でも統一仕様）
+	EXPECT_STREQ(L"U+3042", pCodeBase->CodeToHex(L"あ", sStatusbar).c_str());
+
+	// カラー絵文字「男性のシンボル」（サロゲートペア）
+	EXPECT_STREQ(L"U+1F6B9", pCodeBase->CodeToHex(L"\U0001F6B9", sStatusbar).c_str());
+}
+
+/*!
+ * @brief パラメータテストをインスタンス化する
+ */
+INSTANTIATE_TEST_CASE_P(ParameterizedTestToHex
+	, CodeToHexTest
+	, ::testing::Values(
+		CODE_SJIS,
+		CODE_JIS,
+		CODE_EUC,
+		CODE_UNICODE,
+		CODE_UTF8,
+		CODE_UTF7,
+		CODE_UNICODEBE,
+		(ECodeType)12000,
+		(ECodeType)12001,
+		CODE_CESU8,
+		CODE_LATIN1
+	)
+);
+
+/*!
+ * @brief UnicodeToHex代替関数のテスト
+ */
+TEST(CCodeBase, SjisToHex)
+{
+	const auto eCodeType = CODE_SJIS;
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	// 特定コードのマルチバイトを表示する設定
+	CommonSetting_Statusbar sStatusbar;
+	sStatusbar.m_bDispUniInSjis = false;
+	sStatusbar.m_bDispUniInJis = false;
+	sStatusbar.m_bDispUniInEuc = false;
+	sStatusbar.m_bDispUtf8Codepoint = false;
+	sStatusbar.m_bDispSPCodepoint = false;
+
+	// 日本語 ひらがな「あ」（文字セットがサポートしない文字でも統一仕様）
+	EXPECT_STREQ(L"82A0", pCodeBase->CodeToHex(L"あ", sStatusbar).c_str());
+
+	// カラー絵文字「男性のシンボル」（サロゲートペア）
+	EXPECT_STREQ(L"D83DDEB9", pCodeBase->CodeToHex(L"\U0001F6B9", sStatusbar).c_str());
+}
+
+/*!
+ * @brief UnicodeToHex代替関数のテスト
+ */
+TEST(CCodeBase, JisToHex)
+{
+	const auto eCodeType = CODE_JIS;
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	// 特定コードのマルチバイトを表示する設定
+	CommonSetting_Statusbar sStatusbar;
+	sStatusbar.m_bDispUniInSjis = false;
+	sStatusbar.m_bDispUniInJis = false;
+	sStatusbar.m_bDispUniInEuc = false;
+	sStatusbar.m_bDispUtf8Codepoint = false;
+	sStatusbar.m_bDispSPCodepoint = false;
+
+	// 日本語 ひらがな「あ」（文字セットがサポートしない文字でも統一仕様）
+	EXPECT_STREQ(L"2422", pCodeBase->CodeToHex(L"あ", sStatusbar).c_str());
+
+	// カラー絵文字「男性のシンボル」（サロゲートペア）
+	EXPECT_STREQ(L"D83DDEB9", pCodeBase->CodeToHex(L"\U0001F6B9", sStatusbar).c_str());
+}
+
+/*!
+ * @brief UnicodeToHex代替関数のテスト
+ */
+TEST(CCodeBase, EucToHex)
+{
+	const auto eCodeType = CODE_EUC;
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	// 特定コードのマルチバイトを表示する設定
+	CommonSetting_Statusbar sStatusbar;
+	sStatusbar.m_bDispUniInSjis = false;
+	sStatusbar.m_bDispUniInJis = false;
+	sStatusbar.m_bDispUniInEuc = false;
+	sStatusbar.m_bDispUtf8Codepoint = false;
+	sStatusbar.m_bDispSPCodepoint = false;
+
+	// 日本語 ひらがな「あ」（文字セットがサポートしない文字でも統一仕様）
+	EXPECT_STREQ(L"A4A2", pCodeBase->CodeToHex(L"あ", sStatusbar).c_str());
+
+	// カラー絵文字「男性のシンボル」（サロゲートペア）
+	EXPECT_STREQ(L"D83DDEB9", pCodeBase->CodeToHex(L"\U0001F6B9", sStatusbar).c_str());
+}
+
+/*!
+ * @brief UnicodeToHex代替関数のテスト
+ */
+TEST(CCodeBase, Utf8ToHex)
+{
+	const auto eCodeType = CODE_UTF8;
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	// 特定コードのマルチバイトを表示する設定
+	CommonSetting_Statusbar sStatusbar;
+	sStatusbar.m_bDispUniInSjis = false;
+	sStatusbar.m_bDispUniInJis = false;
+	sStatusbar.m_bDispUniInEuc = false;
+	sStatusbar.m_bDispUtf8Codepoint = false;
+	sStatusbar.m_bDispSPCodepoint = false;
+
+	// 日本語 ひらがな「あ」（文字セットがサポートしない文字でも統一仕様）
+	EXPECT_STREQ(L"E38182", pCodeBase->CodeToHex(L"あ", sStatusbar).c_str());
+
+	// カラー絵文字「男性のシンボル」（サロゲートペア）
+	EXPECT_STREQ(L"F09F9AB9", pCodeBase->CodeToHex(L"\U0001F6B9", sStatusbar).c_str());
+}
+
+/*!
+ * @brief UnicodeToHex代替関数のテスト
+ */
+TEST(CCodeBase, Latin1ToHex)
+{
+	const auto eCodeType = CODE_LATIN1;
+	auto pCodeBase = CCodeFactory::CreateCodeBase(eCodeType);
+
+	// 特定コードのマルチバイトを表示する設定
+	CommonSetting_Statusbar sStatusbar;
+	sStatusbar.m_bDispUniInSjis = false;
+	sStatusbar.m_bDispUniInJis = false;
+	sStatusbar.m_bDispUniInEuc = false;
+	sStatusbar.m_bDispUtf8Codepoint = false;
+	sStatusbar.m_bDispSPCodepoint = false;
+
+	// 日本語 ひらがな「あ」（文字セットがサポートしない文字でも統一仕様）
+	EXPECT_STREQ(L"U+3042", pCodeBase->CodeToHex(L"あ", sStatusbar).c_str());
+
+	// カラー絵文字「男性のシンボル」（サロゲートペア）
+	EXPECT_STREQ(L"D83DDEB9", pCodeBase->CodeToHex(L"\U0001F6B9", sStatusbar).c_str());
 }

@@ -1,6 +1,6 @@
 ﻿/*! @file */
 /*
-	Copyright (C) 2018-2021, Sakura Editor Organization
+	Copyright (C) 2021, Sakura Editor Organization
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -22,6 +22,16 @@
 		3. This notice may not be removed or altered from any source
 		   distribution.
 */
+#pragma once
 
-#include "StdAfx.h"
-#include "CUnicodeBe.h"
+#include "CConvert.h"
+#include "charset/charset.h"
+
+//! 文字コード変換 SJIS→xxx
+class CConvert_CodeFromSjis final : public CConvert{
+	ECodeType m_eCodeType;
+
+public:
+	explicit CConvert_CodeFromSjis(ECodeType eCoceType) noexcept;
+	bool DoConvert(CNativeW* pcData) override;
+};
