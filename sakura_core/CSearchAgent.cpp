@@ -747,7 +747,7 @@ end_of_func:;
   Fromを含む位置からToの直前を含むデータを削除する
   Fromの位置へテキストを挿入する
 */
-void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
+void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg, bool bEnableExtEol )
 {
 //	MY_RUNNINGTIMER( cRunningTimer, "CDocLineMgr::ReplaceData()" );
 
@@ -783,6 +783,10 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 		CDlgCancel*& m_pDlg;
 	public:
 		CDLgCandelCloser(CDlgCancel*& pDlg): m_pDlg(pDlg){}
+		CDLgCandelCloser(const CDLgCandelCloser&) = delete;
+		CDLgCandelCloser& operator = (const CDLgCandelCloser&) = delete;
+		CDLgCandelCloser(CDLgCandelCloser&&) noexcept = delete;
+		CDLgCandelCloser& operator = (CDLgCandelCloser&&) noexcept = delete;
 		~CDLgCandelCloser(){
 			if( NULL != m_pDlg ){
 				// 進捗ダイアログを表示しない場合と同じ動きになるようにダイアログは遅延破棄する
@@ -796,7 +800,8 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 	CDLgCandelCloser closer(pCDlgCancel);
 	const CLogicInt nDelLines = pArg->sDelRange.GetTo().y - pArg->sDelRange.GetFrom().y;
 	const CLogicInt nEditLines = std::max<CLogicInt>(CLogicInt(1), nDelLines + CLogicInt(pArg->pInsData ? pArg->pInsData->size(): 0));
-	if( !CEditApp::getInstance()->m_pcGrepAgent->m_bGrepRunning ){
+	if( const CGrepAgent *pcGrepAgent = CEditApp::getInstance()->m_pcGrepAgent;
+	    pcGrepAgent && !pcGrepAgent->m_bGrepRunning ){
 		if( 3000 < nEditLines ){
 			/* 進捗ダイアログの表示 */
 			pCDlgCancel = new CDlgCancel;
@@ -813,8 +818,6 @@ void CSearchAgent::ReplaceData( DocLineReplaceArg* pArg )
 	if( pArg->pcmemDeleted ){
 		pArg->pcmemDeleted->reserve( pArg->sDelRange.GetTo().y + CLogicInt(1) - pArg->sDelRange.GetFrom().y );
 	}
-
-	const bool bEnableExtEol = GetDllShareData().m_Common.m_sEdit.m_bEnableExtEol;
 
 	// 2012.01.10 行内の削除&挿入のときの操作を1つにする
 	bool bChangeOneLine = false;	// 行内の挿入
