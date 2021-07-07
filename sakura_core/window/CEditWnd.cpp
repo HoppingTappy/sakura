@@ -54,7 +54,6 @@
 #include "env/CShareData.h"
 #include "env/CSakuraEnvironment.h"
 #include "print/CPrintPreview.h"	/// 2002/2/3 aroka
-#include "charset/CharPointer.h"
 #include "charset/CCodeFactory.h"
 #include "charset/CCodeBase.h"
 #include "CEditApp.h"
@@ -76,6 +75,9 @@
 #include "config/system_constants.h"
 #include "config/app_constants.h"
 #include "String_define.h"
+#include "recent/CRecentEditNode.h"
+#include "recent/CRecentFile.h"
+#include "recent/CRecentFolder.h"
 
 //@@@ 2002.01.14 YAZAKI 印刷プレビューをCPrintPreviewに独立させたので
 //	定義を削除
@@ -1945,6 +1947,10 @@ LRESULT CEditWnd::DispatchEvent(
 		size_t nEnd = t_min<size_t>(nLineLen, m_pShareData->m_sWorkBuffer.GetWorkBufferCount<EDIT_CHAR>());
 		wmemcpy( m_pShareData->m_sWorkBuffer.GetWorkBuffer<EDIT_CHAR>(), pLine, nEnd );
 		return nLineLen;
+	}
+	case MYWM_GETLINECOUNT:
+	{
+		return GetDocument()->m_cDocLineMgr.GetLineCount();
 	}
 
 	// 2010.05.11 Moca MYWM_ADDSTRINGLEN_Wを追加 NULセーフ
