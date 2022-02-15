@@ -17,7 +17,7 @@
 	Copyright (C) 2007, ryoji, じゅうじ, maru
 	Copyright (C) 2009, nasukoji, ryoji
 	Copyright (C) 2010, ryoji
-	Copyright (C) 2018-2021, Sakura Editor Organization
+	Copyright (C) 2018-2022, Sakura Editor Organization
 
 	This software is provided 'as-is', without any express or implied
 	warranty. In no event will the authors be held liable for any damages
@@ -95,7 +95,7 @@ LRESULT CALLBACK EditViewWndProc(
 		pCEdit = reinterpret_cast<CEditView*>(pCreate->lpCreateParams);
 		return pCEdit->DispatchEvent( hwnd, uMsg, wParam, lParam );
 	default:
-		pCEdit = ( CEditView* )::GetWindowLongPtr( hwnd, 0 );
+		pCEdit = ( CEditView* )::GetWindowLongPtr( hwnd, GWLP_USERDATA );
 		if( NULL != pCEdit ){
 			//	May 16, 2000 genta
 			//	From Here
@@ -124,7 +124,7 @@ VOID CALLBACK EditViewTimerProc(
 )
 {
 	CEditView*	pCEditView;
-	pCEditView = ( CEditView* )::GetWindowLongPtr( hwnd, 0 );
+	pCEditView = ( CEditView* )::GetWindowLongPtr( hwnd, GWLP_USERDATA );
 	if( NULL != pCEditView ){
 		pCEditView->OnTimer( hwnd, uMsg, idEvent, dwTime );
 	}
@@ -288,7 +288,7 @@ BOOL CEditView::Create(
 	wc.style			= CS_DBLCLKS | CS_BYTEALIGNCLIENT | CS_BYTEALIGNWINDOW;
 	wc.lpfnWndProc		= EditViewWndProc;
 	wc.cbClsExtra		= 0;
-	wc.cbWndExtra		= sizeof( LONG_PTR );
+	wc.cbWndExtra		= 0;
 	wc.hInstance		= G_AppInstance();
 	wc.hIcon			= LoadIcon( NULL, IDI_APPLICATION );
 	wc.hCursor			= NULL/*LoadCursor( NULL, IDC_IBEAM )*/;
@@ -451,7 +451,7 @@ LRESULT CEditView::DispatchEvent(
 		return OnMOUSEHWHEEL( wParam, lParam );
 
 	case WM_CREATE:
-		::SetWindowLongPtr( hwnd, 0, (LONG_PTR) this );
+		::SetWindowLongPtr( hwnd, GWLP_USERDATA, (LONG_PTR) this );
 		m_hwndSizeBox = ::CreateWindowEx(
 			0L,									/* no extended styles */
 			WC_SCROLLBAR,						/* scroll bar control class */

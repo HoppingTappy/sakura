@@ -15,7 +15,7 @@
 	Copyright (C) 2005, genta, MIK, novice, aroka, D.S.Koba, かろと, Moca
 	Copyright (C) 2006, Moca, aroka, ryoji, fon, genta
 	Copyright (C) 2007, ryoji, じゅうじ, maru
-	Copyright (C) 2018-2021, Sakura Editor Organization
+	Copyright (C) 2018-2022, Sakura Editor Organization
 
 	This source code is designed for sakura editor.
 	Please contact the copyright holders to use this code for other purpose.
@@ -289,6 +289,7 @@ normal_action:;
 				GetSelectionInfo().BeginSelectArea();				// 現在のカーソル位置から選択を開始する
 				GetSelectionInfo().m_bBeginLineSelect = false;		// 行単位選択中 OFF
 			}
+			return;
 		}else
 		/* 選択開始処理 */
 		/* SHIFTキーが押されていたか */
@@ -717,7 +718,7 @@ void CEditView::OnMBUTTONUP( WPARAM fwKeys, int xPos , int yPos )
 void CALLBACK AutoScrollTimerProc( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime )
 {
 	CEditView*	pCEditView;
-	pCEditView = ( CEditView* )::GetWindowLongPtr( hwnd, 0 );
+	pCEditView = ( CEditView* )::GetWindowLongPtr( hwnd, GWLP_USERDATA );
 	if( NULL != pCEditView ){
 		pCEditView->AutoScrollOnTimer();
 	}
