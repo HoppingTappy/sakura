@@ -848,7 +848,7 @@ bool CMacro::HandleCommand(
 			if( bBackupFlag ){
 				GetDllShareData().m_Common.m_sSearch = backupFlags;
 				pcEditView->m_sCurSearchOption = backupLocalFlags;
-				pcEditView->m_strCurSearchKey = backupStr;
+				pcEditView->m_strCurSearchKey = std::move(backupStr);
 				pcEditView->m_bCurSearchUpdate = true;
 				pcEditView->m_nCurSearchKeySequence = GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence;
 				pcEditView->ChangeCurRegexp( backupKeyMark );
@@ -1052,9 +1052,9 @@ bool CMacro::HandleCommand(
 			if( bBackupFlag ){
 				GetDllShareData().m_Common.m_sSearch = backupFlags;
 				pcEditView->m_sCurSearchOption = backupLocalFlags;
-				pcEditView->m_strCurSearchKey = backupStr;
+				pcEditView->m_strCurSearchKey = std::move(backupStr);
 				pcEditView->m_bCurSearchUpdate = true;
-				cDlgReplace.m_strText2 = backupStrRep;
+				cDlgReplace.m_strText2 = std::move(backupStrRep);
 				pcEditView->m_nCurSearchKeySequence = GetDllShareData().m_Common.m_sSearch.m_nSearchKeySequence;
 				pcEditView->ChangeCurRegexp( backupKeyMark );
 				pcEditView->m_bCurSrchKeyMark = backupKeyMark;
