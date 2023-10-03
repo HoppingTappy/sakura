@@ -735,18 +735,18 @@ HWND CEditWnd::Create(
 	m_bIsActiveApp = ( ::GetActiveWindow() == GetHwnd() );	// 2007.03.08 ryoji
 
 	// エディタ－トレイ間でのUI特権分離の確認（Vista UIPI機能） 2007.06.07 ryoji
-	{
-		m_bUIPI = FALSE;
-		::SendMessage( m_pShareData->m_sHandles.m_hwndTray, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
-		if( !m_bUIPI ){	// 返事が返らない
-			TopErrorMessage( GetHwnd(),
-				LS(STR_ERR_DLGEDITWND02)
-			);
-			::DestroyWindow( GetHwnd() );
-			m_hWnd = hWnd = NULL;
-			return hWnd;
-		}
-	}
+//	{
+//		m_bUIPI = FALSE;
+//		::SendMessage( m_pShareData->m_sHandles.m_hwndTray, MYWM_UIPI_CHECK,  (WPARAM)0, (LPARAM)GetHwnd() );
+//		if( !m_bUIPI ){	// 返事が返らない
+//			TopErrorMessage( GetHwnd(),
+//				LS(STR_ERR_DLGEDITWND02)
+//			);
+//			::DestroyWindow( GetHwnd() );
+//			m_hWnd = hWnd = NULL;
+//			return hWnd;
+//		}
+//	}
 
 	CShareData::getInstance()->SetTraceOutSource( GetHwnd() );	// TraceOut()起動元ウィンドウの設定	// 2006.06.26 ryoji
 

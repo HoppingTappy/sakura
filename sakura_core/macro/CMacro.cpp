@@ -2506,6 +2506,16 @@ bool CMacro::HandleFunction(CEditView *View, EFunctionCode ID, const VARIANT *Ar
 			Wrap( &Result )->Receive( nLine + 1 );
 			return true;
 		}
+	case F_CHGINSSPACE:
+		{
+			if( ArgSize != 1 ) return false;
+			if(VariantChangeType(&varCopy.Data, &(Arguments[0]), 0, VT_I4) != S_OK) return false;	// VT_I4として解釈
+			auto& bInsSpace = View->m_pcEditDoc->m_cDocType.GetDocumentAttributeWrite().m_bInsSpace;
+			Wrap( &Result )->Receive( bInsSpace ? 1 : 0 );
+			if (varCopy.Data.iVal == 0) bInsSpace = false;
+			else if (varCopy.Data.iVal == 1) bInsSpace = true;
+			return true;
+		}
 	case F_GETCOMMONPROP:
 	case F_SETCOMMONPROP:
 	case F_GETTYPEPROP:

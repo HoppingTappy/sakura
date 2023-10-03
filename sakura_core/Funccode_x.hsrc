@@ -579,10 +579,11 @@ F_GETVIEWLINES		= 40056,	// ビューの行数取得
 F_GETVIEWCOLUMNS	= 40057,	// ビューの列数取得
 F_CREATEMENU		= 40058,	// メニュー作成
 F_GETVIEWTOP		= 40059,	// 画面に表示される一番上の行番号を取得
-F_GETCOMMONPROP		= 40060,	// 共通設定を取得
-F_SETCOMMONPROP		= 40061,	// 共通設定を設定
-F_GETTYPEPROP		= 40062,	// タイプ別設定を取得
-F_SETTYPEPROP		= 40063,	// タイプ別設定を設定
+F_CHGINSSPACE		= 40060,	// SPACEの挿入を取得、設定する
+F_GETCOMMONPROP		= 40061,	// 共通設定を取得
+F_SETCOMMONPROP		= 40062,	// 共通設定を設定
+F_GETTYPEPROP		= 40063,	// タイプ別設定を取得
+F_SETTYPEPROP		= 40064,	// タイプ別設定を設定
 
 //	= 2005,.01.10 genta ISearch用補助コード
 //	2007.07.07 genta 16bit以内に収めないと状況コードと衝突するのでコードを変更
