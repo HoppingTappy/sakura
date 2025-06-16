@@ -19,25 +19,7 @@
 	Copyright (C) 2010, ryoji
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 
 #include "StdAfx.h"
@@ -774,13 +756,6 @@ LRESULT CEditView::DispatchEvent(
 		/* タイマー終了 */
 		::KillTimer( GetHwnd(), IDT_ROLLMOUSE );
 
-		// 「URLを開く」処理の完了をチェックして必要があれば待機する
-		// 開始後、joinされてないstd::threadを破棄すると例外が起きる。
-		// ダブルクリックで「URLを開く」をしてない場合、このif文には入らない。
-		if (m_threadUrlOpen.joinable()) {
-			m_threadUrlOpen.join();
-		}
-
 //		MYTRACE( L"	WM_DESTROY\n" );
 		/*
 		||子ウィンドウの破棄
@@ -820,14 +795,14 @@ LRESULT CEditView::DispatchEvent(
 		// 2002.04.09 switch case に変更  minfu
 		switch ( wParam ){
 		case IMR_RECONVERTSTRING:
-			return SetReconvertStruct((PRECONVERTSTRING)lParam, UNICODE_BOOL);
+			return SetReconvertStruct((PRECONVERTSTRING)lParam);
 
 		case IMR_CONFIRMRECONVERTSTRING:
-			return SetSelectionFromReonvert((PRECONVERTSTRING)lParam, UNICODE_BOOL);
+			return SetSelectionFromReonvert((PRECONVERTSTRING)lParam);
 
 		// 2010.03.16 MS-IME 2002 だと「カーソル位置の前後の内容を参照して変換を行う」の機能
 		case IMR_DOCUMENTFEED:
-			return SetReconvertStruct((PRECONVERTSTRING)lParam, UNICODE_BOOL, true);
+			return SetReconvertStruct((PRECONVERTSTRING)lParam, true);
 
 		default:
 			break;
@@ -1002,6 +977,8 @@ void CEditView::OnSize( int cx, int cy )
 			case BGIMAGE_CENTER:
 				bUpdateWidth = true;
 				break;
+			default:
+				break;
 			}
 			switch( imgPos ){
 			case BGIMAGE_BOTTOM_CENTER:
@@ -1012,9 +989,11 @@ void CEditView::OnSize( int cx, int cy )
 			case BGIMAGE_CENTER_RIGHT:
 				bUpdateHeight = true;
 				break;
+			default:
+				break;
 			}
-			if( bUpdateWidth  && nAreaWidthOld  != GetTextArea().GetAreaWidth() ||
-			    bUpdateHeight && nAreaHeightOld != GetTextArea().GetAreaHeight() ){
+			if( (bUpdateWidth  && nAreaWidthOld  != GetTextArea().GetAreaWidth()) ||
+			    (bUpdateHeight && nAreaHeightOld != GetTextArea().GetAreaHeight()) ){
 				InvalidateRect(NULL, FALSE);
 			}
 		}

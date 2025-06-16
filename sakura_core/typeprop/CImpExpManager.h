@@ -8,25 +8,7 @@
 	Copyright (C) 2010, Uchi, Moca
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose, 
-	including commercial applications, and to alter it and redistribute it 
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such, 
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 
 #ifndef SAKURA_CIMPEXPMANAGER_12EC6C8E_1661_485E_8972_A7A9AE419BC8_H_
@@ -98,14 +80,14 @@ public:
 	}
 
 public:
-	bool ImportAscertain( HINSTANCE, HWND, const wstring&, wstring& );
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool ImportAscertain( HINSTANCE, HWND, const wstring&, wstring& ) override;
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.ini"; }
-	const wchar_t* GetOriginExtension()	{ return L"ini"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.ini"; }
+	const wchar_t* GetOriginExtension() override	{ return L"ini"; }
 	bool IsAddType(){ return m_bAddType; }
 
 private:
@@ -135,13 +117,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.col"; }
-	const wchar_t* GetOriginExtension()	{ return L"col"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.col"; }
+	const wchar_t* GetOriginExtension() override	{ return L"col"; }
 
 private:
 	ColorInfo*		m_ColorInfoArr;
@@ -160,13 +142,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.rkw"; }
-	const wchar_t* GetOriginExtension()	{ return L"rkw"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.rkw"; }
+	const wchar_t* GetOriginExtension() override	{ return L"rkw"; }
 
 private:
 	STypeConfig&	m_Types;
@@ -185,13 +167,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.txt"; }
-	const wchar_t* GetOriginExtension()	{ return L"txt"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.txt"; }
+	const wchar_t* GetOriginExtension() override	{ return L"txt"; }
 
 private:
 	STypeConfig&	m_Types;
@@ -210,13 +192,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.key"; }
-	const wchar_t* GetOriginExtension()	{ return L"key"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.key"; }
+	const wchar_t* GetOriginExtension() override	{ return L"key"; }
 
 private:
 	CommonSetting&		m_Common;
@@ -235,13 +217,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.mnu"; }
-	const wchar_t* GetOriginExtension()	{ return L"mnu"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.mnu"; }
+	const wchar_t* GetOriginExtension() override	{ return L"mnu"; }
 
 private:
 	CommonSetting&		m_Common;
@@ -262,13 +244,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.kwd"; }
-	const wchar_t* GetOriginExtension()	{ return L"kwd"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.kwd"; }
+	const wchar_t* GetOriginExtension() override	{ return L"kwd"; }
 
 private:
 	CommonSetting&		m_Common;
@@ -289,13 +271,13 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.ini"; }
-	const wchar_t* GetOriginExtension()	{ return L"ini"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.ini"; }
+	const wchar_t* GetOriginExtension() override	{ return L"ini"; }
 
 private:
 	CommonSetting&		m_Common;
@@ -314,14 +296,14 @@ public:
 	}
 
 public:
-	bool Import( const wstring&, wstring& );
-	bool Export( const wstring&, wstring& );
+	bool Import( const wstring&, wstring& ) override;
+	bool Export( const wstring&, wstring& ) override;
 	static void IO_FileTreeIni( CDataProfile&, std::vector<SFileTreeItem>& );
 
 public:
 	// デフォルト拡張子の取得
-	const WCHAR* GetDefaultExtension()	{ return L"*.ini"; }
-	const wchar_t* GetOriginExtension()	{ return L"ini"; }
+	const WCHAR* GetDefaultExtension() override	{ return L"*.ini"; }
+	const wchar_t* GetOriginExtension() override	{ return L"ini"; }
 
 private:
 	std::vector<SFileTreeItem>&		m_aFileTreeItems;

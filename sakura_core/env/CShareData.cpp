@@ -168,7 +168,6 @@ bool CShareData::InitShareData()
 		m_pShareData->m_sNodes.m_nEditArrNum = 0;
 
 		m_pShareData->m_sHandles.m_hwndTray = NULL;
-		m_pShareData->m_sHandles.m_hAccel = NULL;
 		m_pShareData->m_sHandles.m_hwndDebug = NULL;
 
 		for( int i = 0; i < _countof(m_pShareData->m_dwCustColors); i++ ){
@@ -294,7 +293,6 @@ bool CShareData::InitShareData()
 
 			sWindow.m_nRulerHeight = 13;					/* ルーラーの高さ */
 			sWindow.m_nRulerBottomSpace = 0;				/* ルーラーとテキストの隙間 */
-			sWindow.m_nRulerType = 0;					/* ルーラーのタイプ */
 			sWindow.m_nLineNumRightSpace = 0;			/* 行番号の右の隙間 */
 			sWindow.m_nVertLineOffset = -1;			// 2005.11.10 Moca 指定桁縦線
 			sWindow.m_bUseCompatibleBMP = TRUE;		// 2007.09.09 Moca 画面キャッシュを使う	// 2009.06.09 ryoji FALSE->TRUE
@@ -526,7 +524,6 @@ bool CShareData::InitShareData()
 			sHelper.m_bHokanKey_RETURN	= TRUE;			/* VK_RETURN 補完決定キーが有効/無効 */
 			sHelper.m_bHokanKey_TAB		= FALSE;		/* VK_TAB   補完決定キーが有効/無効 */
 			sHelper.m_bHokanKey_RIGHT	= TRUE;			/* VK_RIGHT 補完決定キーが有効/無効 */
-			sHelper.m_bHokanKey_SPACE	= FALSE;		/* VK_SPACE 補完決定キーが有効/無効 */
 		}
 
 		// [アウトライン]タブ
@@ -779,8 +776,8 @@ static void ConvertLangValueImpl( wchar_t* pBuf, size_t chBufSize, int nStrId, s
 	index++;
 }
 
-#define ConvertLangValue(buf, id)  ConvertLangValueImpl(buf, _countof(buf), id, values, index, bSetValues, true);
-#define ConvertLangValue2(buf, id) ConvertLangValueImpl(buf, _countof(buf), id, values, index, bSetValues, false);
+#define ConvertLangValue(buf, id)  ConvertLangValueImpl(buf, _countof(buf), id, values, index, bSetValues, true)
+#define ConvertLangValue2(buf, id) ConvertLangValueImpl(buf, _countof(buf), id, values, index, bSetValues, false)
 
 /*!
 	国際化対応のための文字列を変更する

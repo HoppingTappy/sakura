@@ -3,25 +3,7 @@
 	Copyright (C) 2007, kobake
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 
 #include "StdAfx.h"
@@ -126,15 +108,15 @@ UINT32 ParseVersion( const WCHAR* sVer )
 			else p++;
 			nShift = 0x20;
 		}
-		else if( !_istdigit(*p) ){
+		else if( !iswdigit(*p) ){
 			nShift = -0x80;
 		}
 		else{
 			nShift = 0;
 		}
-		while( *p && !_istdigit(*p) ){ p++; }
+		while( *p && !iswdigit(*p) ){ p++; }
 		//数値の抽出
-		for( nVer = 0, nDigit = 0; _istdigit(*p); p++ ){
+		for( nVer = 0, nDigit = 0; iswdigit(*p); p++ ){
 			if( ++nDigit > 2 )break;	//数字は2桁までで止める
 			nVer = nVer * 10 + *p - L'0';
 		}

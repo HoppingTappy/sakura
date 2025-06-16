@@ -922,9 +922,6 @@
     <ClInclude Include="..\sakura_core\debug\Debug2.h">
       <Filter>Cpp Source Files\debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\sakura_core\debug\Debug3.h">
-      <Filter>Cpp Source Files\debug</Filter>
-    </ClInclude>
     <ClInclude Include="..\sakura_core\_main\CAppMode.h">
       <Filter>Cpp Source Files\_main</Filter>
     </ClInclude>
@@ -1034,9 +1031,6 @@
       <Filter>Cpp Source Files\extmodule</Filter>
     </ClInclude>
     <ClInclude Include="..\sakura_core\extmodule\CMigemo.h">
-      <Filter>Cpp Source Files\extmodule</Filter>
-    </ClInclude>
-    <ClInclude Include="..\sakura_core\extmodule\CUxTheme.h">
       <Filter>Cpp Source Files\extmodule</Filter>
     </ClInclude>
     <ClInclude Include="..\sakura_core\print\CPrint.h">
@@ -2084,9 +2078,6 @@
     <ClCompile Include="..\sakura_core\debug\Debug2.cpp">
       <Filter>Cpp Source Files\debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\sakura_core\debug\Debug3.cpp">
-      <Filter>Cpp Source Files\debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\sakura_core\_main\CAppMode.cpp">
       <Filter>Cpp Source Files\_main</Filter>
     </ClCompile>
@@ -2241,9 +2232,6 @@
       <Filter>Cpp Source Files\extmodule</Filter>
     </ClCompile>
     <ClCompile Include="..\sakura_core\extmodule\CMigemo.cpp">
-      <Filter>Cpp Source Files\extmodule</Filter>
-    </ClCompile>
-    <ClCompile Include="..\sakura_core\extmodule\CUxTheme.cpp">
       <Filter>Cpp Source Files\extmodule</Filter>
     </ClCompile>
     <ClCompile Include="..\sakura_core\print\CPrint.cpp">

@@ -2,27 +2,9 @@
 /*
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
-#include <gtest/gtest.h>
+#include "pch.h"
 
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -40,6 +22,7 @@
 #include <string>
 #include <string_view>
 #include <thread>
+#include <fstream>
 
 #include "config/maxdata.h"
 #include "basis/primitive.h"
@@ -300,8 +283,16 @@ TEST_P(WinMainTest, runEditorProcess)
 	// テスト用プロファイル名
 	const auto szProfileName(GetParam());
 
+	// テスト用ファイル作成
+	const std::wstring strFileName = std::filesystem::current_path() / L"test_1000lines.txt";
+	std::wofstream fs(strFileName.c_str());
+	for (int n = 1; n <= 1000; n++) {
+		fs << n << std::endl;
+	}
+	fs.close();
+
 	// エディタプロセスを起動するため、テスト実行はプロセスごと分離して行う
-	auto separatedTestProc = [szProfileName]() {
+	auto separatedTestProc = [szProfileName, strFileName]() {
 		// 起動時実行マクロの中身を作る
 		std::wstring strStartupMacro;
 		strStartupMacro += L"Down();";
@@ -341,7 +332,7 @@ TEST_P(WinMainTest, runEditorProcess)
 		strStartupMacro += L"ExitAll();";		//NOTE: このコマンドにより、エディタプロセスは起動された直後に終了する。
 
 		// コマンドラインを組み立てる
-		std::wstring strCommandLine(_T(__FILE__));
+		std::wstring strCommandLine = strFileName;
 		strCommandLine += strprintf(LR"( -PROF="%s")", szProfileName);
 		strCommandLine += strprintf(LR"( -MTYPE=js -M="%s")", std::regex_replace( strStartupMacro, std::wregex( L"\"" ), L"\"\"" ).c_str());
 
@@ -359,6 +350,9 @@ TEST_P(WinMainTest, runEditorProcess)
 
 	// コントロールプロセスが終了すると、INIファイルが作成される
 	ASSERT_TRUE( fexist( iniPath.c_str() ) );
+
+	// テスト用ファイルの後始末
+	std::filesystem::remove(strFileName);
 }
 
 /*!

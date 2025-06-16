@@ -109,7 +109,7 @@ protected:
 	Proc_migemo_is_enable_s           m_migemo_is_enable_s;
 
 	migemo* m_migemo;
-	// IA64/x64は対応不要
+	// x64は対応不要
 #ifdef _WIN64
 	static const bool	m_bStdcall = true;
 #else
@@ -117,9 +117,9 @@ protected:
 #endif
 	bool	m_bUtf8;
 
-	LPCWSTR GetDllNameImp(int nIndex);
-	bool InitDllImp();
-	bool DeinitDllImp(void);
+	LPCWSTR GetDllNameImp(int nIndex) override;
+	bool InitDllImp() override;
+	bool DeinitDllImp(void) override;
 
 public:
 	long migemo_open(char* dict);

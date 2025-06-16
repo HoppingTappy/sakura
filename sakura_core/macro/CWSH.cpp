@@ -12,32 +12,11 @@
 	Copyright (C) 2009, syat
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 
 #include "StdAfx.h"
 #include <process.h> // _beginthreadex
-#ifdef __MINGW32__
-#define INITGUID 1
-#endif
 #include <ObjBase.h>
 #include <InitGuid.h>
 #include <ShlDisp.h>
@@ -73,18 +52,17 @@ class CWSHSite: public IActiveScriptSite, public IActiveScriptSiteWindow
 {
 private:
 	CWSHClient *m_Client;
-	ITypeInfo *m_TypeInfo;
 	ULONG m_RefCount;
 public:
 	CWSHSite(CWSHClient *AClient): m_Client(AClient), m_RefCount(0)
 	{
 	}
 
-	virtual ULONG STDMETHODCALLTYPE AddRef() {
+	ULONG STDMETHODCALLTYPE AddRef() override {
 		return ++m_RefCount;
 	}
 
-	virtual ULONG STDMETHODCALLTYPE Release() {
+	ULONG STDMETHODCALLTYPE Release() override {
 		if(--m_RefCount == 0)
 		{
 			delete this;
@@ -93,9 +71,9 @@ public:
 		return m_RefCount;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE QueryInterface(
+	HRESULT STDMETHODCALLTYPE QueryInterface(
 	    /* [in] */ REFIID iid,
-	    /* [out] */ void ** ppvObject)
+	    /* [out] */ void ** ppvObject) override
 	{
 		*ppvObject = NULL;
 
@@ -108,8 +86,8 @@ public:
 		return E_NOTIMPL;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE GetLCID( 
-	    /* [out] */ LCID *plcid) 
+	HRESULT STDMETHODCALLTYPE GetLCID(
+	    /* [out] */ LCID *plcid) override
 	{ 
 #ifdef TEST
 		cout << "GetLCID" << endl;
@@ -117,11 +95,11 @@ public:
 		return E_NOTIMPL; //システムデフォルトを使用
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE GetItemInfo( 
+	HRESULT STDMETHODCALLTYPE GetItemInfo(
 	    /* [in] */ LPCOLESTR pstrName,
 	    /* [in] */ DWORD dwReturnMask,
 	    /* [out] */ IUnknown **ppiunkItem,
-	    /* [out] */ ITypeInfo **ppti) 
+	    /* [out] */ ITypeInfo **ppti) override
 	{
 #ifdef TEST
 		wcout << L"GetItemInfo:" << pstrName << endl;
@@ -148,8 +126,8 @@ public:
 		return TYPE_E_ELEMENTNOTFOUND;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE GetDocVersionString( 
-	    /* [out] */ BSTR *pbstrVersion) 
+	HRESULT STDMETHODCALLTYPE GetDocVersionString(
+	    /* [out] */ BSTR *pbstrVersion) override
 	{ 
 #ifdef TEST
 		cout << "GetDocVersionString" << endl;
@@ -157,9 +135,9 @@ public:
 		return E_NOTIMPL; 
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE OnScriptTerminate( 
+	HRESULT STDMETHODCALLTYPE OnScriptTerminate(
 	    /* [in] */ const VARIANT *pvarResult,
-	    /* [in] */ const EXCEPINFO *pexcepinfo) 
+	    /* [in] */ const EXCEPINFO *pexcepinfo) override
 	{ 
 #ifdef TEST
 		cout << "OnScriptTerminate" << endl;
@@ -167,8 +145,8 @@ public:
 		return S_OK; 
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE OnStateChange( 
-	    /* [in] */ SCRIPTSTATE ssScriptState) 
+	HRESULT STDMETHODCALLTYPE OnStateChange(
+	    /* [in] */ SCRIPTSTATE ssScriptState) override
 	{ 
 #ifdef TEST
 		cout << "OnStateChange" << endl;
@@ -178,8 +156,8 @@ public:
 
 	//	Nov. 3, 2002 鬼
 	//	エラー行番号表示対応
-	virtual HRESULT STDMETHODCALLTYPE OnScriptError(
-	  /* [in] */ IActiveScriptError *pscripterror)
+	HRESULT STDMETHODCALLTYPE OnScriptError(
+	  /* [in] */ IActiveScriptError *pscripterror) override
 	{ 
 		EXCEPINFO Info;
 		if(pscripterror->GetExceptionInfo(&Info) == S_OK)
@@ -207,14 +185,14 @@ public:
 		return S_OK;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE OnEnterScript() {
+	HRESULT STDMETHODCALLTYPE OnEnterScript() override {
 #ifdef TEST
 		cout << "OnEnterScript" << endl;
 #endif
 		return S_OK; 
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE OnLeaveScript() {
+	HRESULT STDMETHODCALLTYPE OnLeaveScript() override {
 #ifdef TEST
 		cout << "OnLeaveScript" << endl;
 #endif
@@ -222,16 +200,16 @@ public:
 	}
 
 	//	Sep. 15, 2005 FILE IActiveScriptSiteWindow実装
-	virtual HRESULT STDMETHODCALLTYPE GetWindow(
-	    /* [out] */ HWND *phwnd)
+	HRESULT STDMETHODCALLTYPE GetWindow(
+	    /* [out] */ HWND *phwnd) override
 	{
 		*phwnd = CEditWnd::getInstance()->m_cSplitterWnd.GetHwnd();
 		return S_OK;
 	}
 
 	//	Sep. 15, 2005 FILE IActiveScriptSiteWindow実装
-	virtual HRESULT STDMETHODCALLTYPE EnableModeless(
-	    /* [in] */ BOOL fEnable)
+	HRESULT STDMETHODCALLTYPE EnableModeless(
+	    /* [in] */ BOOL fEnable) override
 	{
 		return S_OK;
 	}
@@ -256,7 +234,7 @@ CWSHClient::CWSHClient(const wchar_t *AEngine, ScriptErrorHandler AErrorHandler,
 			ClassID = CLSID_JSScript9;
 		}
 #endif
-		if(CoCreateInstance(ClassID, 0, CLSCTX_INPROC_SERVER, IID_IActiveScript, reinterpret_cast<void **>(&m_Engine)) != S_OK)
+		if(CoCreateInstance(ClassID, nullptr, CLSCTX_INPROC_SERVER, IID_IActiveScript, reinterpret_cast<void **>(&m_Engine)) != S_OK)
 			Error(LS(STR_ERR_CWSH02));
 		else
 		{
@@ -396,7 +374,7 @@ bool CWSHClient::Execute(const wchar_t *AScript)
 					Error(LS(STR_ERR_CWSH07));
 				else
 				{
-					HRESULT hr = Parser->ParseScriptText(AScript, 0, 0, 0, 0, 0, SCRIPTTEXT_ISVISIBLE, 0, 0);
+					HRESULT hr = Parser->ParseScriptText(AScript, nullptr, nullptr, nullptr, 0, 0, SCRIPTTEXT_ISVISIBLE, nullptr, nullptr);
 					if (hr == SCRIPT_E_REPORTED) {
 					/*
 						IActiveScriptSite->OnScriptErrorに通知済み。

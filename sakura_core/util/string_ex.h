@@ -3,25 +3,7 @@
 	Copyright (C) 2008, kobake
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 #ifndef SAKURA_STRING_EX_87282FEB_4B23_4112_9C5A_419F43618705_H_
 #define SAKURA_STRING_EX_87282FEB_4B23_4112_9C5A_419F43618705_H_
@@ -203,8 +185,7 @@ inline int auto_sprintf(WCHAR* buf, const WCHAR* format, ...) { va_list args; va
 
 inline int auto_vsprintf_s(ACHAR* buf, size_t nBufCount, const ACHAR* format, va_list& v) { return ::_vsnprintf_s(buf, nBufCount, _TRUNCATE, format, v); }
 inline int auto_vsprintf_s(WCHAR* buf, size_t nBufCount, const WCHAR* format, va_list& v) { return ::_vsnwprintf_s(buf, nBufCount, _TRUNCATE, format, v); }
-#define auto_sprintf_s(buf, nBufCount, format, ...)		::_sntprintf_s((buf), nBufCount, _TRUNCATE, (format), __VA_ARGS__)
-#define auto_snprintf_s(buf, nBufCount, format, ...)	::_sntprintf_s((buf), nBufCount, _TRUNCATE, (format), __VA_ARGS__)
+#define auto_snprintf_s(buf, nBufCount, format, ...)	::_snwprintf_s((buf), nBufCount, _TRUNCATE, (format), __VA_ARGS__)
 
 std::wstring& eos(std::wstring& strOut, size_t cchOut);
 std::string& eos(std::string& strOut, size_t cchOut);
@@ -257,29 +238,25 @@ std::string wcstou8s(std::wstring_view strInput);
 
 //wcsncmpの文字数指定をliteralData2の大きさで取得してくれる版
 template <size_t Size>
-int wcsncmp_literal(const wchar_t* strData1, const wchar_t (&literalData2)[Size]) {
-	assert(literalData2[Size - 1] == 0);
+inline int wcsncmp_literal(const wchar_t* strData1, const wchar_t (&literalData2)[Size]) {
 	return ::wcsncmp(strData1, literalData2, Size - 1 ); //※終端ヌルを含めないので、_countofからマイナス1する
 }
 
 //strncmpの文字数指定をliteralData2の大きさで取得してくれる版
 template <size_t Size>
-int strncmp_literal(const char* strData1, const char (&literalData2)[Size]) {
-	assert(literalData2[Size - 1] == 0);
+inline int strncmp_literal(const char* strData1, const char (&literalData2)[Size]) {
 	return ::strncmp(strData1, literalData2, Size - 1 ); //※終端ヌルを含めないので、_countofからマイナス1する
 }
 
 //_wcsnicmpの文字数指定をliteralData2の大きさで取得してくれる版
 template <size_t Size>
-int wcsnicmp_literal(const wchar_t* strData1, const wchar_t (&literalData2)[Size]) {
-	assert(literalData2[Size - 1] == 0);
+inline int wcsnicmp_literal(const wchar_t* strData1, const wchar_t (&literalData2)[Size]) {
 	return ::_wcsnicmp(strData1, literalData2, Size - 1 ); //※終端ヌルを含めないので、_countofからマイナス1する
 }
 
 //_strnicmpの文字数指定をliteralData2の大きさで取得してくれる版
 template <size_t Size>
-int strnicmp_literal(const char* strData1, const char (&literalData2)[Size]) {
-	assert(literalData2[Size - 1] == 0);
+inline int strnicmp_literal(const char* strData1, const char (&literalData2)[Size]) {
 	return ::_strnicmp(strData1, literalData2, Size - 1 ); //※終端ヌルを含めないので、_countofからマイナス1する
 }
 #endif /* SAKURA_STRING_EX_87282FEB_4B23_4112_9C5A_419F43618705_H_ */

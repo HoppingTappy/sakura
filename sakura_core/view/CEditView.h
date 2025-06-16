@@ -18,25 +18,7 @@
 	Copyright (C) 2009, nasukoji
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 
 #ifndef SAKURA_CEDITVIEW_54DE503F_6F97_4A16_8165_27F5F0D232E2_H_
@@ -46,8 +28,6 @@
 #include <Windows.h>
 #include <ObjIdl.h>  // LPDATAOBJECT
 #include <shellapi.h>  // HDROP
-
-#include <thread>
 
 #include "CTextMetrics.h"
 #include "CTextDrawer.h"
@@ -123,8 +103,6 @@ class CEditView
 , public CMyWnd
 , public CDocListenerEx
 {
-	std::thread m_threadUrlOpen;
-
 public:
 	const CEditDoc* GetDocument() const
 	{
@@ -143,7 +121,7 @@ public:
 	}
 
 public:
-	CEditView* GetEditView()
+	CEditView* GetEditView() override
 	{
 		return this;
 	}
@@ -347,8 +325,8 @@ public:
 	void AddToCmdArr(const WCHAR* szCmd);
 	BOOL ChangeCurRegexp(bool bRedrawIfChanged= true);									// 2002.01.16 hor 正規表現の検索パターンを必要に応じて更新する(ライブラリが使用できないときはFALSEを返す)
 	void SendStatusMessage( const WCHAR* msg );					// 2002.01.26 hor 検索／置換／ブックマーク検索時の状態をステータスバーに表示する
-	LRESULT SetReconvertStruct(PRECONVERTSTRING pReconv, bool bUnicode, bool bDocumentFeed = false);	/* 再変換用構造体を設定する 2002.04.09 minfu */
-	LRESULT SetSelectionFromReonvert(const PRECONVERTSTRING pReconv, bool bUnicode);				/* 再変換用構造体の情報を元に選択範囲を変更する 2002.04.09 minfu */
+	LRESULT SetReconvertStruct(PRECONVERTSTRING pReconv, bool bDocumentFeed = false);	/* 再変換用構造体を設定する 2002.04.09 minfu */
+	LRESULT SetSelectionFromReonvert(const RECONVERTSTRING* pReconv);				/* 再変換用構造体の情報を元に選択範囲を変更する 2002.04.09 minfu */
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	//                           D&D                               //

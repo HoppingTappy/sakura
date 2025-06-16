@@ -14,25 +14,7 @@
 	Copyright (C) 2009, syat
 	Copyright (C) 2018-2022, Sakura Editor Organization
 
-	This software is provided 'as-is', without any express or implied
-	warranty. In no event will the authors be held liable for any damages
-	arising from the use of this software.
-
-	Permission is granted to anyone to use this software for any purpose,
-	including commercial applications, and to alter it and redistribute it
-	freely, subject to the following restrictions:
-
-		1. The origin of this software must not be misrepresented;
-		   you must not claim that you wrote the original software.
-		   If you use this software in a product, an acknowledgment
-		   in the product documentation would be appreciated but is
-		   not required.
-
-		2. Altered source versions must be plainly marked as such,
-		   and must not be misrepresented as being the original software.
-
-		3. This notice may not be removed or altered from any source
-		   distribution.
+	SPDX-License-Identifier: Zlib
 */
 #include "StdAfx.h"
 #include "macro/CIfObj.h"
@@ -56,8 +38,8 @@ private:
 public:
 	CIfObjTypeInfo(const CIfObj::CMethodInfoList& methods, const std::wstring& sName);
 
-	virtual HRESULT STDMETHODCALLTYPE GetTypeAttr(
-					/* [out] */ TYPEATTR __RPC_FAR *__RPC_FAR *ppTypeAttr)
+	HRESULT STDMETHODCALLTYPE GetTypeAttr(
+					/* [out] */ TYPEATTR __RPC_FAR *__RPC_FAR *ppTypeAttr) override
 	{
 #ifdef TEST
 		DEBUG_TRACE( L"GetTypeAttr\n" );
@@ -66,8 +48,8 @@ public:
 		return S_OK;
 	}
         
-	virtual HRESULT STDMETHODCALLTYPE GetTypeComp( 
-					/* [out] */ ITypeComp __RPC_FAR *__RPC_FAR *ppTComp)
+	HRESULT STDMETHODCALLTYPE GetTypeComp(
+					/* [out] */ ITypeComp __RPC_FAR *__RPC_FAR *ppTComp) override
 	{
 #ifdef TEST
 		DEBUG_TRACE( L"GetTypeComp\n" );
@@ -75,63 +57,63 @@ public:
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetFuncDesc( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetFuncDesc(
 				/* [in] */ UINT index,
-				/* [out] */ FUNCDESC __RPC_FAR *__RPC_FAR *ppFuncDesc);
+				/* [out] */ FUNCDESC __RPC_FAR *__RPC_FAR *ppFuncDesc) override;
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetVarDesc( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetVarDesc(
 	    /* [in] */ UINT index,
-	    /* [out] */ VARDESC __RPC_FAR *__RPC_FAR *ppVarDesc)
+	    /* [out] */ VARDESC __RPC_FAR *__RPC_FAR *ppVarDesc) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetNames( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetNames(
 	    /* [in] */ MEMBERID memid,
 	    /* [length_is][size_is][out] */ BSTR __RPC_FAR *rgBstrNames,
 	    /* [in] */ UINT cMaxNames,
-	    /* [out] */ UINT __RPC_FAR *pcNames);
+	    /* [out] */ UINT __RPC_FAR *pcNames) override;
 
-	virtual HRESULT STDMETHODCALLTYPE GetRefTypeOfImplType( 
+	HRESULT STDMETHODCALLTYPE GetRefTypeOfImplType(
 	    /* [in] */ UINT index,
-	    /* [out] */ HREFTYPE __RPC_FAR *pRefType)
+	    /* [out] */ HREFTYPE __RPC_FAR *pRefType) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE GetImplTypeFlags( 
+	HRESULT STDMETHODCALLTYPE GetImplTypeFlags(
 	    /* [in] */ UINT index,
-	    /* [out] */ INT __RPC_FAR *pImplTypeFlags)
+	    /* [out] */ INT __RPC_FAR *pImplTypeFlags) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetIDsOfNames( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetIDsOfNames(
 	    /* [size_is][in] */ LPOLESTR __RPC_FAR *rgszNames,
 	    /* [in] */ UINT cNames,
-	    /* [size_is][out] */ MEMBERID __RPC_FAR *pMemId)
+	    /* [size_is][out] */ MEMBERID __RPC_FAR *pMemId) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE Invoke( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE Invoke(
 	    /* [in] */ PVOID pvInstance,
 	    /* [in] */ MEMBERID memid,
 	    /* [in] */ WORD wFlags,
 	    /* [out][in] */ DISPPARAMS __RPC_FAR *pDispParams,
 	    /* [out] */ VARIANT __RPC_FAR *pVarResult,
 	    /* [out] */ EXCEPINFO __RPC_FAR *pExcepInfo,
-	    /* [out] */ UINT __RPC_FAR *puArgErr)
+	    /* [out] */ UINT __RPC_FAR *puArgErr) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetDocumentation( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetDocumentation(
 	    /* [in] */ MEMBERID memid,
 	    /* [out] */ BSTR __RPC_FAR *pBstrName,
 	    /* [out] */ BSTR __RPC_FAR *pBstrDocString,
 	    /* [out] */ DWORD __RPC_FAR *pdwHelpContext,
-	    /* [out] */ BSTR __RPC_FAR *pBstrHelpFile)
+	    /* [out] */ BSTR __RPC_FAR *pBstrHelpFile) override
 	{
 		//	Feb. 08, 2004 genta
 		//	とりあえず全部NULLを返す (情報無し)
@@ -159,65 +141,65 @@ public:
 		return S_OK;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetDllEntry( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetDllEntry(
 	    /* [in] */ MEMBERID memid,
 	    /* [in] */ INVOKEKIND invKind,
 	    /* [out] */ BSTR __RPC_FAR *pBstrDllName,
 	    /* [out] */ BSTR __RPC_FAR *pBstrName,
-	    /* [out] */ WORD __RPC_FAR *pwOrdinal)
+	    /* [out] */ WORD __RPC_FAR *pwOrdinal) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE GetRefTypeInfo( 
+	HRESULT STDMETHODCALLTYPE GetRefTypeInfo(
 	    /* [in] */ HREFTYPE hRefType,
-	    /* [out] */ ITypeInfo __RPC_FAR *__RPC_FAR *ppTInfo)
+	    /* [out] */ ITypeInfo __RPC_FAR *__RPC_FAR *ppTInfo) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE AddressOfMember( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE AddressOfMember(
 	    /* [in] */ MEMBERID memid,
 	    /* [in] */ INVOKEKIND invKind,
-	    /* [out] */ PVOID __RPC_FAR *ppv)
+	    /* [out] */ PVOID __RPC_FAR *ppv) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE CreateInstance( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE CreateInstance(
 	    /* [in] */ IUnknown __RPC_FAR *pUnkOuter,
 	    /* [in] */ REFIID riid,
-	    /* [iid_is][out] */ PVOID __RPC_FAR *ppvObj)
+	    /* [iid_is][out] */ PVOID __RPC_FAR *ppvObj) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE GetMops( 
+	HRESULT STDMETHODCALLTYPE GetMops(
 	    /* [in] */ MEMBERID memid,
-	    /* [out] */ BSTR __RPC_FAR *pBstrMops)
+	    /* [out] */ BSTR __RPC_FAR *pBstrMops) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ HRESULT STDMETHODCALLTYPE GetContainingTypeLib( 
+	/* [local] */ HRESULT STDMETHODCALLTYPE GetContainingTypeLib(
 	    /* [out] */ ITypeLib __RPC_FAR *__RPC_FAR *ppTLib,
-	    /* [out] */ UINT __RPC_FAR *pIndex)
+	    /* [out] */ UINT __RPC_FAR *pIndex) override
 	{
 		return E_NOTIMPL;
 	}
 
-	virtual /* [local] */ void STDMETHODCALLTYPE ReleaseTypeAttr( 
-					/* [in] */ TYPEATTR __RPC_FAR *pTypeAttr)
+	/* [local] */ void STDMETHODCALLTYPE ReleaseTypeAttr(
+					/* [in] */ TYPEATTR __RPC_FAR *pTypeAttr) override
 	{
 	}
 
-	virtual /* [local] */ void STDMETHODCALLTYPE ReleaseFuncDesc( 
-					/* [in] */ FUNCDESC __RPC_FAR *pFuncDesc)
+	/* [local] */ void STDMETHODCALLTYPE ReleaseFuncDesc(
+					/* [in] */ FUNCDESC __RPC_FAR *pFuncDesc) override
 	{
 	}
 
-	virtual /* [local] */ void STDMETHODCALLTYPE ReleaseVarDesc(
-				/* [in] */ VARDESC __RPC_FAR *pVarDesc)
+	/* [local] */ void STDMETHODCALLTYPE ReleaseVarDesc(
+				/* [in] */ VARDESC __RPC_FAR *pVarDesc) override
 	{
 	}
 };
@@ -261,7 +243,7 @@ HRESULT STDMETHODCALLTYPE CIfObjTypeInfo::GetNames(
 
 //コンストラクタ
 CIfObj::CIfObj(const wchar_t* name, bool isGlobal)
-: ImplementsIUnknown<IDispatch>(), m_sName(name), m_isGlobal(isGlobal), m_Owner(0), m_Methods(), m_TypeInfo(NULL)
+: ImplementsIUnknown<IDispatch>(), m_sName(name), m_isGlobal(isGlobal), m_Owner(nullptr), m_Methods(), m_TypeInfo(nullptr)
 { 
 };
 
